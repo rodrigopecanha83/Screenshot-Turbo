@@ -1,0 +1,601 @@
+SCREENSHOT TURBO
+
+
+# PROMPT — Desenvolvimento de uma extensão profissional de captura de tela para Chrome e Edge
+
+## 1. Objetivo do projeto
+
+Desenvolva uma extensão completa para Google Chrome e Microsoft Edge que permita capturar, recortar, editar, visualizar e salvar imagens de páginas da Web.
+
+A extensão deverá oferecer diferentes modos de captura, seleção livre de regiões, proporções predefinidas, captura de páginas inteiras com rolagem automática, predefinições configuráveis, conversão de formatos e atalhos de teclado personalizáveis.
+
+A experiência deverá ser semelhante à de uma ferramenta profissional de captura de tela: rápida, intuitiva, precisa e com o mínimo possível de etapas desnecessárias.
+
+**Requisito fundamental:** após qualquer captura, abrir um editor de pré-visualização para que o usuário possa conferir o resultado, realizar ajustes e confirmar o salvamento.
+
+A extensão deverá processar as imagens localmente, sem enviá-las para servidores externos.
+
+## 2. Tecnologias e arquitetura
+
+Utilize as seguintes tecnologias:
+
+* JavaScript moderno, preferencialmente ES Modules.
+* HTML5 e CSS3.
+* Chrome Extensions Manifest V3.
+* Canvas API para recortes, composição, redimensionamento e conversão de imagens.
+* Chrome Extensions APIs para captura de tela, gerenciamento de abas, atalhos e downloads.
+* Chrome Storage API para persistência das configurações.
+* Service worker para coordenar as operações em segundo plano.
+* Scripts de conteúdo para a interface de seleção e interação com a página, quando necessário.
+
+A extensão deverá ser compatível com as versões estáveis atuais do Chrome e do Edge.
+
+Utilize apenas permissões justificadas pela funcionalidade implementada. Evite dependências externas desnecessárias.
+
+A arquitetura deverá separar claramente:
+
+1. Gerenciamento da extensão.
+2. Captura da tela e da página inteira.
+3. Interface de seleção.
+4. Editor de imagens.
+5. Conversão e exportação.
+6. Configurações e predefinições.
+7. Atalhos de teclado.
+8. Tratamento de erros.
+
+O código deverá ser modular, organizado, documentado e preparado para manutenção e evolução.
+
+## 3. Interface de captura diretamente na página
+
+A interação principal deverá ocorrer por meio de uma sobreposição visual sobre a página atual.
+
+Ao iniciar uma captura, a extensão deverá apresentar uma camada de interação que permita selecionar a região desejada sem abrir uma janela independente para realizar o recorte.
+
+A sobreposição deverá conter os seguintes elementos, conforme o modo de captura:
+
+* Área de seleção.
+* Fundo externo escurecido.
+* Contorno visual da seleção.
+* Alças de redimensionamento.
+* Indicação das dimensões em pixels.
+* Indicação da proporção selecionada.
+* Controles para confirmar ou cancelar.
+* Ferramentas para mover ou redimensionar a área.
+* Identificação do modo de captura ativo.
+
+O usuário deverá conseguir interagir com a seleção utilizando o mouse.
+
+Implementar:
+
+* Clique e arraste para criar uma seleção.
+* Arraste dentro da seleção para movê-la.
+* Redimensionamento pelas bordas e pelos cantos.
+* Manutenção das proporções fixas quando ativadas.
+* Cancelamento por tecla de atalho.
+* Confirmação da seleção.
+* Tratamento de seleções mínimas e inválidas.
+
+A interface deverá permanecer responsiva e não prejudicar desnecessariamente a interação com a página.
+
+Quando a página não permitir a injeção de scripts, como em páginas internas do navegador, apresentar uma mensagem clara e orientar o usuário sobre a limitação.
+
+## 4. Modos de captura
+
+### 4.1. Janela visível
+
+Capturar o conteúdo atualmente visível na área de visualização da página.
+
+O usuário poderá optar por:
+
+* Capturar toda a área visível.
+* Selecionar uma região específica da área visível.
+* Aplicar uma proporção predefinida.
+* Prosseguir para o editor de pré-visualização.
+
+A captura deverá respeitar as dimensões efetivamente capturadas pelo navegador e considerar a diferença entre pixels CSS e pixels físicos da imagem.
+
+Não incluir elementos da interface do navegador, como abas, barra de endereço ou menus, a menos que exista suporte explícito a esse tipo de captura.
+
+### 4.2. Página inteira com rolagem automática
+
+Capturar a página inteira, incluindo o conteúdo que não está inicialmente visível.
+
+Implementar um procedimento que:
+
+1. Identifique a extensão da página.
+2. Determine os segmentos necessários para a captura.
+3. Percorra a página automaticamente.
+4. Capture os segmentos.
+5. Combine as imagens em uma única imagem final.
+6. Detecte e corrija sobreposições sempre que possível.
+7. Minimize descontinuidades, lacunas e duplicações.
+8. Restaure a posição original de rolagem.
+9. Abra o resultado no editor de pré-visualização.
+
+Considerar situações especiais:
+
+* Cabeçalhos e menus fixos.
+* Elementos com `position: fixed` e `position: sticky`.
+* Conteúdo carregado por rolagem.
+* Imagens com carregamento tardio.
+* Animações e conteúdo que muda durante a captura.
+* Páginas muito longas.
+* Conteúdo incorporado em `iframe`.
+* Páginas com rolagem própria em contêineres internos.
+
+A implementação deverá evitar a duplicação de cabeçalhos fixos durante a composição, sempre que tecnicamente viável.
+
+O procedimento deverá aguardar o carregamento do conteúdo quando necessário e possuir limites de tempo, tentativas e memória.
+
+Não presumir que todas as páginas podem ser capturadas perfeitamente. Quando houver limitações, informar o usuário e preservar o máximo possível do resultado obtido.
+
+Se a página utilizar rolagem infinita, implementar uma estratégia controlada para evitar um processo interminável. Permitir interromper a operação.
+
+A captura deverá ser feita respeitando as restrições das APIs do navegador, sem recorrer a técnicas incompatíveis com o Manifest V3.
+
+### 4.3. Forma livre
+
+Permitir a seleção de uma região retangular de dimensões livres, sem proporção fixa.
+
+A seleção deverá permitir:
+
+* Definir a região por clique e arraste.
+* Mover a região selecionada.
+* Redimensionar pelos cantos e pelas bordas.
+* Exibir largura e altura em pixels.
+* Confirmar a seleção.
+* Cancelar e recomeçar.
+
+O recorte deverá corresponder à região selecionada, respeitando as coordenadas e a escala da imagem original.
+
+### 4.4. Proporções predefinidas
+
+Disponibilizar as seguintes proporções:
+
+* 1:1.
+* 3:2.
+* 4:3.
+* 5:4.
+
+Cada proporção deverá permitir orientação horizontal ou vertical, exceto 1:1, que é quadrada.
+
+A proporção escolhida deverá ser mantida matematicamente durante a criação e o redimensionamento da seleção.
+
+Exemplos:
+
+* 1:1: 1000 × 1000 pixels.
+* 3:2: 1500 × 1000 pixels.
+* 4:3: 1200 × 900 pixels.
+* 5:4: 1250 × 1000 pixels.
+
+Os valores são exemplos; a dimensão final dependerá do tamanho selecionado.
+
+Implementar as seguintes opções:
+
+* Escolher uma proporção antes de iniciar a seleção.
+* Alternar entre orientação horizontal e vertical.
+* Mover a seleção sem alterar seu tamanho.
+* Redimensionar mantendo a proporção.
+* Exibir as dimensões resultantes.
+* Respeitar os limites da área disponível.
+* Impedir dimensões negativas, nulas ou inválidas.
+
+Quando a proporção fixa estiver ativada, o recorte final não poderá sofrer distorções.
+
+### 4.5. Aplicação dos modos
+
+Os modos de captura deverão funcionar de maneira coerente com o tipo de conteúdo capturado.
+
+Para a janela visível, a página inteira e a forma livre, oferecer os recursos de recorte compatíveis com cada situação.
+
+As proporções predefinidas deverão poder ser utilizadas tanto durante a seleção quanto no editor, quando aplicável.
+
+Ao recortar uma captura de página inteira, permitir selecionar uma região que ultrapasse a área originalmente visível da página.
+
+## 5. Sistema de predefinições
+
+Implementar dois modos de operação.
+
+### 5.1. Modo manual
+
+O usuário escolhe explicitamente o modo de captura, a proporção e as demais opções antes de iniciar a operação.
+
+### 5.2. Modo automático
+
+A extensão utiliza uma predefinição previamente configurada pelo usuário.
+
+O sistema deverá distinguir:
+
+* Modo de captura padrão.
+* Proporção padrão.
+* Orientação padrão.
+* Formato de saída.
+* Qualidade de exportação.
+* Comportamento de salvamento.
+* Padrão de nomeação do arquivo.
+
+Permitir configurar uma predefinição global e, se viável, criar múltiplas predefinições nomeadas.
+
+Cada predefinição deverá poder armazenar suas próprias opções.
+
+O usuário deverá poder escolher uma predefinição manualmente ou definir uma predefinição padrão para utilização automática.
+
+Não inferir silenciosamente o conteúdo desejado a partir da página. O modo automático deverá utilizar regras explícitas e preferências previamente configuradas.
+
+## 6. Editor de pré-visualização
+
+O editor deverá ser aberto automaticamente após cada captura bem-sucedida.
+
+Essa é uma funcionalidade central e obrigatória do projeto.
+
+A interface deverá apresentar uma pré-visualização da imagem capturada e oferecer ferramentas para ajustar o resultado antes de salvá-lo.
+
+### 6.1. Ferramentas obrigatórias
+
+Implementar:
+
+* Visualização da imagem capturada.
+* Ajuste de zoom da pré-visualização.
+* Ajuste automático da imagem à área disponível.
+* Recorte retangular livre.
+* Recorte com proporções predefinidas.
+* Movimentação da área de recorte.
+* Redimensionamento da área de recorte.
+* Confirmação ou cancelamento do recorte.
+* Reinicialização do recorte.
+* Exibição das dimensões finais.
+* Seleção do formato de saída.
+* Ajuste da qualidade para JPG e WebP.
+* Botão para salvar.
+* Botão para cancelar.
+* Botão para realizar um novo recorte ou uma nova captura.
+
+O zoom de visualização não deverá modificar as dimensões reais da imagem exportada.
+
+O editor deverá manter a imagem original em memória para permitir refazer o recorte sem perda progressiva de qualidade.
+
+### 6.2. Comportamento do editor
+
+O editor deverá preservar a captura original enquanto o usuário realiza ajustes.
+
+As alterações de recorte deverão ser não destrutivas até a confirmação da exportação.
+
+Ao alterar a proporção, recalcular a área de seleção sem distorcer o conteúdo.
+
+O editor deverá informar a dimensão final do arquivo em pixels.
+
+A interface deverá ser adequada tanto para imagens pequenas quanto para capturas de grandes dimensões.
+
+Para imagens muito grandes, utilizar estratégias de processamento que reduzam o consumo de memória e evitem travamentos.
+
+O editor poderá ser implementado em uma página própria da extensão, mantendo a interface de seleção diretamente sobre a página capturada.
+
+## 7. Formatos de saída
+
+Disponibilizar três formatos.
+
+### 7.1. PNG
+
+Formato padrão.
+
+* Preservar a qualidade da imagem.
+* Preservar transparência quando disponível na origem e no processamento.
+* Não aplicar compressão com perdas.
+* Utilizar a extensão `.png`.
+
+### 7.2. JPG/JPEG
+
+* Permitir configurar a qualidade da imagem.
+* Utilizar uma qualidade padrão equilibrada, como 90%.
+* Permitir escolher um fundo para regiões transparentes.
+* Utilizar a extensão `.jpg` ou `.jpeg`, conforme a convenção adotada.
+
+### 7.3. WebP
+
+* Permitir configurar a qualidade.
+* Utilizar uma qualidade padrão equilibrada, como 90%.
+* Priorizar boa relação entre qualidade visual e tamanho do arquivo.
+* Utilizar o tipo MIME e a extensão correspondentes.
+
+A conversão deverá utilizar a Canvas API ou outro mecanismo nativo compatível com o navegador.
+
+Verificar o tipo MIME efetivamente produzido. Se o navegador não conseguir gerar o formato solicitado, informar o usuário e evitar salvar silenciosamente a imagem com uma extensão incorreta.
+
+O formato escolhido deverá ser aplicado somente na exportação, preservando a imagem original em memória enquanto o editor estiver aberto.
+
+## 8. Atalhos de teclado personalizáveis
+
+Implementar atalhos para iniciar os principais modos de captura e controlar a operação.
+
+Utilizar a API `chrome.commands` do Manifest V3 para os comandos compatíveis.
+
+Permitir configurar os atalhos nas opções da extensão ou por meio da página de atalhos do navegador, conforme as possibilidades oferecidas pela API.
+
+Os comandos deverão incluir, quando tecnicamente suportados:
+
+* Capturar a janela visível.
+* Capturar a página inteira.
+* Iniciar a seleção livre.
+* Iniciar a seleção com a proporção 1:1.
+* Iniciar a seleção com a proporção 3:2.
+* Iniciar a seleção com a proporção 4:3.
+* Iniciar a seleção com a proporção 5:4.
+* Cancelar a seleção atual.
+* Cancelar ou fechar o editor.
+
+Criar atalhos iniciais sugeridos, respeitando as combinações aceitas pelo navegador e evitando conflitos conhecidos.
+
+Não presumir que a extensão pode registrar qualquer combinação de teclas. Documentar as restrições impostas pelo navegador.
+
+Os atalhos deverão funcionar quando a extensão tiver permissão e o contexto permitir sua execução.
+
+A tecla Escape deverá cancelar a seleção ou fechar a operação atual de forma previsível, sem perder uma captura já salva.
+
+Não interceptar atalhos globais desnecessariamente nem prejudicar os comandos nativos das páginas.
+
+## 9. Interface principal e navegação
+
+A extensão deverá apresentar uma interface compacta e intuitiva, com acesso rápido às funções.
+
+Disponibilizar os seguintes comandos:
+
+* Capturar janela visível.
+* Capturar página inteira.
+* Seleção livre.
+* Proporções predefinidas.
+* Alternância entre modo manual e automático.
+* Seleção de predefinições.
+* Acesso às configurações.
+
+A interface de captura deverá aparecer sobre a página sempre que o usuário iniciar um modo que exija seleção.
+
+A página do editor deverá abrir automaticamente após a captura e permitir concluir o fluxo de edição e exportação.
+
+Utilizar uma identidade visual consistente, com hierarquia clara, ícones compreensíveis e feedback visual durante as operações.
+
+Evitar elementos decorativos desnecessários.
+
+## 10. Configurações persistentes
+
+Utilizar `chrome.storage.local` para persistir as configurações da extensão.
+
+Armazenar:
+
+* Modo de captura padrão.
+* Modo manual ou automático.
+* Proporção padrão.
+* Orientação padrão.
+* Formato de saída padrão.
+* Qualidade JPG.
+* Qualidade WebP.
+* Predefinição ativa.
+* Predefinições personalizadas.
+* Preferências de nomeação.
+* Comportamento de salvamento.
+* Preferências do editor.
+* Configurações de atalhos que sejam controladas pela própria extensão.
+
+As configurações deverão permanecer disponíveis após reiniciar o navegador.
+
+Não armazenar capturas permanentemente sem solicitação explícita do usuário.
+
+Caso seja necessário transferir uma imagem entre componentes da extensão, utilizar mecanismos apropriados, considerando o tamanho do arquivo e os limites de armazenamento e comunicação.
+
+## 11. Salvamento e downloads
+
+Após a edição, o usuário deverá poder confirmar o salvamento da imagem.
+
+Utilizar `chrome.downloads` quando necessário, solicitando a permissão correspondente.
+
+Implementar:
+
+* Nomeação automática.
+* Data e hora opcionais no nome.
+* Inclusão opcional do domínio de origem.
+* Escolha do formato.
+* Tratamento de nomes duplicados.
+* Tratamento de falhas de download.
+* Confirmação visual após a solicitação de salvamento.
+
+Utilizar o seguinte padrão inicial:
+
+`captura_YYYY-MM-DD_HH-mm-ss.png`
+
+A extensão do arquivo deverá ser ajustada de acordo com o formato efetivamente exportado.
+
+O usuário deverá poder configurar se deseja utilizar nomes com data, hora, domínio ou um prefixo personalizado.
+
+O fluxo de exportação não deverá declarar que o arquivo foi salvo com sucesso antes de receber a confirmação correspondente do mecanismo de download.
+
+## 12. Tratamento de erros e desempenho
+
+Implementar tratamento de erros para:
+
+* Falta de permissões.
+* Páginas incompatíveis.
+* Falha na captura.
+* Falha durante a rolagem.
+* Conteúdo dinâmico.
+* Cancelamento pelo usuário.
+* Falha na composição das imagens.
+* Erros de conversão.
+* Falhas no download.
+* Limites de memória.
+* Dimensões excessivas.
+* Formatos não suportados.
+* Comunicação interrompida entre componentes.
+
+Exibir mensagens objetivas e compreensíveis.
+
+Evitar travamentos da interface durante capturas demoradas.
+
+Utilizar indicadores de progresso nas capturas de página inteira.
+
+Permitir cancelar operações longas quando for tecnicamente possível.
+
+Implementar liberação adequada de recursos, referências a imagens, objetos `Blob` e URLs criadas por `URL.createObjectURL()`.
+
+Considerar os limites máximos de dimensão e área do Canvas em cada navegador.
+
+Não prometer suporte ilimitado a imagens de dimensões arbitrárias.
+
+## 13. Segurança e privacidade
+
+A extensão deverá:
+
+* Processar as capturas localmente.
+* Não enviar imagens para servidores externos.
+* Não coletar dados pessoais desnecessários.
+* Não executar código remoto.
+* Utilizar somente as permissões necessárias.
+* Seguir as regras do Manifest V3.
+* Respeitar as restrições de páginas internas e protegidas.
+* Não tentar contornar mecanismos de proteção do navegador.
+* Não modificar permanentemente o conteúdo dos sites capturados.
+
+Documentar cada permissão no `manifest.json` e explicar sua finalidade.
+
+## 14. Estrutura do projeto
+
+Organizar o código em módulos com responsabilidades claras.
+
+Adotar uma estrutura semelhante à seguinte, ajustando-a quando necessário:
+
+```text
+screen-capture-extension/
+├── manifest.json
+├── background/
+│   └── service-worker.js
+├── content/
+│   ├── capture-overlay.js
+│   └── capture-overlay.css
+├── capture/
+│   ├── visible-capture.js
+│   ├── full-page-capture.js
+│   ├── selection.js
+│   └── image-composition.js
+├── editor/
+│   ├── editor.html
+│   ├── editor.js
+│   └── editor.css
+├── settings/
+│   ├── settings.html
+│   ├── settings.js
+│   └── settings.css
+├── shared/
+│   ├── storage.js
+│   ├── messaging.js
+│   ├── image-export.js
+│   ├── shortcuts.js
+│   └── constants.js
+├── icons/
+└── README.md
+```
+
+Essa estrutura é uma referência arquitetural. O projeto poderá ser reorganizado conforme as necessidades, desde que preserve a separação de responsabilidades.
+
+## 15. Testes e critérios de aceitação
+
+Implementar e validar os seguintes cenários.
+
+### Captura
+
+1. Captura correta da janela visível.
+2. Captura de página inteira com rolagem automática.
+3. Seleção livre com mouse.
+4. Seleção com proporção fixa.
+5. Seleção horizontal e vertical.
+6. Movimentação e redimensionamento da área.
+7. Cancelamento da operação.
+
+### Editor
+
+8. Abertura automática após uma captura bem-sucedida.
+9. Pré-visualização correta.
+10. Recorte livre e por proporção.
+11. Alteração de zoom sem modificar as dimensões exportadas.
+12. Reinicialização do recorte.
+13. Preservação da imagem original durante a edição.
+14. Exibição das dimensões finais.
+
+### Exportação
+
+15. Geração válida de PNG.
+16. Geração válida de JPG.
+17. Geração válida de WebP.
+18. Aplicação correta da qualidade selecionada.
+19. Tratamento de transparência em formatos que não a suportam.
+20. Nomeação correta dos arquivos.
+
+### Configurações e atalhos
+
+21. Persistência das preferências.
+22. Utilização correta das predefinições.
+23. Execução dos atalhos configurados.
+24. Tratamento de combinações de teclas inválidas ou indisponíveis.
+25. Funcionamento após reiniciar o navegador.
+
+### Robustez
+
+26. Tratamento de páginas com conteúdo dinâmico.
+27. Tratamento de cabeçalhos fixos.
+28. Tratamento de páginas muito longas.
+29. Cancelamento de capturas demoradas.
+30. Recuperação de falhas sem deixar a página em estado inconsistente.
+
+Os testes deverão verificar não apenas a interface, mas também a integridade dos arquivos gerados e a correspondência entre as dimensões selecionadas e as imagens exportadas.
+
+## 16. Documentação e entrega
+
+Entregar o projeto completo, incluindo:
+
+* Código-fonte funcional.
+* Arquivo `manifest.json`.
+* Todos os arquivos HTML, CSS e JavaScript necessários.
+* Ícones da extensão.
+* Interface de captura.
+* Editor de pré-visualização.
+* Página de configurações.
+* Sistema de atalhos.
+* Sistema de predefinições.
+* Funções de exportação.
+* Testes relevantes.
+* Arquivo `README.md`.
+* Instruções de instalação no Chrome e Edge.
+* Documentação das permissões.
+* Lista de limitações conhecidas.
+
+Não entregar apenas pseudocódigo, telas demonstrativas ou módulos sem integração.
+
+O resultado deverá ser instalável em modo de desenvolvedor e permitir testar os principais fluxos sem serviços externos.
+
+## 17. Método de desenvolvimento
+
+Antes de escrever o código:
+
+1. Analise os requisitos.
+2. Proponha a arquitetura.
+3. Identifique as limitações das APIs do navegador.
+4. Explique como ocorrerá a comunicação entre service worker, scripts de conteúdo, editor e armazenamento.
+5. Defina uma estratégia de testes.
+
+Depois, implemente o projeto por etapas:
+
+* Etapa 1: estrutura básica e Manifest V3.
+* Etapa 2: captura da janela visível.
+* Etapa 3: sobreposição e seleção livre.
+* Etapa 4: proporções predefinidas.
+* Etapa 5: captura de página inteira.
+* Etapa 6: editor de pré-visualização.
+* Etapa 7: exportação PNG, JPG e WebP.
+* Etapa 8: configurações e predefinições.
+* Etapa 9: atalhos de teclado.
+* Etapa 10: testes, correções e documentação.
+
+Ao concluir cada etapa, verificar a integração com as funcionalidades já implementadas.
+
+Não substituir requisitos difíceis por implementações simuladas.
+
+Quando uma funcionalidade não puder ser implementada exatamente como solicitado devido a restrições do navegador, explicar a limitação, apresentar a alternativa mais próxima e documentar a decisão.
+
+**Resultado esperado:** uma extensão profissional de captura de tela, funcional, segura, modular e pronta para instalação e testes, com seleção diretamente sobre a página, editor de pré-visualização, proporções configuráveis, captura de página inteira, formatos de exportação e atalhos personalizáveis.

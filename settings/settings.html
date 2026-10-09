@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações — ScreenShot Turbo</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="settings-container">
+    <header class="settings-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+        </div>
+        <div>
+          <h1>ScreenShot <span class="accent-turbo">Turbo</span></h1>
+          <p class="subtitle">Preferências & Predefinições Globais</p>
+        </div>
+      </div>
+      <button id="btn-save-settings" class="btn-save">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        Salvar Alterações
+      </button>
+    </header>
+
+    <div class="settings-grid">
+      <!-- Seção: Padrões de Captura -->
+      <div class="card">
+        <h2 class="card-title">Comportamento Geral de Captura</h2>
+        
+        <div class="form-group">
+          <label for="default-mode">Modo de Captura Padrão:</label>
+          <select id="default-mode" class="form-control">
+            <option value="visible">Janela Visível</option>
+            <option value="full_page">Página Inteira</option>
+            <option value="free_selection">Seleção Livre</option>
+            <option value="ratio_selection">Seleção por Proporção</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="default-ratio">Proporção Padrão:</label>
+          <select id="default-ratio" class="form-control">
+            <option value="free">Livre (Sem proporção fixa)</option>
+            <option value="1:1">1:1 (Quadrado)</option>
+            <option value="3:2">3:2 (Fotografia)</option>
+            <option value="4:3">4:3 (Monitor padrão)</option>
+            <option value="5:4">5:4 (Quadro)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="default-orient">Orientação Padrão:</label>
+          <select id="default-orient" class="form-control">
+            <option value="landscape">Horizontal (Paisagem)</option>
+            <option value="portrait">Vertical (Retrato)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Seção: Exportação de Arquivos -->
+      <div class="card">
+        <h2 class="card-title">Formatos & Qualidade de Exportação</h2>
+        
+        <div class="form-group">
+          <label for="default-format">Formato de Saída Padrão:</label>
+          <select id="default-format" class="form-control">
+            <option value="png">PNG (Sem perdas, suporta transparência)</option>
+            <option value="jpg">JPG (Comprimido, alta compatibilidade)</option>
+            <option value="webp">WebP (Moderno, ultra-compacto)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="flex-between">
+            <label for="jpg-quality">Qualidade JPG:</label>
+            <span id="jpg-quality-val" class="badge">90%</span>
+          </div>
+          <input type="range" id="jpg-quality" min="10" max="100" value="90" class="slider">
+        </div>
+
+        <div class="form-group">
+          <div class="flex-between">
+            <label for="webp-quality">Qualidade WebP:</label>
+            <span id="webp-quality-val" class="badge">90%</span>
+          </div>
+          <input type="range" id="webp-quality" min="10" max="100" value="90" class="slider">
+        </div>
+
+        <div class="form-group">
+          <label for="jpg-bg-color">Cor de Fundo para JPG:</label>
+          <div class="color-row">
+            <input type="color" id="jpg-bg-color" value="#ffffff">
+            <span id="jpg-bg-hex">#ffffff</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Seção: Nomenclatura -->
+      <div class="card">
+        <h2 class="card-title">Nomes & Salvamento de Arquivo</h2>
+        
+        <div class="form-group">
+          <label for="filename-pattern">Padrão do Nome do Arquivo:</label>
+          <input type="text" id="filename-pattern" class="form-control" value="captura_{date}_{time}">
+          <p class="help-text">Tags disponíveis: <code>{date}</code> (ano-mês-dia), <code>{time}</code> (hora-min-seg).</p>
+        </div>
+
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="include-domain" checked>
+          <label for="include-domain">Incluir nome do domínio/site no início do arquivo</label>
+        </div>
+      </div>
+
+      <!-- Seção: Atalhos do Teclado -->
+      <div class="card">
+        <h2 class="card-title">Atalhos de Teclado Globais</h2>
+        <div class="shortcuts-list">
+          <div class="shortcut-item">
+            <span>Janela Visível</span>
+            <span class="key-badge">Alt + Shift + V</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Página Inteira</span>
+            <span class="key-badge">Alt + Shift + F</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Seleção Livre</span>
+            <span class="key-badge">Alt + Shift + S</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Seleção 1:1</span>
+            <span class="key-badge">Alt + Shift + 1</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Seleção 3:2</span>
+            <span class="key-badge">Alt + Shift + 2</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Seleção 4:3</span>
+            <span class="key-badge">Alt + Shift + 3</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Seleção 5:4</span>
+            <span class="key-badge">Alt + Shift + 4</span>
+          </div>
+        </div>
+        <p class="help-text" style="margin-top:12px;">Para personalizar os atalhos nativos do navegador, acesse <code>chrome://extensions/shortcuts</code> ou <code>edge://extensions/shortcuts</code>.</p>
+      </div>
+    </div>
+
+    <!-- Feedback Toast -->
+    <div id="save-toast" class="save-toast" style="display: none;">Configurações salvas com sucesso!</div>
+  </div>
+
+  <script type="module" src="settings.js"></script>
+</body>
+</html>

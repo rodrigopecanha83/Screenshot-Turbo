@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor de Pré-visualização — ScreenShot Turbo</title>
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <div class="editor-app">
+    <!-- Barra Superior -->
+    <header class="editor-navbar">
+      <div class="navbar-brand">
+        <div class="logo-badge">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>Editor de Pré-visualização</h1>
+          <span id="source-domain" class="source-tag">Captura local</span>
+        </div>
+      </div>
+
+      <!-- Ações Principais -->
+      <div class="navbar-actions">
+        <button id="btn-reset-crop" class="btn-secondary" title="Reiniciar Recorte">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          Restaurar Imagem
+        </button>
+        <button id="btn-copy-clipboard" class="btn-secondary" title="Copiar para Área de Transferência">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          Copiar
+        </button>
+        <button id="btn-save-image" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Salvar Imagem
+        </button>
+      </div>
+    </header>
+
+    <!-- Área Principal de Trabalho -->
+    <main class="editor-main">
+      <!-- Painel Esquerdo: Ferramentas e Configuração de Exportação -->
+      <aside class="editor-sidebar">
+        <!-- Ferramenta de Recorte -->
+        <div class="sidebar-card">
+          <h2 class="card-heading">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3H3v3M18 3h3v3M6 21H3v-3M18 21h3v-3M9 3h6M9 21h6M3 9v6M21 9v6"></path></svg>
+            Recorte & Proporções
+          </h2>
+          <div class="ratio-select-grid">
+            <button class="ratio-chip active" data-ratio="free">Livre</button>
+            <button class="ratio-chip" data-ratio="1:1">1:1</button>
+            <button class="ratio-chip" data-ratio="3:2">3:2</button>
+            <button class="ratio-chip" data-ratio="4:3">4:3</button>
+            <button class="ratio-chip" data-ratio="5:4">5:4</button>
+          </div>
+          <div class="orientation-row">
+            <span class="sub-label">Orientação:</span>
+            <div class="toggle-group">
+              <button id="editor-orient-land" class="btn-chip active">Horizontal</button>
+              <button id="editor-orient-port" class="btn-chip">Vertical</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dimensões Finais -->
+        <div class="sidebar-card">
+          <h2 class="card-heading">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            Dimensões da Imagem
+          </h2>
+          <div class="dimension-metrics">
+            <div class="metric-item">
+              <span class="metric-label">Largura</span>
+              <span id="stat-width" class="metric-value">0 px</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Altura</span>
+              <span id="stat-height" class="metric-value">0 px</span>
+            </div>
+          </div>
+          <div class="metric-subinfo">
+            <span id="stat-ratio-display">Proporção: Original</span>
+          </div>
+        </div>
+
+        <!-- Formato e Qualidade -->
+        <div class="sidebar-card">
+          <h2 class="card-heading">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            Formato de Exportação
+          </h2>
+          <div class="format-buttons">
+            <button class="format-btn active" data-format="png">PNG</button>
+            <button class="format-btn" data-format="jpg">JPG</button>
+            <button class="format-btn" data-format="webp">WebP</button>
+          </div>
+
+          <!-- Controle de Qualidade para JPG/WebP -->
+          <div id="quality-control-wrapper" class="quality-wrapper" style="display: none;">
+            <div class="quality-header">
+              <span class="sub-label">Qualidade:</span>
+              <span id="quality-val-display" class="badge-val">90%</span>
+            </div>
+            <input type="range" id="quality-slider" min="10" max="100" value="90" class="custom-slider">
+          </div>
+
+          <!-- Fundo para JPG -->
+          <div id="bg-color-wrapper" class="bg-color-wrapper" style="display: none;">
+            <span class="sub-label">Cor de fundo (sem transparência):</span>
+            <div class="color-picker-row">
+              <input type="color" id="jpg-bg-color" value="#ffffff">
+              <span id="jpg-bg-hex">#FFFFFF</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nome do Arquivo -->
+        <div class="sidebar-card">
+          <h2 class="card-heading">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+            Nome do Arquivo
+          </h2>
+          <input type="text" id="filename-preview" class="filename-input" spellcheck="false">
+        </div>
+      </aside>
+
+      <!-- Visualizador Central com Canvas e Controles de Zoom -->
+      <section class="editor-stage-wrapper">
+        <!-- Barra flutuante de Zoom -->
+        <div class="zoom-floating-toolbar">
+          <button id="btn-zoom-out" class="zoom-btn" title="Diminuir Zoom">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+          <span id="zoom-level-badge" class="zoom-text">100%</span>
+          <button id="btn-zoom-in" class="zoom-btn" title="Aumentar Zoom">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+          <div class="toolbar-divider"></div>
+          <button id="btn-zoom-fit" class="zoom-btn" title="Ajustar à Tela">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+          </button>
+          <button id="btn-zoom-100" class="zoom-btn" title="Tamanho Real (100%)">1:1</button>
+        </div>
+
+        <!-- Canvas Container com Interação de Recorte -->
+        <div id="canvas-container" class="canvas-viewport">
+          <div id="canvas-wrapper" class="canvas-workspace">
+            <canvas id="main-canvas"></canvas>
+            <div id="crop-overlay-box" class="editor-crop-box">
+              <div class="crop-handle handle-nw" data-handle="nw"></div>
+              <div class="crop-handle handle-n" data-handle="n"></div>
+              <div class="crop-handle handle-ne" data-handle="ne"></div>
+              <div class="crop-handle handle-e" data-handle="e"></div>
+              <div class="crop-handle handle-se" data-handle="se"></div>
+              <div class="crop-handle handle-s" data-handle="s"></div>
+              <div class="crop-handle handle-sw" data-handle="sw"></div>
+              <div class="crop-handle handle-w" data-handle="w"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Feedback Toast -->
+    <div id="editor-toast" class="toast-message" style="display: none;"></div>
+  </div>
+
+  <script type="module" src="editor.js"></script>
+</body>
+</html>
