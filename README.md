@@ -9,10 +9,12 @@
 - 📸 **Modos de Captura Flexíveis**:
   - **Janela Visível**: Captura instantânea do viewport atual.
   - **Página Inteira**: Rolagem automática inteligente com costura sem emendas e ocultação de menus fixos repetidos.
-  - **Seleção Livre**: Camada interativa diretamente sobre a página com redimensionamento pelas 8 alças.
+  - **Seleção Livre**: Camada interativa diretamente sobre a página com redimensionamento pelas 8 alças, confirmação, cópia direta e salvamento rápido.
   - **Proporções Predefinidas**: Fixação matemática de proporções (1:1, 3:2, 4:3, 5:4) com alternância entre paisagem e retrato.
 - 🎨 **Editor de Pré-visualização Integrado**:
   - Abertura automática após cada captura.
+  - **Ferramentas de Anotação e Desenho**: Formas geométricas (retângulos, círculos), texto, setas, linhas retas, polilinhas (linhas contínuas ponto a ponto) e pincel livre.
+  - Modos de desenho contínuo sem necessidade de reativação da ferramenta.
   - Recorte não destrutivo em Canvas.
   - Controles de zoom (Zoom In, Zoom Out, Ajustar à Tela, 100%).
   - Cópia direta para a área de transferência (`Clipboard API`).

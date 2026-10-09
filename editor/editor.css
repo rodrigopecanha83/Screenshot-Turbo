@@ -151,8 +151,8 @@ body {
 /* Ferramentas de Anotação (Fabric.js) */
 .annotation-tools-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 4px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
 }
 
 .tool-btn {
@@ -546,6 +546,20 @@ body {
   box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.55);
   cursor: move;
   box-sizing: border-box;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.editor-crop-box .crop-handle {
+  display: none;
+}
+
+.crop-mode .editor-crop-box {
+  pointer-events: auto;
+}
+
+.crop-mode .editor-crop-box .crop-handle {
+  display: block;
 }
 
 .crop-handle {

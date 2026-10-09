@@ -119,6 +119,16 @@
   transform: translateY(-1px);
 }
 
+.sst-btn-copy {
+  background: #6366f1;
+  color: #ffffff;
+}
+
+.sst-btn-copy:hover {
+  background: #4f46e5;
+  transform: translateY(-1px);
+}
+
 .sst-btn-save {
   background: #16a34a;
   color: #ffffff;

@@ -105,6 +105,10 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
         Confirmar
       </button>
+      <button class="sst-btn sst-btn-copy" id="sst-btn-copy" title="Copiar seleção para a área de transferência">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        Copiar
+      </button>
       <button class="sst-btn sst-btn-save" id="sst-btn-save" title="Salvar direto, sem abrir o editor">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         Salvar
@@ -128,12 +132,17 @@
     // Ações dos botões da barra
     toolbar.querySelector('#sst-btn-confirm').addEventListener('click', (e) => {
       e.stopPropagation();
-      confirmSelection();
+      confirmSelection('editor');
+    });
+
+    toolbar.querySelector('#sst-btn-copy').addEventListener('click', (e) => {
+      e.stopPropagation();
+      confirmSelection('copy');
     });
 
     toolbar.querySelector('#sst-btn-save').addEventListener('click', (e) => {
       e.stopPropagation();
-      confirmSelection(true);
+      confirmSelection('save');
     });
 
     toolbar.querySelector('#sst-btn-cancel').addEventListener('click', (e) => {
@@ -361,11 +370,11 @@
     if (e.key === 'Escape') {
       removeOverlay();
     } else if (e.key === 'Enter' && currentRect.w > 10 && currentRect.h > 10) {
-      confirmSelection();
+      confirmSelection('editor');
     }
   }
 
-  async function confirmSelection(directSave = false) {
+  async function confirmSelection(action = 'editor') {
     if (currentRect.w < 10 || currentRect.h < 10) {
       alert('Selecione uma área válida antes de prosseguir.');
       return;
@@ -392,7 +401,7 @@
     await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     await new Promise((resolve) => setTimeout(resolve, 80));
 
-    if (directSave) {
+    if (action === 'save' || action === true) {
       try {
         const res = await chrome.runtime.sendMessage({ type: 'CAPTURE_RAW' });
         if (!res || res.error || !res.dataUrl) throw new Error(res?.error || 'Falha na captura.');
@@ -412,7 +421,24 @@
       return;
     }
 
-    // Notifica o service worker para tirar o screenshot limpo
+    if (action === 'copy') {
+      try {
+        const res = await chrome.runtime.sendMessage({ type: 'CAPTURE_RAW' });
+        if (!res || res.error || !res.dataUrl) throw new Error(res?.error || 'Falha na captura.');
+        const cropped = await cropDataUrl(res.dataUrl, selectionData);
+        const response = await fetch(cropped);
+        const blob = await response.blob();
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': blob })
+        ]);
+        showCopySuccessToast();
+      } catch (err) {
+        showErrorToast(err.message || 'Falha ao copiar imagem para a área de transferência.');
+      }
+      return;
+    }
+
+    // Notifica o service worker para tirar o screenshot limpo e abrir o editor
     chrome.runtime.sendMessage({
       type: 'SELECTION_CONFIRMED',
       selection: selectionData,
@@ -507,6 +533,24 @@
     setTimeout(() => {
       removeProgressToast();
     }, 1500);
+  }
+
+  function showCopySuccessToast() {
+    removeProgressToast();
+    const copyToast = document.createElement('div');
+    copyToast.id = 'sst-progress-toast';
+    copyToast.style.borderColor = 'rgba(56, 189, 248, 0.5)';
+    copyToast.innerHTML = `
+      <div style="font-weight:600; font-size:14px; color:#38bdf8; display:flex; align-items:center; gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Imagem copiada!
+      </div>
+      <div style="font-size:12px; color:#e2e8f0; margin-top:4px;">Pronta para colar onde quiser (Ctrl+V).</div>
+    `;
+    document.body.appendChild(copyToast);
+    setTimeout(() => {
+      if (copyToast.parentNode) copyToast.parentNode.removeChild(copyToast);
+    }, 2000);
   }
 
   function showErrorToast(msg) {

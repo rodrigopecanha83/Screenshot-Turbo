@@ -22,6 +22,11 @@ let isDrawingShape = false;
 let shapeStartX = 0, shapeStartY = 0;
 let activeDrawingObject = null;
 
+// Variáveis de Polilinha (Linhas contínuas ponto a ponto)
+let polylinePoints = [];
+let polylineActiveLine = null;
+let polylineTempLines = [];
+
 // Estados do Editor
 let zoomLevel = 1.0;
 let currentRatio = 'free';
@@ -146,8 +151,13 @@ function initFabricCanvas() {
     preserveObjectStacking: true
   });
 
-  // Eventos de teclas para apagar objetos (Delete / Backspace)
+  // Eventos de teclas para apagar objetos (Delete / Backspace) e finalizar polilinha (Enter / Escape)
   window.addEventListener('keydown', (e) => {
+    if ((e.key === 'Enter' || e.key === 'Escape') && activeTool === 'polyline') {
+      finishPolyline(e.key === 'Escape');
+      return;
+    }
+
     if ((e.key === 'Delete' || e.key === 'Backspace') && fabricCanvas) {
       const activeObj = fabricCanvas.getActiveObject();
       // Se não estiver editando texto ativamente no canvas
@@ -163,13 +173,18 @@ function initFabricCanvas() {
     }
   });
 
-  // Lógica para desenhar formas interativamente (Retângulo, Círculo, Seta)
+  // Lógica para desenhar formas interativamente (Retângulo, Círculo, Seta, Linha, Polilinha)
   fabricCanvas.on('mouse:down', (options) => {
     if (activeTool === 'select' || activeTool === 'draw') return;
 
     const pointer = fabricCanvas.getPointer(options.e);
     shapeStartX = pointer.x;
     shapeStartY = pointer.y;
+
+    if (activeTool === 'polyline') {
+      handlePolylineClick(pointer);
+      return;
+    }
 
     if (activeTool === 'text') {
       const text = new fabric.IText('Seu texto aqui', {
@@ -213,6 +228,14 @@ function initFabricCanvas() {
         strokeWidth: strokeWidth,
         fill: currentFill
       });
+    } else if (activeTool === 'line') {
+      activeDrawingObject = new fabric.Line([shapeStartX, shapeStartY, shapeStartX, shapeStartY], {
+        stroke: strokeColor,
+        strokeWidth: strokeWidth,
+        strokeLineCap: 'round',
+        selectable: true,
+        hasBorders: true
+      });
     } else if (activeTool === 'arrow') {
       const points = [shapeStartX, shapeStartY, shapeStartX, shapeStartY];
       activeDrawingObject = createArrowGroup(points, strokeColor, strokeWidth);
@@ -224,8 +247,14 @@ function initFabricCanvas() {
   });
 
   fabricCanvas.on('mouse:move', (options) => {
-    if (!isDrawingShape || !activeDrawingObject) return;
     const pointer = fabricCanvas.getPointer(options.e);
+
+    if (activeTool === 'polyline') {
+      handlePolylineMove(pointer);
+      return;
+    }
+
+    if (!isDrawingShape || !activeDrawingObject) return;
 
     if (activeTool === 'rect') {
       const width = Math.abs(pointer.x - shapeStartX);
@@ -245,6 +274,11 @@ function initFabricCanvas() {
         rx: rx,
         ry: ry
       });
+    } else if (activeTool === 'line') {
+      activeDrawingObject.set({
+        x2: pointer.x,
+        y2: pointer.y
+      });
     } else if (activeTool === 'arrow') {
       fabricCanvas.remove(activeDrawingObject);
       const points = [shapeStartX, shapeStartY, pointer.x, pointer.y];
@@ -255,17 +289,102 @@ function initFabricCanvas() {
     fabricCanvas.requestRenderAll();
   });
 
+  fabricCanvas.on('mouse:dblclick', () => {
+    if (activeTool === 'polyline') {
+      finishPolyline();
+    }
+  });
+
   fabricCanvas.on('mouse:up', () => {
     if (isDrawingShape) {
       isDrawingShape = false;
       if (activeDrawingObject) {
         activeDrawingObject.setCoords();
-        fabricCanvas.setActiveObject(activeDrawingObject);
       }
       activeDrawingObject = null;
-      setActiveTool('select');
     }
   });
+}
+
+/**
+ * Funções auxiliares para a ferramenta Polilinha (Linha Contínua ponto a ponto)
+ */
+function handlePolylineClick(pointer) {
+  polylinePoints.push({ x: pointer.x, y: pointer.y });
+
+  if (polylinePoints.length === 1) {
+    // Primeiro ponto: cria a linha elástica ativa
+    polylineActiveLine = new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], {
+      stroke: strokeColor,
+      strokeWidth: strokeWidth,
+      strokeDashArray: [4, 4],
+      selectable: false,
+      evented: false
+    });
+    fabricCanvas.add(polylineActiveLine);
+  } else {
+    // Ponto subsequente: fixa o segmento anterior visualmente
+    const prev = polylinePoints[polylinePoints.length - 2];
+    const segment = new fabric.Line([prev.x, prev.y, pointer.x, pointer.y], {
+      stroke: strokeColor,
+      strokeWidth: strokeWidth,
+      strokeLineCap: 'round',
+      selectable: false,
+      evented: false
+    });
+    fabricCanvas.add(segment);
+    polylineTempLines.push(segment);
+
+    // Reposiciona a linha ativa para partir deste novo ponto
+    if (polylineActiveLine) {
+      polylineActiveLine.set({
+        x1: pointer.x,
+        y1: pointer.y,
+        x2: pointer.x,
+        y2: pointer.y
+      });
+    }
+  }
+
+  fabricCanvas.requestRenderAll();
+}
+
+function handlePolylineMove(pointer) {
+  if (polylinePoints.length > 0 && polylineActiveLine) {
+    polylineActiveLine.set({
+      x2: pointer.x,
+      y2: pointer.y
+    });
+    fabricCanvas.requestRenderAll();
+  }
+}
+
+function finishPolyline(cancel = false) {
+  // Limpa linha elástica e linhas temporárias
+  if (polylineActiveLine) {
+    fabricCanvas.remove(polylineActiveLine);
+    polylineActiveLine = null;
+  }
+
+  polylineTempLines.forEach(l => fabricCanvas.remove(l));
+  polylineTempLines = [];
+
+  if (!cancel && polylinePoints.length >= 2) {
+    // Cria o objeto Polyline oficial no Fabric.js
+    const poly = new fabric.Polyline(polylinePoints.map(p => ({ x: p.x, y: p.y })), {
+      stroke: strokeColor,
+      strokeWidth: strokeWidth,
+      fill: 'transparent',
+      strokeLineCap: 'round',
+      strokeLineJoin: 'round',
+      selectable: true,
+      hasBorders: true
+    });
+    fabricCanvas.add(poly);
+  }
+
+  polylinePoints = [];
+  fabricCanvas.requestRenderAll();
 }
 
 /**
@@ -311,8 +430,11 @@ function setupAnnotationTools() {
     select: document.getElementById('tool-select'),
     text: document.getElementById('tool-text'),
     arrow: document.getElementById('tool-arrow'),
+    line: document.getElementById('tool-line'),
+    polyline: document.getElementById('tool-polyline'),
     rect: document.getElementById('tool-rect'),
     circle: document.getElementById('tool-circle'),
+    crop: document.getElementById('tool-crop'),
     draw: document.getElementById('tool-draw')
   };
 
@@ -370,13 +492,28 @@ function setupAnnotationTools() {
 }
 
 function setActiveTool(toolName) {
+  if (activeTool === 'polyline' && toolName !== 'polyline') {
+    finishPolyline();
+  }
+
   activeTool = toolName;
 
   document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
   const activeBtn = document.getElementById(`tool-${toolName}`);
   if (activeBtn) activeBtn.classList.add('active');
 
+  // Modo recorte: a máscara passa a receber o mouse; nos demais, o Fabric recebe
+  const wrapper = document.getElementById('canvas-wrapper');
+  if (wrapper) wrapper.classList.toggle('crop-mode', toolName === 'crop');
+
   if (!fabricCanvas) return;
+
+  if (toolName === 'crop') {
+    fabricCanvas.isDrawingMode = false;
+    fabricCanvas.discardActiveObject();
+    fabricCanvas.requestRenderAll();
+    return;
+  }
 
   if (toolName === 'draw') {
     fabricCanvas.isDrawingMode = true;
@@ -414,6 +551,11 @@ function updateSelectedObjectProps() {
     activeObj.set({
       stroke: strokeColor,
       fill: currentFill,
+      strokeWidth: strokeWidth
+    });
+  } else if (activeObj.type === 'line' || activeObj.type === 'polyline') {
+    activeObj.set({
+      stroke: strokeColor,
       strokeWidth: strokeWidth
     });
   } else if (activeObj.type === 'group') {
@@ -587,6 +729,7 @@ function setupUIEventListeners() {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.ratio-chip').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      setActiveTool('crop');
       setRatio(btn.dataset.ratio, currentOrientation);
     });
   });

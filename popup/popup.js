@@ -24,7 +24,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Predefinição do usuário (modo padrão das configurações)
   document.getElementById('btn-cap-preset').addEventListener('click', () => {
-    triggerCapture(userMode, userMode === 'ratio_selection' ? (settings.defaultRatio || '1:1') : 'free');
+    triggerCapture(
+      userMode,
+      userMode === 'ratio_selection' ? (settings.defaultRatio || '1:1') : 'free',
+      settings.defaultOrientation || currentOrientation
+    );
   });
 
   // Ações de Captura
@@ -48,13 +52,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  async function triggerCapture(mode, ratio = 'free') {
+  async function triggerCapture(mode, ratio = 'free', orientation = currentOrientation) {
     try {
       const response = await chrome.runtime.sendMessage({
         type: MESSAGE_TYPES.START_CAPTURE,
         mode: mode,
         ratio: ratio,
-        orientation: currentOrientation
+        orientation: orientation
       });
 
       if (response && response.error) {
