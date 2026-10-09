@@ -7,6 +7,21 @@ let canvas = null;
 let ctx = null;
 let currentCaptureData = null;
 
+// Instância do Fabric.js
+let fabricCanvas = null;
+let activeTool = 'select'; // 'select', 'text', 'arrow', 'rect', 'circle', 'draw'
+
+// Cores e Propriedades de Anotação
+let strokeColor = '#ef4444';
+let fillColor = '#ffeb3b';
+let isFillTransparent = true;
+let strokeWidth = 4;
+
+// Variáveis de desenho de formas/setas
+let isDrawingShape = false;
+let shapeStartX = 0, shapeStartY = 0;
+let activeDrawingObject = null;
+
 // Estados do Editor
 let zoomLevel = 1.0;
 let currentRatio = 'free';
@@ -28,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await loadCapturedSession();
   setupUIEventListeners();
+  setupAnnotationTools();
   setupCropInteractions();
 });
 
@@ -106,6 +122,7 @@ async function loadCapturedSession() {
       }
     }
 
+    initFabricCanvas();
     renderCanvas();
     autoFitZoom();
     updateFilenameInput();
@@ -114,6 +131,305 @@ async function loadCapturedSession() {
     console.error('Erro ao carregar sessão no editor:', err);
     showToast(`Erro ao carregar imagem: ${err.message}`);
   }
+}
+
+/**
+ * Inicializa o Fabric.js sobre o elemento canvas principal
+ */
+function initFabricCanvas() {
+  if (fabricCanvas) {
+    fabricCanvas.dispose();
+  }
+
+  fabricCanvas = new fabric.Canvas('main-canvas', {
+    selection: true,
+    preserveObjectStacking: true
+  });
+
+  // Eventos de teclas para apagar objetos (Delete / Backspace)
+  window.addEventListener('keydown', (e) => {
+    if ((e.key === 'Delete' || e.key === 'Backspace') && fabricCanvas) {
+      const activeObj = fabricCanvas.getActiveObject();
+      // Se não estiver editando texto ativamente no canvas
+      if (activeObj && !activeObj.isEditing) {
+        if (activeObj.type === 'activeSelection') {
+          activeObj.forEachObject(obj => fabricCanvas.remove(obj));
+          fabricCanvas.discardActiveObject();
+        } else {
+          fabricCanvas.remove(activeObj);
+        }
+        fabricCanvas.requestRenderAll();
+      }
+    }
+  });
+
+  // Lógica para desenhar formas interativamente (Retângulo, Círculo, Seta)
+  fabricCanvas.on('mouse:down', (options) => {
+    if (activeTool === 'select' || activeTool === 'draw') return;
+
+    const pointer = fabricCanvas.getPointer(options.e);
+    shapeStartX = pointer.x;
+    shapeStartY = pointer.y;
+
+    if (activeTool === 'text') {
+      const text = new fabric.IText('Seu texto aqui', {
+        left: pointer.x,
+        top: pointer.y,
+        fontSize: Math.max(16, strokeWidth * 5),
+        fill: strokeColor,
+        backgroundColor: isFillTransparent ? 'transparent' : fillColor,
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      });
+      fabricCanvas.add(text);
+      fabricCanvas.setActiveObject(text);
+      text.enterEditing();
+      text.selectAll();
+      setActiveTool('select');
+      return;
+    }
+
+    isDrawingShape = true;
+    const currentFill = isFillTransparent ? 'transparent' : fillColor;
+
+    if (activeTool === 'rect') {
+      activeDrawingObject = new fabric.Rect({
+        left: shapeStartX,
+        top: shapeStartY,
+        width: 0,
+        height: 0,
+        stroke: strokeColor,
+        strokeWidth: strokeWidth,
+        fill: currentFill,
+        rx: 4,
+        ry: 4
+      });
+    } else if (activeTool === 'circle') {
+      activeDrawingObject = new fabric.Ellipse({
+        left: shapeStartX,
+        top: shapeStartY,
+        rx: 0,
+        ry: 0,
+        stroke: strokeColor,
+        strokeWidth: strokeWidth,
+        fill: currentFill
+      });
+    } else if (activeTool === 'arrow') {
+      const points = [shapeStartX, shapeStartY, shapeStartX, shapeStartY];
+      activeDrawingObject = createArrowGroup(points, strokeColor, strokeWidth);
+    }
+
+    if (activeDrawingObject) {
+      fabricCanvas.add(activeDrawingObject);
+    }
+  });
+
+  fabricCanvas.on('mouse:move', (options) => {
+    if (!isDrawingShape || !activeDrawingObject) return;
+    const pointer = fabricCanvas.getPointer(options.e);
+
+    if (activeTool === 'rect') {
+      const width = Math.abs(pointer.x - shapeStartX);
+      const height = Math.abs(pointer.y - shapeStartY);
+      activeDrawingObject.set({
+        left: Math.min(pointer.x, shapeStartX),
+        top: Math.min(pointer.y, shapeStartY),
+        width: width,
+        height: height
+      });
+    } else if (activeTool === 'circle') {
+      const rx = Math.abs(pointer.x - shapeStartX) / 2;
+      const ry = Math.abs(pointer.y - shapeStartY) / 2;
+      activeDrawingObject.set({
+        left: Math.min(pointer.x, shapeStartX),
+        top: Math.min(pointer.y, shapeStartY),
+        rx: rx,
+        ry: ry
+      });
+    } else if (activeTool === 'arrow') {
+      fabricCanvas.remove(activeDrawingObject);
+      const points = [shapeStartX, shapeStartY, pointer.x, pointer.y];
+      activeDrawingObject = createArrowGroup(points, strokeColor, strokeWidth);
+      fabricCanvas.add(activeDrawingObject);
+    }
+
+    fabricCanvas.requestRenderAll();
+  });
+
+  fabricCanvas.on('mouse:up', () => {
+    if (isDrawingShape) {
+      isDrawingShape = false;
+      if (activeDrawingObject) {
+        activeDrawingObject.setCoords();
+        fabricCanvas.setActiveObject(activeDrawingObject);
+      }
+      activeDrawingObject = null;
+      setActiveTool('select');
+    }
+  });
+}
+
+/**
+ * Cria um grupo de Seta (Linha + Triângulo na ponta) no Fabric.js
+ */
+function createArrowGroup(points, color, width) {
+  const x1 = points[0], y1 = points[1], x2 = points[2], y2 = points[3];
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+  const line = new fabric.Line(points, {
+    stroke: color,
+    strokeWidth: width,
+    originX: 'center',
+    originY: 'center'
+  });
+
+  const headSize = Math.max(12, width * 3);
+  const triangle = new fabric.Triangle({
+    left: x2,
+    top: y2,
+    pointType: 'arrow_head',
+    angle: angle + 90,
+    width: headSize,
+    height: headSize,
+    fill: color,
+    originX: 'center',
+    originY: 'center'
+  });
+
+  return new fabric.Group([line, triangle], {
+    selectable: true,
+    hasBorders: true
+  });
+}
+
+/**
+ * Configura botões de ferramentas de desenho e eventos de propriedade (cor, largura)
+ */
+function setupAnnotationTools() {
+  const toolBtns = {
+    select: document.getElementById('tool-select'),
+    text: document.getElementById('tool-text'),
+    arrow: document.getElementById('tool-arrow'),
+    rect: document.getElementById('tool-rect'),
+    circle: document.getElementById('tool-circle'),
+    draw: document.getElementById('tool-draw')
+  };
+
+  Object.keys(toolBtns).forEach(toolName => {
+    const btn = toolBtns[toolName];
+    if (btn) {
+      btn.addEventListener('click', () => setActiveTool(toolName));
+    }
+  });
+
+  // Seletor de Cor da Linha/Texto
+  const strokeColorInput = document.getElementById('draw-stroke-color');
+  strokeColorInput.addEventListener('input', (e) => {
+    strokeColor = e.target.value;
+    updateSelectedObjectProps();
+  });
+
+  // Seletor de Cor de Fundo
+  const fillColorInput = document.getElementById('draw-fill-color');
+  fillColorInput.addEventListener('input', (e) => {
+    fillColor = e.target.value;
+    updateSelectedObjectProps();
+  });
+
+  // Fundo Transparente Checkbox
+  const fillTransCheckbox = document.getElementById('draw-fill-transparent');
+  fillTransCheckbox.addEventListener('change', (e) => {
+    isFillTransparent = e.target.checked;
+    updateSelectedObjectProps();
+  });
+
+  // Espessura / Tamanho Slider
+  const strokeWidthSlider = document.getElementById('draw-stroke-width');
+  const strokeWidthVal = document.getElementById('stroke-width-val');
+  strokeWidthSlider.addEventListener('input', (e) => {
+    strokeWidth = parseInt(e.target.value, 10);
+    strokeWidthVal.textContent = `${strokeWidth}px`;
+    updateSelectedObjectProps();
+  });
+
+  // Botão Apagar Selecionado
+  document.getElementById('btn-delete-selected').addEventListener('click', () => {
+    if (!fabricCanvas) return;
+    const activeObj = fabricCanvas.getActiveObject();
+    if (activeObj) {
+      if (activeObj.type === 'activeSelection') {
+        activeObj.forEachObject(obj => fabricCanvas.remove(obj));
+        fabricCanvas.discardActiveObject();
+      } else {
+        fabricCanvas.remove(activeObj);
+      }
+      fabricCanvas.requestRenderAll();
+    }
+  });
+}
+
+function setActiveTool(toolName) {
+  activeTool = toolName;
+
+  document.querySelectorAll('.tool-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById(`tool-${toolName}`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  if (!fabricCanvas) return;
+
+  if (toolName === 'draw') {
+    fabricCanvas.isDrawingMode = true;
+    fabricCanvas.freeDrawingBrush.color = strokeColor;
+    fabricCanvas.freeDrawingBrush.width = strokeWidth;
+  } else {
+    fabricCanvas.isDrawingMode = false;
+    fabricCanvas.selection = (toolName === 'select');
+    fabricCanvas.forEachObject(obj => {
+      obj.selectable = (toolName === 'select');
+    });
+  }
+}
+
+function updateSelectedObjectProps() {
+  if (!fabricCanvas) return;
+  const currentFill = isFillTransparent ? 'transparent' : fillColor;
+
+  // Atualiza pincel se estiver em modo livre
+  if (fabricCanvas.isDrawingMode) {
+    fabricCanvas.freeDrawingBrush.color = strokeColor;
+    fabricCanvas.freeDrawingBrush.width = strokeWidth;
+  }
+
+  const activeObj = fabricCanvas.getActiveObject();
+  if (!activeObj) return;
+
+  if (activeObj.type === 'i-text' || activeObj.type === 'text') {
+    activeObj.set({
+      fill: strokeColor,
+      backgroundColor: currentFill,
+      fontSize: Math.max(16, strokeWidth * 5)
+    });
+  } else if (activeObj.type === 'rect' || activeObj.type === 'ellipse') {
+    activeObj.set({
+      stroke: strokeColor,
+      fill: currentFill,
+      strokeWidth: strokeWidth
+    });
+  } else if (activeObj.type === 'group') {
+    // Para grupos como a Seta
+    activeObj.forEachObject(child => {
+      if (child.type === 'line') {
+        child.set({ stroke: strokeColor, strokeWidth: strokeWidth });
+      } else if (child.type === 'triangle') {
+        child.set({ fill: strokeColor });
+      }
+    });
+  } else if (activeObj.type === 'path') {
+    activeObj.set({ stroke: strokeColor, strokeWidth: strokeWidth });
+  }
+
+  fabricCanvas.requestRenderAll();
 }
 
 /**
@@ -144,15 +460,10 @@ async function stitchFullPageSegments(segments, totalWidth, totalHeight, dpr = 1
     return stitchCanvas;
   }
 
-  // Calcula a distância de rolagem entre cada passo
-  // scaleCSSToImage calcula a relação entre pixels CSS e pixels reais da imagem capturada
   const scale = canvasWidth / totalWidth;
-
-  // Monta os cortes ordenados por avanço
   const slices = [];
   let totalCalculatedHeight = 0;
 
-  // O primeiro segmento desenha a tela inteira (do topo 0 até viewportImgHeight)
   slices.push({
     img: images[0],
     srcY: 0,
@@ -167,17 +478,11 @@ async function stitchFullPageSegments(segments, totalWidth, totalHeight, dpr = 1
     const currSeg = segments[i];
     const currImg = images[i];
 
-    // Distância percorrida em pixels CSS desde o último segmento
     const deltaY_css = currSeg.scrollY - prevSeg.scrollY;
-    
-    // Se o frame tiver exatamente a mesma posição do anterior (duplicata), ignora
-    if (deltaY_css <= 0) {
-      continue;
-    }
+    if (deltaY_css <= 0) continue;
 
     const deltaY_img = Math.round(deltaY_css * scale);
 
-    // Se o avanço for menor que a altura da tela, pegamos apenas a parte nova (fundo da imagem)
     if (deltaY_img < viewportImgHeight) {
       const newContentHeight = Math.min(viewportImgHeight, deltaY_img);
       const srcY = viewportImgHeight - newContentHeight;
@@ -190,7 +495,6 @@ async function stitchFullPageSegments(segments, totalWidth, totalHeight, dpr = 1
       });
       totalCalculatedHeight += newContentHeight;
     } else {
-      // Se avançou uma tela cheia ou mais
       slices.push({
         img: currImg,
         srcY: 0,
@@ -222,14 +526,20 @@ async function stitchFullPageSegments(segments, totalWidth, totalHeight, dpr = 1
 }
 
 function renderCanvas() {
-  if (!rawImage) return;
+  if (!rawImage || !fabricCanvas) return;
 
-  canvas.width = rawImage.width;
-  canvas.height = rawImage.height;
+  fabricCanvas.setWidth(rawImage.width);
+  fabricCanvas.setHeight(rawImage.height);
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(rawImage, 0, 0);
+  // Define a imagem capturada como fundo do Fabric.js
+  const bgImg = new fabric.Image(rawImage, {
+    selectable: false,
+    evented: false,
+    originX: 'left',
+    originY: 'top'
+  });
 
+  fabricCanvas.setBackgroundImage(bgImg, fabricCanvas.renderAll.bind(fabricCanvas));
   updateCropOverlayVisual();
 }
 
@@ -248,9 +558,12 @@ function updateCropOverlayVisual() {
   cropBox.style.width = `${scaledW}px`;
   cropBox.style.height = `${scaledH}px`;
 
-  // Atualiza visualização do canvas conforme o zoom
-  canvas.style.width = `${rawImage.width * zoomLevel}px`;
-  canvas.style.height = `${rawImage.height * zoomLevel}px`;
+  // Atualiza visualização do canvas conforme o zoom usando Fabric.js
+  if (fabricCanvas) {
+    fabricCanvas.setZoom(zoomLevel);
+    fabricCanvas.setWidth(rawImage.width * zoomLevel);
+    fabricCanvas.setHeight(rawImage.height * zoomLevel);
+  }
 
   document.getElementById('zoom-level-badge').textContent = `${Math.round(zoomLevel * 100)}%`;
   updateDimensionStats();
@@ -340,7 +653,8 @@ function setupUIEventListeners() {
   // Copiar para Área de Transferência
   document.getElementById('btn-copy-clipboard').addEventListener('click', async () => {
     try {
-      const cropped = cropImageToCanvas(rawImage, cropRect);
+      const fullAnnotatedCanvas = getFullAnnotatedCanvas();
+      const cropped = cropImageToCanvas(fullAnnotatedCanvas, cropRect);
       const blob = await canvasToBlob(cropped, 'png');
       const item = new ClipboardItem({ 'image/png': blob });
       await navigator.clipboard.write([item]);
@@ -354,6 +668,36 @@ function setupUIEventListeners() {
   document.getElementById('btn-save-image').addEventListener('click', async () => {
     await executeSaveImage();
   });
+}
+
+/**
+ * Exporta o Canvas do Fabric.js com zoom 1.0 (resolução real) combinando fundo e anotações
+ */
+function getFullAnnotatedCanvas() {
+  if (!fabricCanvas) return rawImage;
+  
+  // Desativa temporariamente o zoom do Fabric para renderizar os pixels reais 1:1
+  const prevZoom = fabricCanvas.getZoom();
+  fabricCanvas.setZoom(1.0);
+  fabricCanvas.setWidth(rawImage.width);
+  fabricCanvas.setHeight(rawImage.height);
+  fabricCanvas.renderAll();
+
+  // Exporta o canvas elemento HTML DOM original do Fabric
+  const exportCanvas = document.createElement('canvas');
+  exportCanvas.width = rawImage.width;
+  exportCanvas.height = rawImage.height;
+  const eCtx = exportCanvas.getContext('2d');
+  
+  eCtx.drawImage(fabricCanvas.getElement(), 0, 0);
+
+  // Restaura o zoom visual do Fabric
+  fabricCanvas.setZoom(prevZoom);
+  fabricCanvas.setWidth(rawImage.width * prevZoom);
+  fabricCanvas.setHeight(rawImage.height * prevZoom);
+  fabricCanvas.renderAll();
+
+  return exportCanvas;
 }
 
 function updateFormatButtons() {
@@ -410,7 +754,6 @@ function setRatio(ratio, orientation) {
     newW = newH * targetRatio;
   }
 
-  // Centraliza na imagem se ultrapassar limites
   let newX = cropRect.x;
   let newY = cropRect.y;
 
@@ -438,7 +781,7 @@ function setupCropInteractions() {
   const cropBox = document.getElementById('crop-overlay-box');
   const canvasWrapper = document.getElementById('canvas-wrapper');
 
-  // 1. Interação sobre a caixa de recorte existente ou suas alças
+  // Interação sobre a caixa de recorte existente
   cropBox.addEventListener('mousedown', (e) => {
     if (e.target.classList.contains('crop-handle')) {
       isResizingCrop = true;
@@ -455,34 +798,9 @@ function setupCropInteractions() {
     e.preventDefault();
   });
 
-  // 2. Clicar em qualquer ponto da imagem (fora do box) para desenhar um NOVO recorte a partir daquele ponto
-  canvasWrapper.addEventListener('mousedown', (e) => {
-    if (e.target.closest('#crop-overlay-box')) return;
-    if (!rawImage) return;
-
-    const rect = canvasWrapper.getBoundingClientRect();
-    const clickX = (e.clientX - rect.left) / zoomLevel;
-    const clickY = (e.clientY - rect.top) / zoomLevel;
-
-    isCreatingNewCrop = true;
-    dragStartX = Math.max(0, Math.min(rawImage.width, clickX));
-    dragStartY = Math.max(0, Math.min(rawImage.height, clickY));
-
-    cropRect = {
-      x: Math.round(dragStartX),
-      y: Math.round(dragStartY),
-      width: 0,
-      height: 0
-    };
-
-    updateCropOverlayVisual();
-    e.preventDefault();
-  });
-
   window.addEventListener('mousemove', (e) => {
     if (!rawImage || (!isDraggingCrop && !isResizingCrop && !isCreatingNewCrop)) return;
 
-    // A) Movendo a seleção inteira
     if (isDraggingCrop) {
       let nextScaledX = e.clientX - dragStartX;
       let nextScaledY = e.clientY - dragStartY;
@@ -499,62 +817,6 @@ function setupCropInteractions() {
       return;
     }
 
-    // B) Desenhando um NOVO recorte do zero com clique e arraste
-    if (isCreatingNewCrop) {
-      const rect = canvasWrapper.getBoundingClientRect();
-      const currentMouseX = Math.max(0, Math.min(rawImage.width, (e.clientX - rect.left) / zoomLevel));
-      const currentMouseY = Math.max(0, Math.min(rawImage.height, (e.clientY - rect.top) / zoomLevel));
-
-      let dx = currentMouseX - dragStartX;
-      let dy = currentMouseY - dragStartY;
-
-      let newW = dx;
-      let newH = dy;
-
-      if (currentRatio !== 'free' && RATIO_VALUES[currentRatio]) {
-        let { w: rw, h: rh } = RATIO_VALUES[currentRatio];
-        if (currentRatio === '1:1') {
-          const maxDim = Math.max(Math.abs(newW), Math.abs(newH));
-          newW = (newW < 0 ? -1 : 1) * maxDim;
-          newH = (newH < 0 ? -1 : 1) * maxDim;
-        } else {
-          const isPortrait = Math.abs(dy) > Math.abs(dx);
-          currentOrientation = isPortrait ? 'portrait' : 'landscape';
-          const rTarget = isPortrait ? (rh / rw) : (rw / rh);
-
-          let absW = Math.abs(newW);
-          let absH = Math.abs(newH);
-          if (absW >= absH) {
-            newH = (newH < 0 ? -1 : 1) * (absW / rTarget);
-          } else {
-            newW = (newW < 0 ? -1 : 1) * (absH * rTarget);
-          }
-        }
-      }
-
-      let finalX = newW < 0 ? dragStartX + newW : dragStartX;
-      let finalY = newH < 0 ? dragStartY + newH : dragStartY;
-      let finalW = Math.abs(newW);
-      let finalH = Math.abs(newH);
-
-      // Limita às dimensões do Canvas
-      if (finalX < 0) { finalW += finalX; finalX = 0; }
-      if (finalY < 0) { finalH += finalY; finalY = 0; }
-      if (finalX + finalW > rawImage.width) { finalW = rawImage.width - finalX; }
-      if (finalY + finalH > rawImage.height) { finalH = rawImage.height - finalY; }
-
-      cropRect = {
-        x: Math.round(finalX),
-        y: Math.round(finalY),
-        width: Math.round(finalW),
-        height: Math.round(finalH)
-      };
-
-      updateCropOverlayVisual();
-      return;
-    }
-
-    // C) Redimensionando por QUALQUER UMA das 8 alças (nw, n, ne, e, se, s, sw, w)
     if (isResizingCrop && activeHandle) {
       const deltaX = (e.clientX - dragStartX) / zoomLevel;
       const deltaY = (e.clientY - dragStartY) / zoomLevel;
@@ -564,7 +826,6 @@ function setupCropInteractions() {
       let newW = initialCropRect.width;
       let newH = initialCropRect.height;
 
-      // Alças que alteram a horizontal
       if (activeHandle.includes('e')) {
         newW = initialCropRect.width + deltaX;
       } else if (activeHandle.includes('w')) {
@@ -572,7 +833,6 @@ function setupCropInteractions() {
         newX = initialCropRect.x + deltaX;
       }
 
-      // Alças que alteram a vertical
       if (activeHandle.includes('s')) {
         newH = initialCropRect.height + deltaY;
       } else if (activeHandle.includes('n')) {
@@ -580,7 +840,6 @@ function setupCropInteractions() {
         newY = initialCropRect.y + deltaY;
       }
 
-      // Aplica proporção se não for livre
       if (currentRatio !== 'free' && RATIO_VALUES[currentRatio]) {
         let { w: rw, h: rh } = RATIO_VALUES[currentRatio];
         if (currentOrientation === 'portrait' && currentRatio !== '1:1') {
@@ -595,11 +854,9 @@ function setupCropInteractions() {
         }
       }
 
-      // Previne dimensões negativas
       if (newW < 20) { newW = 20; }
       if (newH < 20) { newH = 20; }
 
-      // Limita aos limites reais da imagem
       if (newX < 0) { newX = 0; }
       if (newY < 0) { newY = 0; }
       if (newX + newW > rawImage.width) { newW = rawImage.width - newX; }
@@ -617,17 +874,6 @@ function setupCropInteractions() {
   });
 
   window.addEventListener('mouseup', () => {
-    // Se desenhou um novo recorte muito pequeno, restaura para a imagem toda
-    if (isCreatingNewCrop && (cropRect.width < 10 || cropRect.height < 10)) {
-      cropRect = {
-        x: 0,
-        y: 0,
-        width: rawImage.width,
-        height: rawImage.height
-      };
-      updateCropOverlayVisual();
-    }
-
     isDraggingCrop = false;
     isResizingCrop = false;
     isCreatingNewCrop = false;
@@ -648,12 +894,12 @@ function updateFilenameInput() {
 
 async function executeSaveImage() {
   try {
-    const cropped = cropImageToCanvas(rawImage, cropRect);
+    const fullAnnotatedCanvas = getFullAnnotatedCanvas();
+    const cropped = cropImageToCanvas(fullAnnotatedCanvas, cropRect);
     const blob = await canvasToBlob(cropped, currentFormat, currentQuality, jpgBgColor);
     const filename = document.getElementById('filename-preview').value || `captura.${currentFormat}`;
     const blobUrl = URL.createObjectURL(blob);
 
-    // Solicita o download via service-worker (chrome.downloads)
     chrome.runtime.sendMessage({
       type: 'DOWNLOAD_IMAGE',
       blobUrl: blobUrl,
@@ -662,7 +908,6 @@ async function executeSaveImage() {
       if (response && response.success) {
         showToast('Imagem salva com sucesso!');
       } else {
-        // Fallback nativo caso o chrome.downloads falhe ou exija diálogo direto
         const a = document.createElement('a');
         a.href = blobUrl;
         a.download = filename;
@@ -683,3 +928,4 @@ function showToast(msg) {
     toast.style.display = 'none';
   }, 3500);
 }
+
