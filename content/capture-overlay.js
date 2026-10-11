@@ -2,10 +2,11 @@
  * Script de Conteúdo: Interface de Seleção e Overlay Interativo
  */
 (() => {
-  // Evita injeção duplicada
-  if (window.__sstOverlayActive) {
+  // Evita injeção e ouvintes de mensagens duplicados
+  if (window.__sstScriptLoaded) {
     return;
   }
+  window.__sstScriptLoaded = true;
 
   let overlay = null;
   let maskTop, maskBottom, maskLeft, maskRight;
@@ -469,13 +470,30 @@
 
   function removeOverlay() {
     window.__sstOverlayActive = false;
+    isDragging = false;
+    isResizing = false;
+    resizeHandle = null;
+    currentRect = { x: 0, y: 0, w: 0, h: 0 };
+
     window.removeEventListener('mousemove', onMouseMove);
     window.removeEventListener('mouseup', onMouseUp);
     window.removeEventListener('keydown', onKeyDown);
-    if (overlay && overlay.parentNode) {
-      overlay.parentNode.removeChild(overlay);
+
+    if (overlay) {
+      overlay.removeEventListener('mousedown', onMouseDown);
     }
+
+    // Remove qualquer elemento de overlay existente na página
+    const existingOverlays = document.querySelectorAll('#sst-capture-overlay');
+    existingOverlays.forEach(el => el.remove());
+
     overlay = null;
+    selectionBox = null;
+    toolbar = null;
+    maskTop = null;
+    maskBottom = null;
+    maskLeft = null;
+    maskRight = null;
   }
 
   // Toast de progresso para captura de página inteira

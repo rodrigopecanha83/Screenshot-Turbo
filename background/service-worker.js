@@ -180,6 +180,20 @@ async function injectOverlay(tabId, options) {
       target: { tabId },
       files: ['content/capture-overlay.css']
     });
+
+    // Tenta enviar mensagem diretamente caso o script já esteja injetado na página
+    try {
+      const res = await chrome.tabs.sendMessage(tabId, {
+        type: 'INIT_SELECTION_OVERLAY',
+        options
+      });
+      if (res && res.status === 'overlay_initialized') {
+        return;
+      }
+    } catch (_) {
+      // Script ainda não carregado nesta aba, injeta agora
+    }
+
     await chrome.scripting.executeScript({
       target: { tabId },
       files: ['content/capture-overlay.js']
