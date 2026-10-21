@@ -14,8 +14,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const statusEl = document.getElementById('status-message');
 
   const userMode = settings.defaultMode || 'visible';
-  document.getElementById('preset-desc').textContent =
-    `Modo padrão: ${MODE_LABELS[userMode] || userMode}`;
+  const modeLabel = userMode === 'ratio_selection'
+    ? `Seleção ${settings.defaultRatio || '1:1'}`
+    : (MODE_LABELS[userMode] || userMode);
+  document.getElementById('preset-desc').textContent = `Modo padrão: ${modeLabel}`;
 
   // Abertura das configurações
   document.getElementById('btn-open-settings').addEventListener('click', () => {

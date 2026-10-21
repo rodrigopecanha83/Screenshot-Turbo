@@ -13,15 +13,19 @@ export const ASPECT_RATIOS = {
   RATIO_1_1: '1:1',
   RATIO_3_2: '3:2',
   RATIO_4_3: '4:3',
-  RATIO_5_4: '5:4'
+  RATIO_5_4: '5:4',
+  RATIO_16_9: '16:9'
 };
 
 export const RATIO_VALUES = {
   '1:1': { w: 1, h: 1 },
   '3:2': { w: 3, h: 2 },
   '4:3': { w: 4, h: 3 },
-  '5:4': { w: 5, h: 4 }
+  '5:4': { w: 5, h: 4 },
+  '16:9': { w: 16, h: 9 }
 };
+
+export const FILENAME_PREFIX = 'ScreenShot-Turbo';
 
 export const ORIENTATIONS = {
   LANDSCAPE: 'landscape',
@@ -51,8 +55,8 @@ export const DEFAULT_SETTINGS = {
   webpQuality: 90,
   jpgBgColor: '#ffffff',
   activePreset: 'default',
-  filenamePattern: 'captura_{date}_{time}',
-  includeDomain: true,
+  includePrefix: true, // Prefixo "ScreenShot-Turbo" no nome do arquivo
+  includeDomain: true, // Domínio do site após a data/hora
   autoOpenEditor: true,
   presets: [
     {

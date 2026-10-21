@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ScreenShot Turbo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Extensão profissional e rápida de captura, recorte, edição e exportação de tela para Chrome e Edge.",
   "permissions": [
     "activeTab",
@@ -11,16 +11,13 @@
     "downloads",
     "scripting"
   ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
-      "16": "icons/icon16.png",
-      "32": "icons/icon32.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
+      "16": "icons/Icon16.png",
+      "32": "icons/Icon32.png",
+      "48": "icons/Icon48.png",
+      "128": "icons/Icon128.png"
     },
     "default_title": "ScreenShot Turbo"
   },
@@ -64,6 +61,9 @@
     },
     "capture-ratio-5-4": {
       "description": "Seleção com proporção 5:4"
+    },
+    "capture-ratio-16-9": {
+      "description": "Seleção com proporção 16:9"
     }
   },
   "options_ui": {
@@ -71,9 +71,12 @@
     "open_in_tab": true
   },
   "icons": {
-    "16": "icons/icon16.png",
-    "32": "icons/icon32.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "icons/Icon16.png",
+    "32": "icons/Icon32.png",
+    "48": "icons/Icon48.png",
+    "64": "icons/Icon64.png",
+    "128": "icons/Icon128.png",
+    "256": "icons/Icon256.png",
+    "512": "icons/Icon512.png"
   }
 }

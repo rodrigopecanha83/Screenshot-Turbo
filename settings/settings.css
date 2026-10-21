@@ -203,6 +203,25 @@ label {
   font-family: monospace;
 }
 
+.Field-Label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #cbd5e1;
+}
+
+.Filename-Preview {
+  display: block;
+  font-family: monospace;
+  font-size: 12px;
+  color: #38bdf8;
+  background: #1e293b;
+  border: 1px dashed rgba(56, 189, 248, 0.35);
+  border-radius: 6px;
+  padding: 8px 12px;
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
 /* Lista de Atalhos */
 .shortcuts-list {
   display: flex;

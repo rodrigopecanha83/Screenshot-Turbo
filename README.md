@@ -10,7 +10,7 @@
   - **Janela Visível**: Captura instantânea do viewport atual.
   - **Página Inteira**: Rolagem automática inteligente com costura sem emendas e ocultação de menus fixos repetidos.
   - **Seleção Livre**: Camada interativa diretamente sobre a página com redimensionamento pelas 8 alças, confirmação, cópia direta e salvamento rápido.
-  - **Proporções Predefinidas**: Fixação matemática de proporções (1:1, 3:2, 4:3, 5:4) com alternância entre paisagem e retrato.
+  - **Proporções Predefinidas**: Fixação matemática de proporções (1:1, 3:2, 4:3, 5:4, 16:9) com alternância entre paisagem e retrato.
 - 🎨 **Editor de Pré-visualização Integrado**:
   - Abertura automática após cada captura.
   - **Ferramentas de Anotação e Desenho**: Formas geométricas (retângulos, círculos), texto, setas, linhas retas, polilinhas (linhas contínuas ponto a ponto) e pincel livre.
@@ -23,16 +23,34 @@
   - **PNG**: Qualidade máxima sem perdas com suporte a transparência.
   - **JPG**: Ajuste fino de compressão (10% a 100%) e personalização de cor de fundo.
   - **WebP**: Formato moderno com excelente taxa de compressão e qualidade visual.
+  - **Memória da última pasta**: A janela "Salvar como" do editor reabre na última pasta utilizada.
 - ⚙️ **Configurações & Predefinições**:
   - Alternância entre modo manual e modo automático com predefinições.
-  - Configuração customizável de nomes de arquivo com tags dinâmicas (`{date}`, `{time}`) e inclusão de domínio.
+  - Menu único de modo de captura padrão (incluindo as seleções por proporção).
+  - Nome de arquivo padronizado `ScreenShot-Turbo-aaaa.mm.dd-hh.mm.ss-site.ext`, com prefixo e site opcionais e pré-visualização ao vivo.
   - Persistência contínua com `chrome.storage.local`.
 - ⌨️ **Atalhos de Teclado Personalizáveis**:
   - `Alt + Shift + V`: Capturar janela visível.
   - `Alt + Shift + F`: Capturar página inteira.
   - `Alt + Shift + S`: Iniciar seleção livre.
   - `Alt + Shift + 1` a `4`: Iniciar seleções com proporções fixas (1:1, 3:2, 4:3, 5:4).
+  - Seleção 16:9: atalho configurável em `chrome://extensions/shortcuts`.
   - `ESC`: Cancelar seleção ou fechar sobreposição.
+
+---
+
+## 📝 Histórico de Versões
+
+### v1.1.0 - 2026-10-21
+- Menu único para "Modo de Captura Padrão" e "Proporção Padrão" nas configurações.
+- Nova proporção **16:9** (popup, editor, overlay, configurações e atalho).
+- Novo padrão de nome: `ScreenShot-Turbo-aaaa.mm.dd-hh.mm.ss-site.ext`, com opções para remover o prefixo e o site.
+- Salvamento direto do overlay passa a usar o mesmo padrão de nome do editor.
+- Editor lembra a última pasta usada no "Salvar como" (File System Access API).
+- Ícones renomeados para Train-Case e novos tamanhos (64, 256, 512).
+
+### v1.0.0
+- Lançamento inicial.
 
 ---
 
@@ -91,5 +109,5 @@ ScreenShot-Turbo/
 │   ├── constants.js           # Constantes e valores padrão
 │   ├── storage.js             # Helpers do chrome.storage
 │   └── image-export.js        # Utilitários de Canvas, conversão e nomes
-└── icons/                     # Ícones em resoluções 16x16, 32x32, 48x48, 128x128
+└── icons/                     # Ícones oficiais (Icon16, Icon32, Icon48, Icon64, Icon128, Icon256, Icon512)
 ```

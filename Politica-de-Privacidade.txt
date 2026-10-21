@@ -1,0 +1,76 @@
+================================================================================
+POLÍTICA DE PRIVACIDADE — SCREENSHOT TURBO (VERSÃO EM PORTUGUÊS)
+Última atualização: 19 de outubro de 2026
+================================================================================
+
+A sua privacidade é um pilar fundamental para nós. Esta Política de Privacidade explica de forma transparente como a extensão ScreenShot Turbo para Google Chrome e navegadores Chromium trata as suas informações.
+
+RESUMO DE PRIVACIDADE:
+A extensão NÃO coleta, NÃO armazena remotamente, NÃO rastreia e NÃO compartilha nenhum dado pessoal, histórico de navegação ou imagem capturada. Todo o processamento de captura, edição e salvamento ocorre 100% de forma local no seu próprio computador.
+
+1. PROCESSAMENTO E COLETA DE DADOS
+O ScreenShot Turbo opera inteiramente sob a premissa de processamento local no cliente:
+- Imagens e Capturas de Tela: As capturas (janela visível, seleção de área e página inteira) e as anotações do editor são renderizadas estritamente na memória local do navegador via Canvas API. Nenhuma imagem é enviada para servidores externos ou serviços em nuvem.
+- Sem Coleta de Informações Pessoais: Não coletamos nomes, endereços de e-mail, IPs ou quaisquer identificadores pessoais.
+- Sem Analytics ou Rastreadores: A extensão não possui scripts de telemetria, Google Analytics, cookies de publicidade ou rastreadores de terceiros.
+
+2. PERMISSÕES SOLICITADAS E JUSTIFICATIVAS TÉCNICAS
+A extensão solicita exclusivamente as permissões indispensáveis para o seu único propósito funcional:
+- activeTab: Concede acesso temporário à aba atual no instante em que o usuário dispara a captura, permitindo registrar a área visível e exibir a camada de seleção. Não monitora sua navegação contínua.
+- tabs: Utilizada para abrir a página do editor em uma nova aba após a captura e obter o título/domínio da página apenas para sugerir um nome de arquivo organizado.
+- scripting: Permite injetar na aba ativa a sobreposição visual de recorte e coordenar a rolagem automática durante a captura de página inteira.
+- storage e unlimitedStorage: Utilizadas exclusivamente no armazenamento local (chrome.storage.local) para lembrar suas preferências (formato padrão, qualidade e atalhos) e armazenar temporariamente a imagem em alta definição até que ela carregue no editor.
+- downloads: Utilizada unicamente quando o usuário clica em "Salvar Imagem", permitindo gravar o arquivo final na pasta de Downloads do seu computador.
+
+3. CÓDIGO REMOTO E TERCEIROS
+- A extensão não executa código remoto, cumprindo rigorosamente as diretrizes do Manifest V3 do Google Chrome.
+- Todas as dependências e bibliotecas (como Fabric.js) estão incluídas e empacotadas localmente no código-fonte.
+- Não há integração, compartilhamento ou comercialização com parceiros de publicidade ou terceiros.
+
+4. RETENÇÃO E EXCLUSÃO
+Todos os dados e configurações existem exclusivamente no perfil local do navegador. Ao desinstalar a extensão do navegador ou limpar o cache do Chrome, todas as informações são apagadas definitiva e instantaneamente.
+
+5. CONTATO
+Em caso de dúvidas ou sugestões sobre esta política, entre em contato através do GitHub:
+https://github.com/rodrigopecanha83
+
+(c) 2026 ScreenShot Turbo — Desenvolvido por Rodrigo Peçanha.
+
+
+================================================================================
+PRIVACY POLICY — SCREENSHOT TURBO (ENGLISH VERSION)
+Last updated: October 19, 2026
+================================================================================
+
+Your privacy is of utmost importance to us. This Privacy Policy transparently explains how the ScreenShot Turbo browser extension for Google Chrome and Chromium browsers handles your information.
+
+PRIVACY SUMMARY:
+The extension does NOT collect, store remotely, track, or share any personal data, browsing history, or captured images. All screen capturing, editing, and saving processes occur 100% locally on your own computer.
+
+1. DATA PROCESSING AND COLLECTION
+ScreenShot Turbo operates entirely on client-side local execution:
+- Images and Screenshots: All captures (visible viewport, selected region, and full scrollable page) and canvas annotations are processed strictly in browser memory via standard Canvas APIs. No images are transmitted to external servers or cloud services.
+- No Personal Information Collected: We do not collect names, email addresses, IP addresses, or unique device identifiers.
+- No Analytics or Tracking: The extension does not embed telemetry scripts, Google Analytics, advertising cookies, or third-party trackers.
+
+2. REQUESTED PERMISSIONS AND TECHNICAL JUSTIFICATIONS
+The extension requests only permissions that are strictly necessary for its single functional purpose:
+- activeTab: Grants temporary access to the active tab only when you invoke a capture, allowing the extension to capture the viewport and display the interactive selection crop area. It never tracks background navigation.
+- tabs: Used to open the built-in image editor in a new browser tab and retrieve the page domain solely to suggest clean default file names.
+- scripting: Injects the interactive crop overlay into the active page and coordinates automatic smooth scrolling during full-page captures.
+- storage and unlimitedStorage: Used exclusively with local browser storage (chrome.storage.local) to remember your preferences (default format, quality, presets) and temporarily hold high-resolution capture data until loaded in the editor.
+- downloads: Used solely when you click "Save Image", allowing the generated image (PNG, JPG, or WebP) to be saved to your computer's Downloads directory.
+
+3. REMOTE CODE AND THIRD PARTIES
+- The extension does not load or execute remote code, strictly adhering to Google Chrome's Manifest V3 security standards.
+- All dependencies (such as Fabric.js) are locally bundled within the extension package.
+- No data is ever shared, sold, or transmitted to advertisers or third-party entities.
+
+4. RETENTION AND DELETION
+All configuration data exists solely within your local browser profile. Uninstalling the extension or clearing browser extension data permanently and immediately purges all stored preferences and temporary files.
+
+5. CONTACT
+If you have questions or inquiries regarding this Privacy Policy, please reach out via GitHub:
+https://github.com/rodrigopecanha83
+
+(c) 2026 ScreenShot Turbo — Developed by Rodrigo Peçanha.

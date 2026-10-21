@@ -1,5 +1,6 @@
 import { MESSAGE_TYPES } from '../shared/constants.js';
 import { getSettings, setTemporaryCaptureData } from '../shared/storage.js';
+import { generateFilename } from '../shared/image-export.js';
 
 // Armazenamento em memória do Service Worker para transferências ultra-rápidas
 let memoryCaptureData = null;
@@ -68,6 +69,9 @@ chrome.commands.onCommand.addListener(async (command) => {
       break;
     case 'capture-ratio-5-4':
       injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '5:4', orientation: 'landscape' });
+      break;
+    case 'capture-ratio-16-9':
+      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '16:9', orientation: 'landscape' });
       break;
   }
 });
@@ -150,7 +154,17 @@ async function handleMessage(message, sender, sendResponse) {
       }
 
       case 'DOWNLOAD_IMAGE': {
-        const { blobUrl, filename } = message;
+        const { blobUrl } = message;
+        let { filename } = message;
+        if (message.autoName || !filename) {
+          const settings = await getSettings();
+          filename = generateFilename({
+            includePrefix: settings.includePrefix !== false,
+            includeDomain: settings.includeDomain !== false,
+            domain: message.domain || '',
+            format: message.format || 'png'
+          });
+        }
         chrome.downloads.download({
           url: blobUrl,
           filename: filename,

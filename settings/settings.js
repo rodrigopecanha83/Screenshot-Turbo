@@ -1,11 +1,11 @@
 import { getSettings, saveSettings } from '../shared/storage.js';
+import { generateFilename } from '../shared/image-export.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const currentSettings = await getSettings();
 
   // Elementos do Formulário
-  const defaultMode = document.getElementById('default-mode');
-  const defaultRatio = document.getElementById('default-ratio');
+  const defaultCapture = document.getElementById('Default-Capture');
   const defaultOrient = document.getElementById('default-orient');
   const defaultFormat = document.getElementById('default-format');
   const jpgQuality = document.getElementById('jpg-quality');
@@ -14,14 +14,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   const webpQualityVal = document.getElementById('webp-quality-val');
   const jpgBgColor = document.getElementById('jpg-bg-color');
   const jpgBgHex = document.getElementById('jpg-bg-hex');
-  const filenamePattern = document.getElementById('filename-pattern');
+  const includePrefix = document.getElementById('Include-Prefix');
   const includeDomain = document.getElementById('include-domain');
+  const filenamePreview = document.getElementById('Filename-Preview');
   const btnSave = document.getElementById('btn-save-settings');
   const toast = document.getElementById('save-toast');
 
   // Popula com dados atuais
-  defaultMode.value = currentSettings.defaultMode || 'visible';
-  defaultRatio.value = currentSettings.defaultRatio || 'free';
+  // Menu unificado: "modo" ou "ratio_selection|proporção"
+  const savedMode = currentSettings.defaultMode || 'visible';
+  defaultCapture.value = savedMode === 'ratio_selection'
+    ? `ratio_selection|${currentSettings.defaultRatio && currentSettings.defaultRatio !== 'free' ? currentSettings.defaultRatio : '1:1'}`
+    : savedMode;
+  if (!defaultCapture.value) defaultCapture.value = 'visible';
   defaultOrient.value = currentSettings.defaultOrientation || 'landscape';
   defaultFormat.value = currentSettings.defaultFormat || 'png';
   
@@ -34,8 +39,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   jpgBgColor.value = currentSettings.jpgBgColor || '#ffffff';
   jpgBgHex.textContent = jpgBgColor.value;
 
-  filenamePattern.value = currentSettings.filenamePattern || 'captura_{date}_{time}';
+  includePrefix.checked = currentSettings.includePrefix !== false;
   includeDomain.checked = currentSettings.includeDomain !== false;
+
+  function updatePreview() {
+    filenamePreview.textContent = generateFilename({
+      includePrefix: includePrefix.checked,
+      includeDomain: includeDomain.checked,
+      domain: 'exemplo.com.br',
+      format: defaultFormat.value
+    });
+  }
+  updatePreview();
+  setInterval(updatePreview, 1000);
+  [includePrefix, includeDomain, defaultFormat].forEach(el => el.addEventListener('change', updatePreview));
 
   // Listeners de UI
   jpgQuality.addEventListener('input', (e) => {
@@ -52,18 +69,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Salva no storage
   btnSave.addEventListener('click', async () => {
+    const [mode, ratio] = defaultCapture.value.split('|');
     const updated = {
       ...currentSettings,
-      defaultMode: defaultMode.value,
-      defaultRatio: defaultRatio.value,
+      defaultMode: mode,
+      defaultRatio: ratio || 'free',
       defaultOrientation: defaultOrient.value,
       defaultFormat: defaultFormat.value,
       jpgQuality: parseInt(jpgQuality.value, 10),
       webpQuality: parseInt(webpQuality.value, 10),
       jpgBgColor: jpgBgColor.value,
-      filenamePattern: filenamePattern.value.trim() || 'captura_{date}_{time}',
+      includePrefix: includePrefix.checked,
       includeDomain: includeDomain.checked
     };
+    delete updated.filenamePattern; // Removido na v1.1
 
     await saveSettings(updated);
     showToast();

@@ -1,4 +1,4 @@
-import { MIME_TYPES } from './constants.js';
+import { MIME_TYPES, FILENAME_PREFIX } from './constants.js';
 
 /**
  * Utilitários para exportação e conversão de imagens usando HTML Canvas
@@ -98,38 +98,38 @@ export function cropImageToCanvas(source, cropRect) {
 
 /**
  * Gera o nome de arquivo formatado
- * @param {Object} options 
+ * Padrão: ScreenShot-Turbo-aaaa.mm.dd-hh.mm.ss[-dominio].ext
+ * @param {Object} options
+ * @param {boolean} options.includePrefix Inclui "ScreenShot-Turbo" no início
+ * @param {boolean} options.includeDomain Inclui o domínio do site após a data/hora
+ * @param {string} options.domain Domínio/hostname do site capturado
+ * @param {string} options.format Extensão do arquivo
+ * @param {Date} [options.date] Data de referência (padrão: agora)
  * @returns {string}
  */
 export function generateFilename({
-  pattern = 'captura_{date}_{time}',
-  domain = '',
+  includePrefix = true,
   includeDomain = true,
-  format = 'png'
-}) {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
+  domain = '',
+  format = 'png',
+  date = new Date()
+} = {}) {
+  const pad = (n) => String(n).padStart(2, '0');
+  const dateStr = `${date.getFullYear()}.${pad(date.getMonth() + 1)}.${pad(date.getDate())}`;
+  const timeStr = `${pad(date.getHours())}.${pad(date.getMinutes())}.${pad(date.getSeconds())}`;
 
-  const dateStr = `${year}-${month}-${day}`;
-  const timeStr = `${hours}-${minutes}-${seconds}`;
+  const parts = [];
+  if (includePrefix !== false) parts.push(FILENAME_PREFIX);
+  parts.push(`${dateStr}-${timeStr}`);
 
-  let name = pattern
-    .replace('{date}', dateStr)
-    .replace('{time}', timeStr);
-
-  if (includeDomain && domain) {
-    // Limpa caracteres especiais do domínio
-    const cleanDomain = domain.replace(/[^a-zA-Z0-9.-]/g, '_');
-    name = `${cleanDomain}_${name}`;
+  if (includeDomain !== false && domain) {
+    // Remove "www." e caracteres inválidos do domínio
+    const cleanDomain = domain.replace(/^www\./i, '').replace(/[^a-zA-Z0-9.-]/g, '_');
+    if (cleanDomain) parts.push(cleanDomain);
   }
 
   // Limpa caracteres ilegais para nomes de arquivo
-  name = name.replace(/[<>:"/\\|?*]/g, '_');
+  const name = parts.join('-').replace(/[<>:"/\\|?*]/g, '_');
 
   const ext = format.toLowerCase() === 'jpeg' ? 'jpg' : format.toLowerCase();
   return `${name}.${ext}`;

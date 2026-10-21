@@ -27,7 +27,8 @@
     '1:1': { w: 1, h: 1 },
     '3:2': { w: 3, h: 2 },
     '4:3': { w: 4, h: 3 },
-    '5:4': { w: 5, h: 4 }
+    '5:4': { w: 5, h: 4 },
+    '16:9': { w: 16, h: 9 }
   };
 
   // Escuta mensagens do background
@@ -407,12 +408,12 @@
         const res = await chrome.runtime.sendMessage({ type: 'CAPTURE_RAW' });
         if (!res || res.error || !res.dataUrl) throw new Error(res?.error || 'Falha na captura.');
         const cropped = await cropDataUrl(res.dataUrl, selectionData);
-        const ts = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-        const domain = (selectionData.domain || 'captura').replace(/[^a-z0-9.-]/gi, '_');
         const dl = await chrome.runtime.sendMessage({
           type: 'DOWNLOAD_IMAGE',
           blobUrl: cropped,
-          filename: `screenshot-${domain}-${ts}.png`,
+          autoName: true,
+          domain: selectionData.domain || '',
+          format: 'png',
           saveAs: false
         });
         if (dl && dl.success === false) throw new Error(dl.error);

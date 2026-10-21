@@ -1025,22 +1025,56 @@ function setupCropInteractions() {
 }
 
 function updateFilenameInput() {
-  const domain = (currentCaptureData && currentCaptureData.sourceDomain) || '';
+  const settings = (currentCaptureData && currentCaptureData.settings) || {};
   const fname = generateFilename({
-    pattern: (currentCaptureData && currentCaptureData.settings && currentCaptureData.settings.filenamePattern) || 'captura_{date}_{time}',
-    domain: domain,
-    includeDomain: currentCaptureData && currentCaptureData.settings ? currentCaptureData.settings.includeDomain : true,
+    includePrefix: settings.includePrefix !== false,
+    includeDomain: settings.includeDomain !== false,
+    domain: (currentCaptureData && currentCaptureData.sourceDomain) || '',
     format: currentFormat
   });
   document.getElementById('filename-preview').value = fname;
 }
 
+// ID fixo do seletor de arquivos: o navegador memoriza a última pasta usada com este ID
+const SAVE_PICKER_ID = 'ScreenShot-Turbo-Save';
+
 async function executeSaveImage() {
+  const filename = document.getElementById('filename-preview').value || `captura.${currentFormat}`;
+
+  // 1. Seletor nativo com memória da última pasta (Chrome/Edge 86+)
+  if (typeof window.showSaveFilePicker === 'function') {
+    let fileHandle = null;
+    try {
+      const ext = currentFormat === 'jpeg' ? 'jpg' : currentFormat;
+      const mime = ext === 'jpg' ? 'image/jpeg' : `image/${ext}`;
+      // Abre a janela ANTES de gerar a imagem para não perder a ativação do clique do usuário
+      fileHandle = await window.showSaveFilePicker({
+        id: SAVE_PICKER_ID,
+        suggestedName: filename,
+        types: [{ description: `Imagem ${ext.toUpperCase()}`, accept: { [mime]: [`.${ext}`] } }]
+      });
+    } catch (err) {
+      if (err && err.name === 'AbortError') return; // Usuário cancelou
+      console.warn('showSaveFilePicker indisponível, usando downloads:', err);
+    }
+
+    if (fileHandle) {
+      try {
+        const blob = await buildExportBlob();
+        const writable = await fileHandle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        showToast(`Imagem salva: ${fileHandle.name}`);
+      } catch (err) {
+        showToast(`Erro ao salvar: ${err.message}`);
+      }
+      return;
+    }
+  }
+
+  // 2. Fallback: API de downloads (sempre parte da pasta Downloads)
   try {
-    const fullAnnotatedCanvas = getFullAnnotatedCanvas();
-    const cropped = cropImageToCanvas(fullAnnotatedCanvas, cropRect);
-    const blob = await canvasToBlob(cropped, currentFormat, currentQuality, jpgBgColor);
-    const filename = document.getElementById('filename-preview').value || `captura.${currentFormat}`;
+    const blob = await buildExportBlob();
     const blobUrl = URL.createObjectURL(blob);
 
     chrome.runtime.sendMessage({
@@ -1061,6 +1095,12 @@ async function executeSaveImage() {
   } catch (err) {
     showToast(`Erro ao salvar: ${err.message}`);
   }
+}
+
+async function buildExportBlob() {
+  const fullAnnotatedCanvas = getFullAnnotatedCanvas();
+  const cropped = cropImageToCanvas(fullAnnotatedCanvas, cropRect);
+  return canvasToBlob(cropped, currentFormat, currentQuality, jpgBgColor);
 }
 
 function showToast(msg) {

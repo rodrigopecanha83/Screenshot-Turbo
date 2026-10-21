@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Configurações — ScreenShot Turbo</title>
+  <link rel="icon" type="image/png" href="../icons/Icon32.png">
   <link rel="stylesheet" href="settings.css">
 </head>
 <body>
@@ -33,23 +34,20 @@
         <h2 class="card-title">Comportamento Geral de Captura</h2>
         
         <div class="form-group">
-          <label for="default-mode">Modo de Captura Padrão:</label>
-          <select id="default-mode" class="form-control">
-            <option value="visible">Janela Visível</option>
-            <option value="full_page">Página Inteira</option>
-            <option value="free_selection">Seleção Livre</option>
-            <option value="ratio_selection">Seleção por Proporção</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="default-ratio">Proporção Padrão:</label>
-          <select id="default-ratio" class="form-control">
-            <option value="free">Livre (Sem proporção fixa)</option>
-            <option value="1:1">1:1 (Quadrado)</option>
-            <option value="3:2">3:2 (Fotografia)</option>
-            <option value="4:3">4:3 (Monitor padrão)</option>
-            <option value="5:4">5:4 (Quadro)</option>
+          <label for="Default-Capture">Modo de Captura Padrão:</label>
+          <select id="Default-Capture" class="form-control">
+            <optgroup label="Captura">
+              <option value="visible">Janela Visível</option>
+              <option value="full_page">Página Inteira</option>
+              <option value="free_selection">Seleção Livre</option>
+            </optgroup>
+            <optgroup label="Seleção por Proporção">
+              <option value="ratio_selection|1:1">Proporção 1:1 (Quadrado)</option>
+              <option value="ratio_selection|3:2">Proporção 3:2 (Fotografia)</option>
+              <option value="ratio_selection|4:3">Proporção 4:3 (Monitor padrão)</option>
+              <option value="ratio_selection|5:4">Proporção 5:4 (Quadro)</option>
+              <option value="ratio_selection|16:9">Proporção 16:9 (Widescreen)</option>
+            </optgroup>
           </select>
         </div>
 
@@ -104,15 +102,20 @@
       <div class="card">
         <h2 class="card-title">Nomes & Salvamento de Arquivo</h2>
         
-        <div class="form-group">
-          <label for="filename-pattern">Padrão do Nome do Arquivo:</label>
-          <input type="text" id="filename-pattern" class="form-control" value="captura_{date}_{time}">
-          <p class="help-text">Tags disponíveis: <code>{date}</code> (ano-mês-dia), <code>{time}</code> (hora-min-seg).</p>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="Include-Prefix" checked>
+          <label for="Include-Prefix">Incluir "ScreenShot-Turbo" no início do nome</label>
         </div>
 
         <div class="form-group checkbox-group">
           <input type="checkbox" id="include-domain" checked>
-          <label for="include-domain">Incluir nome do domínio/site no início do arquivo</label>
+          <label for="include-domain">Incluir endereço do site após a data/hora</label>
+        </div>
+
+        <div class="form-group">
+          <span class="Field-Label">Pré-visualização:</span>
+          <code id="Filename-Preview" class="Filename-Preview"></code>
+          <p class="help-text">Formato: <code>ScreenShot-Turbo-aaaa.mm.dd-hh.mm.ss-site.ext</code></p>
         </div>
       </div>
 
@@ -147,6 +150,10 @@
           <div class="shortcut-item">
             <span>Seleção 5:4</span>
             <span class="key-badge">Alt + Shift + 4</span>
+          </div>
+          <div class="shortcut-item">
+            <span>Seleção 16:9</span>
+            <span class="key-badge">Personalizável</span>
           </div>
         </div>
         <p class="help-text" style="margin-top:12px;">Para personalizar os atalhos nativos do navegador, acesse <code>chrome://extensions/shortcuts</code> ou <code>edge://extensions/shortcuts</code>.</p>
