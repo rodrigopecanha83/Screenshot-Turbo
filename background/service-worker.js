@@ -1,9 +1,10 @@
 import { MESSAGE_TYPES } from '../shared/constants.js';
-import { getSettings, setTemporaryCaptureData } from '../shared/storage.js';
+import { getSettings, setTemporaryCaptureData, setQuickSaveData } from '../shared/storage.js';
 import { generateFilename } from '../shared/image-export.js';
 
 // Armazenamento em memória do Service Worker para transferências ultra-rápidas
 let memoryCaptureData = null;
+let memoryQuickSaveData = null;
 
 // Utilitário de espera
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -56,22 +57,22 @@ chrome.commands.onCommand.addListener(async (command) => {
       startCaptureFullPage(tab.id, settings);
       break;
     case 'capture-selection':
-      injectOverlay(tab.id, { mode: 'free_selection', ratio: 'free', orientation: 'landscape' });
+      injectOverlay(tab.id, { mode: 'free_selection', ratio: 'free', orientation: 'landscape', settings });
       break;
     case 'capture-ratio-1-1':
-      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '1:1', orientation: 'landscape' });
+      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '1:1', orientation: 'landscape', settings });
       break;
     case 'capture-ratio-3-2':
-      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '3:2', orientation: 'landscape' });
+      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '3:2', orientation: 'landscape', settings });
       break;
     case 'capture-ratio-4-3':
-      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '4:3', orientation: 'landscape' });
+      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '4:3', orientation: 'landscape', settings });
       break;
     case 'capture-ratio-5-4':
-      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '5:4', orientation: 'landscape' });
+      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '5:4', orientation: 'landscape', settings });
       break;
     case 'capture-ratio-16-9':
-      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '16:9', orientation: 'landscape' });
+      injectOverlay(tab.id, { mode: 'ratio_selection', ratio: '16:9', orientation: 'landscape', settings });
       break;
   }
 });
@@ -79,6 +80,12 @@ chrome.commands.onCommand.addListener(async (command) => {
 async function handleMessage(message, sender, sendResponse) {
   try {
     switch (message.type) {
+      case 'GET_SETTINGS': {
+        const settings = await getSettings();
+        sendResponse({ settings });
+        break;
+      }
+
       case MESSAGE_TYPES.START_CAPTURE: {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
         if (!tab || !tab.id) {
@@ -106,7 +113,8 @@ async function handleMessage(message, sender, sendResponse) {
           await injectOverlay(tab.id, {
             mode,
             ratio: message.ratio || 'free',
-            orientation: message.orientation || 'landscape'
+            orientation: message.orientation || 'landscape',
+            settings
           });
           sendResponse({ success: true });
         }
@@ -176,6 +184,63 @@ async function handleMessage(message, sender, sendResponse) {
             sendResponse({ success: true, downloadId });
           }
         });
+        break;
+      }
+
+      case 'OPEN_QUICK_SAVE': {
+        const { imageDataUrl, format, domain } = message;
+        const settings = await getSettings();
+        const filename = generateFilename({
+          includePrefix: settings.includePrefix !== false,
+          includeDomain: settings.includeDomain !== false,
+          domain: domain || '',
+          format: format || 'png'
+        });
+
+        const quickSavePayload = {
+          imageDataUrl,
+          filename,
+          domain: domain || '',
+          format: format || 'png',
+          timestamp: Date.now()
+        };
+
+        memoryQuickSaveData = quickSavePayload;
+        await setQuickSaveData(quickSavePayload);
+
+        // Abre a mini-janela com origem chrome-extension://
+        // Assim o showSaveFilePicker compartilha o mesmo escopo e ID do Editor
+        let left = 100;
+        let top = 100;
+        const width = 440;
+        const height = 480;
+
+        try {
+          const currentWin = sender.tab?.windowId
+            ? await chrome.windows.get(sender.tab.windowId)
+            : await chrome.windows.getCurrent();
+          if (currentWin && currentWin.width && currentWin.height) {
+            left = Math.max(0, Math.round(currentWin.left + (currentWin.width - width) / 2));
+            top = Math.max(0, Math.round(currentWin.top + (currentWin.height - height) / 2));
+          }
+        } catch (_) {}
+
+        await chrome.windows.create({
+          url: chrome.runtime.getURL('Quick-Save/Quick-Save.html'),
+          type: 'popup',
+          width,
+          height,
+          left,
+          top,
+          focused: true
+        });
+
+        sendResponse({ success: true });
+        break;
+      }
+
+      case 'GET_QUICK_SAVE_DATA': {
+        sendResponse({ quickSaveData: memoryQuickSaveData });
         break;
       }
     }

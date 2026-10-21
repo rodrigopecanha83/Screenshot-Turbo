@@ -104,5 +104,12 @@ export const MESSAGE_TYPES = {
   GET_CAPTURED_IMAGE: 'GET_CAPTURED_IMAGE',
   CLEAR_CAPTURED_IMAGE: 'CLEAR_CAPTURED_IMAGE',
   EXECUTE_COMMAND: 'EXECUTE_COMMAND',
-  DOWNLOAD_IMAGE: 'DOWNLOAD_IMAGE'
+  DOWNLOAD_IMAGE: 'DOWNLOAD_IMAGE',
+  OPEN_QUICK_SAVE: 'OPEN_QUICK_SAVE',
+  GET_QUICK_SAVE_DATA: 'GET_QUICK_SAVE_DATA'
 };
+
+// ID do seletor nativo (showSaveFilePicker). O Chrome memoriza a última pasta por origem + ID.
+// Editor e Salvamento Rápido rodam na origem chrome-extension:// com este mesmo ID,
+// portanto compartilham a mesma memória de pasta.
+export const SAVE_PICKER_ID = 'ScreenShot-Turbo-Save';

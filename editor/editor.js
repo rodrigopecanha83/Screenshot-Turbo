@@ -1,6 +1,6 @@
-import { getTemporaryCaptureData } from '../shared/storage.js';
+import { getTemporaryCaptureData, getSettings, saveSettings } from '../shared/storage.js';
 import { canvasToBlob, loadImage, cropImageToCanvas, generateFilename } from '../shared/image-export.js';
-import { RATIO_VALUES } from '../shared/constants.js';
+import { RATIO_VALUES, SAVE_PICKER_ID } from '../shared/constants.js';
 
 let rawImage = null; // HTMLImageElement ou Canvas original completo
 let canvas = null;
@@ -754,10 +754,19 @@ function setupUIEventListeners() {
 
   // Formatos
   document.querySelectorAll('.format-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       currentFormat = btn.dataset.format;
       updateFormatButtons();
       updateFilenameInput();
+
+      // Atualiza a preferência do usuário para que o salvamento rápido e futuras edições usem o novo formato
+      try {
+        const currentSettings = await getSettings();
+        currentSettings.defaultFormat = currentFormat;
+        await saveSettings(currentSettings);
+      } catch (e) {
+        console.warn('Falha ao sincronizar formato padrão nas configurações:', e);
+      }
     });
   });
 
@@ -1035,13 +1044,12 @@ function updateFilenameInput() {
   document.getElementById('filename-preview').value = fname;
 }
 
-// ID fixo do seletor de arquivos: o navegador memoriza a última pasta usada com este ID
-const SAVE_PICKER_ID = 'ScreenShot-Turbo-Save';
-
+// Salva via seletor nativo (showSaveFilePicker) com o ID compartilhado SAVE_PICKER_ID.
+// O Salvamento Rápido usa a mesma origem (chrome-extension://) e o mesmo ID, então ambos
+// abrem na última pasta usada. Fallback: chrome.downloads (sempre parte da pasta Downloads).
 async function executeSaveImage() {
   const filename = document.getElementById('filename-preview').value || `captura.${currentFormat}`;
 
-  // 1. Seletor nativo com memória da última pasta (Chrome/Edge 86+)
   if (typeof window.showSaveFilePicker === 'function') {
     let fileHandle = null;
     try {
@@ -1072,7 +1080,6 @@ async function executeSaveImage() {
     }
   }
 
-  // 2. Fallback: API de downloads (sempre parte da pasta Downloads)
   try {
     const blob = await buildExportBlob();
     const blobUrl = URL.createObjectURL(blob);
@@ -1080,7 +1087,8 @@ async function executeSaveImage() {
     chrome.runtime.sendMessage({
       type: 'DOWNLOAD_IMAGE',
       blobUrl: blobUrl,
-      filename: filename
+      filename: filename,
+      saveAs: true
     }, (response) => {
       if (response && response.success) {
         showToast('Imagem salva com sucesso!');

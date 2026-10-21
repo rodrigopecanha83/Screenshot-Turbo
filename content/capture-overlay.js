@@ -405,18 +405,38 @@
 
     if (action === 'save' || action === true) {
       try {
+        let currentSettings = options.settings;
+        if (!currentSettings) {
+          try {
+            const resp = await chrome.runtime.sendMessage({ type: 'GET_SETTINGS' });
+            if (resp && resp.settings) currentSettings = resp.settings;
+          } catch (_) {}
+        }
+        currentSettings = currentSettings || {};
+
+        const rawFormat = (currentSettings.defaultFormat || 'png').toLowerCase();
+        const exportFormat = rawFormat === 'jpeg' ? 'jpg' : rawFormat;
+        const quality = exportFormat === 'webp'
+          ? (currentSettings.webpQuality || 90)
+          : (currentSettings.jpgQuality || 90);
+        const jpgBgColor = currentSettings.jpgBgColor || '#ffffff';
+
         const res = await chrome.runtime.sendMessage({ type: 'CAPTURE_RAW' });
         if (!res || res.error || !res.dataUrl) throw new Error(res?.error || 'Falha na captura.');
-        const cropped = await cropDataUrl(res.dataUrl, selectionData);
-        const dl = await chrome.runtime.sendMessage({
-          type: 'DOWNLOAD_IMAGE',
-          blobUrl: cropped,
-          autoName: true,
+
+        const croppedBlob = await cropDataUrlToBlob(res.dataUrl, selectionData, exportFormat, quality, jpgBgColor);
+
+        // Abre a mini-janela de Salvamento Rápido (origem chrome-extension://).
+        // O seletor nativo não é aberto aqui porque, neste contexto, a memória de pasta
+        // ficaria presa ao site atual e não seria compartilhada com o Editor.
+        const imageDataUrl = await blobToDataUrl(croppedBlob);
+        const qs = await chrome.runtime.sendMessage({
+          type: 'OPEN_QUICK_SAVE',
+          imageDataUrl,
           domain: selectionData.domain || '',
-          format: 'png',
-          saveAs: false
+          format: exportFormat
         });
-        if (dl && dl.success === false) throw new Error(dl.error);
+        if (!qs || qs.success === false) throw new Error(qs?.error || 'Falha ao abrir a janela de salvamento.');
       } catch (err) {
         showErrorToast(err.message);
       }
@@ -427,11 +447,9 @@
       try {
         const res = await chrome.runtime.sendMessage({ type: 'CAPTURE_RAW' });
         if (!res || res.error || !res.dataUrl) throw new Error(res?.error || 'Falha na captura.');
-        const cropped = await cropDataUrl(res.dataUrl, selectionData);
-        const response = await fetch(cropped);
-        const blob = await response.blob();
+        const croppedBlob = await cropDataUrlToBlob(res.dataUrl, selectionData, 'png');
         await navigator.clipboard.write([
-          new ClipboardItem({ 'image/png': blob })
+          new ClipboardItem({ 'image/png': croppedBlob })
         ]);
         showCopySuccessToast();
       } catch (err) {
@@ -448,7 +466,7 @@
     });
   }
 
-  function cropDataUrl(dataUrl, sel) {
+  function cropDataUrlToBlob(dataUrl, sel, format = 'png', quality = 90, bgColor = '#ffffff') {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => {
@@ -458,16 +476,47 @@
         const sy = Math.round(sel.y * scale);
         const sw = Math.round(sel.width * scale);
         const sh = Math.round(sel.height * scale);
+
         const canvas = document.createElement('canvas');
-        canvas.width = sw;
-        canvas.height = sh;
-        canvas.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
-        resolve(canvas.toDataURL('image/png'));
+        canvas.width = Math.max(1, sw);
+        canvas.height = Math.max(1, sh);
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
+        const normFormat = format.toLowerCase() === 'jpeg' ? 'jpg' : format.toLowerCase();
+        if (normFormat === 'jpg') {
+          ctx.fillStyle = bgColor || '#ffffff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+        const mime = normFormat === 'jpg' ? 'image/jpeg' : (normFormat === 'webp' ? 'image/webp' : 'image/png');
+        const qualityFactor = Math.max(0.1, Math.min(1.0, quality / 100));
+
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            reject(new Error(`Falha ao gerar arquivo ${format}.`));
+            return;
+          }
+          resolve(blob);
+        }, mime, qualityFactor);
       };
       img.onerror = () => reject(new Error('Falha ao processar a imagem.'));
       img.src = dataUrl;
     });
   }
+
+  function blobToDataUrl(blob) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error('Falha ao converter dados da imagem.'));
+      reader.readAsDataURL(blob);
+    });
+  }
+
 
   function removeOverlay() {
     window.__sstOverlayActive = false;

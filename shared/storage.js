@@ -81,3 +81,53 @@ export function clearTemporaryCaptureData() {
   });
 }
 
+/**
+ * Armazenamento temporário dos dados para a janela de Salvamento Rápido
+ */
+export function setQuickSaveData(data) {
+  return new Promise((resolve) => {
+    try {
+      chrome.storage.local.set({ quickSaveData: data }, () => resolve());
+    } catch (e) {
+      resolve();
+    }
+  });
+}
+
+export async function getQuickSaveData() {
+  // 1. Tenta recuperar da memória do Service Worker
+  try {
+    const memResponse = await new Promise((resolve) => {
+      const timer = setTimeout(() => resolve(null), 300);
+      try {
+        chrome.runtime.sendMessage({ type: 'GET_QUICK_SAVE_DATA' }, (res) => {
+          clearTimeout(timer);
+          if (chrome.runtime.lastError || !res || !res.quickSaveData) {
+            resolve(null);
+          } else {
+            resolve(res.quickSaveData);
+          }
+        });
+      } catch (e) {
+        clearTimeout(timer);
+        resolve(null);
+      }
+    });
+    if (memResponse) return memResponse;
+  } catch (e) {}
+
+  // 2. Fallback para chrome.storage.local
+  return new Promise((resolve) => {
+    chrome.storage.local.get('quickSaveData', (result) => {
+      resolve(result.quickSaveData || null);
+    });
+  });
+}
+
+export function clearQuickSaveData() {
+  return new Promise((resolve) => {
+    chrome.storage.local.remove('quickSaveData', () => resolve());
+  });
+}
+
+
