@@ -140,26 +140,60 @@ ScreenShot Turbo
 Extension rapide et professionnelle de capture, recadrage, annotation et exportation d'écran pour Chrome et Edge.
 
 [CATÉGORIE]
-Productivité
+Productivité (ou Photos)
 
 [DESCRIPTION]
-Capturez, recadrez, annotez et exportez des captures d'écran professionnelles en quelques secondes ! ScreenShot Turbo est une extension complète et ultra-rapide pour Chrome et Edge avec un éditeur d'aperçu puissant et un respect total de votre vie privée.
+Capturez, recadrez, annotez et exportez des captures d'écran de haute qualité en quelques secondes ! ScreenShot Turbo est une extension complète et ultra-rapide pour Chrome et Edge, conçue pour les professionnels, développeurs, designers et créateurs de contenu qui exigent des captures impeccables avec un respect total de leur vie privée.
 
 FONCTIONNALITÉS PRINCIPALES :
-* Modes de Capture : Fenêtre visible, page entière avec défilement automatique, sélection libre sur la page et formats prédéfinis (1:1, 3:2, 4:3, 5:4, 16:9).
-* Outils d'Édition : Flèches, rectangles, cercles, lignes droites, polylignes continues, texte et pinceau libre.
-* Presse-papiers Instantané : Copiez en un clic pour coller immédiatement (Ctrl+V).
-* Exportation : PNG transparent, JPG avec qualité réglable et WebP ultra-léger.
-* Raccourcis Clavier Globaux : Alt+Shift+V, Alt+Shift+F, Alt+Shift+S et accès direct aux formats.
-* Sécurité et Confidentialité : Traitement 100% local dans votre navigateur. Aucun serveur distant.
+
+* Modes de Capture Flexibles :
+  - Fenêtre Visible : Capture instantanée de votre zone d'affichage actuelle en un clic ou par raccourci.
+  - Page Entière : Défilement automatique intelligent assemblant avec précision les pages longues et masquant les en-têtes fixes répétés.
+  - Sélection Libre Interactive : Calque de sélection directement sur la page avec 8 poignées de redimensionnement et affichage des dimensions en temps réel.
+  - Formats Prédéfinis : Verrouillage mathématique des proportions 1:1 (Carré), 3:2 (Photo), 4:3 (Écran standard), 5:4 (Cadre) et 16:9 (Panoramique), avec basculement instantané entre Paysage et Portrait.
+
+* Éditeur d'Aperçu Intégré avec Outils de Dessin :
+  - S'ouvre automatiquement après chaque capture pour une vérification immédiate.
+  - Outils Vectoriels et Formes : Lignes droites, flèches, rectangles, cercles et polylignes continues (point par point).
+  - Texte et Pinceau Libre : Ajoutez des annotations textuelles explicatives avec couleurs et fonds personnalisés, ou dessinez librement avec un pinceau ajustable.
+  - Recadrage Non-Destructif sur Canvas : Ajustez la zone de découpe finale à tout moment avant l'exportation.
+  - Zoom et Navigation : Zoom avant/arrière, ajustement à l'écran ou affichage à 100% de la résolution réelle.
+  - Presse-papiers Instantané : Copiez en un clic l'image PNG pour la coller immédiatement (Ctrl+V) dans Slack, Discord, Notion ou vos e-mails.
+
+* Exportation Multi-Formats et Réglages Fins :
+  - PNG : Qualité sans perte avec prise en charge complète de la transparence.
+  - JPG : Compression réglable (10% à 100%) et couleur de fond unie personnalisable.
+  - WebP : Format moderne ultra-compact pour le Web et un encombrement réduit.
+  - Mémoire de Dossier : Mémorise le dernier dossier d'enregistrement utilisé entre vos sessions.
+
+* Raccourcis Clavier Globaux :
+  - Alt + Shift + V : Capturer la Fenêtre Visible
+  - Alt + Shift + F : Capturer la Page Entière
+  - Alt + Shift + S : Démarrer la Sélection Libre
+  - Alt + Shift + 1 à 4 : Sélections Rapides de Format (1:1, 3:2, 4:3, 5:4)
+  - Échap : Annuler la sélection ou fermer le calque
+
+* 100% Confidentiel et Traitement Local :
+  - Tout le traitement des images est exécuté exclusivement au sein de votre navigateur.
+  - Zéro serveur externe. Zéro pistage. Zéro collecte de données personnelles.
 
 
 --------------------------------------------------------------------------------
 2. ABA PRIVACIDADE (PRIVACY PRACTICES)
 --------------------------------------------------------------------------------
 
-[SINGLE PURPOSE POLICY — ENGLISH]
+[SINGLE PURPOSE POLICY — ENGLISH (MANDATORY)]
 ScreenShot Turbo has the single, dedicated purpose of allowing users to capture, crop, annotate, and export screenshots of webpages locally within their browser.
+
+[SINGLE PURPOSE POLICY — PORTUGUÊS (pt-BR)]
+O ScreenShot Turbo tem o único e exclusivo propósito de permitir aos usuários capturar, recortar, anotar e exportar capturas de tela de páginas da web localmente em seu navegador.
+
+[SINGLE PURPOSE POLICY — ESPAÑOL (es)]
+ScreenShot Turbo tiene el único y exclusivo propósito de permitir a los usuarios capturar, recortar, anotar y exportar capturas de pantalla de páginas web localmente en su navegador.
+
+[SINGLE PURPOSE POLICY — FRANÇAIS (fr)]
+ScreenShot Turbo a pour unique et exclusif objectif de permettre aux utilisateurs de capturer, recadrer, annoter et exporter des captures d'écran de pages web localement dans leur navigateur.
 
 [JUSTIFICATION OF PERMISSIONS — REQUIRED IN ENGLISH FOR REVIEWERS]
 
