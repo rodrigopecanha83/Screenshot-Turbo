@@ -1,5 +1,6 @@
 import { SAVE_PICKER_ID } from '../shared/constants.js';
 import { getQuickSaveData, clearQuickSaveData } from '../shared/storage.js';
+import { applyI18n, getI18nMessage } from '../shared/i18n.js';
 
 let DadosCaptura = null;
 let EstaSalvando = false;
@@ -18,11 +19,13 @@ function MostrarFeedback(mensagem, tipo = 'Info') {
 }
 
 async function InicializarJanela() {
+  applyI18n();
+
   try {
     DadosCaptura = await getQuickSaveData();
 
     if (!DadosCaptura || !DadosCaptura.imageDataUrl) {
-      MostrarFeedback('Nenhuma imagem pendente para salvar.', 'Erro');
+      MostrarFeedback(getI18nMessage('noPendingImage'), 'Erro');
       setTimeout(() => window.close(), 1800);
       return;
     }
@@ -37,7 +40,7 @@ async function InicializarJanela() {
     // Foco automático no botão de Salvar para permitir confirmar com Enter imediatamente
     BotaoSalvar.focus();
   } catch (erro) {
-    MostrarFeedback(`Erro ao carregar captura: ${erro.message}`, 'Erro');
+    MostrarFeedback(getI18nMessage('loadCaptureError', [erro.message]), 'Erro');
   }
 }
 
@@ -73,7 +76,6 @@ async function ExecutarSalvar() {
 
     if (manipuladorArquivo) {
       try {
-        MostrarFeedback('Salvando imagem...', 'Info');
         const resposta = await fetch(DadosCaptura.imageDataUrl);
         const blobImagem = await resposta.blob();
 
@@ -82,11 +84,11 @@ async function ExecutarSalvar() {
         await escritor.close();
 
         await clearQuickSaveData();
-        MostrarFeedback('Imagem salva com sucesso!', 'Sucesso');
+        MostrarFeedback(getI18nMessage('toastImageSaved'), 'Sucesso');
         setTimeout(() => window.close(), 250);
       } catch (erroGravacao) {
         EstaSalvando = false;
-        MostrarFeedback(`Erro ao gravar arquivo: ${erroGravacao.message}`, 'Erro');
+        MostrarFeedback(getI18nMessage('toastSaveError', [erroGravacao.message]), 'Erro');
       }
       return;
     }
@@ -94,7 +96,7 @@ async function ExecutarSalvar() {
 
   // 2. Fallback caso showSaveFilePicker não esteja disponível
   try {
-    MostrarFeedback('Iniciando download...', 'Info');
+    MostrarFeedback(getI18nMessage('toastDownloadStarted'), 'Info');
     chrome.downloads.download({
       url: DadosCaptura.imageDataUrl,
       filename: nomeArquivo,
@@ -105,7 +107,7 @@ async function ExecutarSalvar() {
     });
   } catch (erroDownload) {
     EstaSalvando = false;
-    MostrarFeedback(`Erro no download: ${erroDownload.message}`, 'Erro');
+    MostrarFeedback(getI18nMessage('toastSaveError', [erroDownload.message]), 'Erro');
   }
 }
 

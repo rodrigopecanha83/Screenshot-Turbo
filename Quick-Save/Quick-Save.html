@@ -17,8 +17,8 @@
           </svg>
         </div>
         <div>
-          <h1 class="Titulo-Janela">Salvar Captura</h1>
-          <span class="Subtitulo-Janela" id="Dominio-Origem">Salvamento Rápido</span>
+          <h1 class="Titulo-Janela" data-i18n="saveCapture">Salvar Captura</h1>
+          <span class="Subtitulo-Janela" id="Dominio-Origem" data-i18n="quickSaveSubtitle">Salvamento Rápido</span>
         </div>
       </div>
     </header>
@@ -26,12 +26,12 @@
     <main class="Conteudo-Principal">
       <div class="Card-Previa">
         <div class="Container-Imagem">
-          <img id="Imagem-Previa" class="Imagem-Previa" alt="Prévia da captura" />
+          <img id="Imagem-Previa" class="Imagem-Previa" alt="Prévia da captura" data-i18n-alt="previewAlt" />
         </div>
       </div>
 
       <div class="Card-Configuracao">
-        <label for="Campo-Nome-Arquivo" class="Rotulo-Campo">Nome do Arquivo</label>
+        <label for="Campo-Nome-Arquivo" class="Rotulo-Campo" data-i18n="filenameLabel">Nome do Arquivo</label>
         <div class="Grupo-Entrada">
           <input type="text" id="Campo-Nome-Arquivo" class="Entrada-Texto" spellcheck="false" autocomplete="off" />
         </div>
@@ -42,18 +42,18 @@
 
     <footer class="Rodape-Janela">
       <div class="Dica-Teclado">
-        <span><kbd>Enter</kbd> Salvar</span>
-        <span><kbd>Esc</kbd> Cancelar</span>
+        <span><kbd>Enter</kbd> <span data-i18n="kbdSave">Salvar</span></span>
+        <span><kbd>Esc</kbd> <span data-i18n="kbdCancel">Cancelar</span></span>
       </div>
       <div class="Grupo-Acoes">
-        <button type="button" id="Botao-Cancelar" class="Botao-Secundario">Cancelar</button>
+        <button type="button" id="Botao-Cancelar" class="Botao-Secundario" data-i18n="btnCancel">Cancelar</button>
         <button type="button" id="Botao-Salvar" class="Botao-Primario" autofocus>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
             <polyline points="17 21 17 13 7 13 7 21"/>
             <polyline points="7 3 7 8 15 8"/>
           </svg>
-          Salvar Imagem
+          <span data-i18n="btnSaveImage">Salvar Imagem</span>
         </button>
       </div>
     </footer>

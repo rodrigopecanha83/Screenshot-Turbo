@@ -1,0 +1,581 @@
+{
+  "appName": {
+    "message": "ScreenShot Turbo",
+    "description": "Nome da extensão"
+  },
+  "appDesc": {
+    "message": "Extensão profissional e rápida de captura, recorte, edição e exportação de tela para Chrome e Edge.",
+    "description": "Descrição da extensão"
+  },
+  "cmdOpenMenu": {
+    "message": "Abrir o menu ScreenShot Turbo",
+    "description": "Atalho para abrir o popup"
+  },
+  "cmdCaptureVisible": {
+    "message": "Capturar janela visível",
+    "description": "Atalho para capturar tela visível"
+  },
+  "cmdCaptureFullPage": {
+    "message": "Capturar página inteira",
+    "description": "Atalho para capturar página inteira"
+  },
+  "cmdCaptureSelection": {
+    "message": "Iniciar seleção livre",
+    "description": "Atalho para seleção livre"
+  },
+  "cmdRatio11": {
+    "message": "Seleção com proporção 1:1",
+    "description": "Atalho para proporção 1:1"
+  },
+  "cmdRatio32": {
+    "message": "Seleção com proporção 3:2",
+    "description": "Atalho para proporção 3:2"
+  },
+  "cmdRatio43": {
+    "message": "Seleção com proporção 4:3",
+    "description": "Atalho para proporção 4:3"
+  },
+  "cmdRatio54": {
+    "message": "Seleção com proporção 5:4",
+    "description": "Atalho para proporção 5:4"
+  },
+  "cmdRatio169": {
+    "message": "Seleção com proporção 16:9",
+    "description": "Atalho para proporção 16:9"
+  },
+  "btnSettings": {
+    "message": "Configurações",
+    "description": "Título do botão de configurações"
+  },
+  "presetTitle": {
+    "message": "Predefinição do Usuário",
+    "description": "Card de predefinição"
+  },
+  "presetDesc": {
+    "message": "Usa o modo padrão das configurações",
+    "description": "Descrição do modo predefinido"
+  },
+  "presetCurrent": {
+    "message": "Modo padrão: $MODE$",
+    "description": "Texto do modo atual",
+    "placeholders": {
+      "mode": {
+        "content": "$1"
+      }
+    }
+  },
+  "visibleWindow": {
+    "message": "Janela Visível",
+    "description": "Título de janela visível"
+  },
+  "visibleDesc": {
+    "message": "Captura o que está na tela agora",
+    "description": "Descrição de janela visível"
+  },
+  "freeSelection": {
+    "message": "Seleção Livre",
+    "description": "Título de seleção livre"
+  },
+  "freeSelectionDesc": {
+    "message": "Recorte livre na página",
+    "description": "Descrição de seleção livre"
+  },
+  "fullPage": {
+    "message": "Página Inteira",
+    "description": "Título de página inteira"
+  },
+  "fullPageDesc": {
+    "message": "Rolagem e captura automática",
+    "description": "Descrição de página inteira"
+  },
+  "presetRatios": {
+    "message": "Proporções Predefinidas",
+    "description": "Seção de proporções no popup"
+  },
+  "autoOrientation": {
+    "message": "Orientação Auto",
+    "description": "Badge de orientação automática"
+  },
+  "ratioSquare": {
+    "message": "Quadrado",
+    "description": "Subtítulo da proporção 1:1"
+  },
+  "ratioPhoto": {
+    "message": "Foto",
+    "description": "Subtítulo da proporção 3:2"
+  },
+  "ratioMonitor": {
+    "message": "Monitor",
+    "description": "Subtítulo da proporção 4:3"
+  },
+  "ratioFrame": {
+    "message": "Quadro",
+    "description": "Subtítulo da proporção 5:4"
+  },
+  "ratioWidescreen": {
+    "message": "Widescreen",
+    "description": "Subtítulo da proporção 16:9"
+  },
+  "ratioSelectionLabel": {
+    "message": "Seleção com Proporção",
+    "description": "Nome genérico do modo de seleção por proporção"
+  },
+  "ratioSelectionWithVal": {
+    "message": "Seleção $RATIO$",
+    "description": "Nome da seleção com proporção específica",
+    "placeholders": {
+      "ratio": {
+        "content": "$1"
+      }
+    }
+  },
+  "errNoActiveTab": {
+    "message": "Nenhuma aba ativa encontrada.",
+    "description": "Erro ao não encontrar aba ativa"
+  },
+  "errRestrictedUrl": {
+    "message": "Por motivos de segurança do navegador, extensões não podem capturar telas em páginas internas do sistema (chrome://, edge:// ou Web Store).",
+    "description": "Erro de página restrita"
+  },
+  "errCaptureWindow": {
+    "message": "Falha ao capturar a janela do navegador. Tente novamente.",
+    "description": "Erro geral de captura de janela"
+  },
+  "errFullPage": {
+    "message": "Erro ao capturar página inteira.",
+    "description": "Erro na captura de página inteira"
+  },
+  "errFullPageNoImages": {
+    "message": "Não foi possível capturar imagens desta página.",
+    "description": "Erro quando nenhum segmento foi capturado"
+  },
+  "overlayHintFree": {
+    "message": "Clique e arraste para selecionar a área desejada (ESC para cancelar)",
+    "description": "Dica de seleção livre no overlay"
+  },
+  "overlayHintRatio": {
+    "message": "Proporção $RATIO$ ($ORIENTATION$) — Clique e arraste para selecionar (ESC para sair)",
+    "description": "Dica de proporção no overlay",
+    "placeholders": {
+      "ratio": { "content": "$1" },
+      "orientation": { "content": "$2" }
+    }
+  },
+  "btnConfirm": {
+    "message": "Confirmar",
+    "description": "Botão confirmar seleção"
+  },
+  "btnCopy": {
+    "message": "Copiar",
+    "description": "Botão copiar"
+  },
+  "btnSave": {
+    "message": "Salvar",
+    "description": "Botão salvar direto"
+  },
+  "btnCancel": {
+    "message": "Cancelar",
+    "description": "Botão cancelar seleção"
+  },
+  "btnCopyTooltip": {
+    "message": "Copiar seleção para a área de transferência",
+    "description": "Tooltip do botão copiar no overlay"
+  },
+  "btnSaveTooltip": {
+    "message": "Salvar direto, sem abrir o editor",
+    "description": "Tooltip do botão salvar no overlay"
+  },
+  "capturingFullPage": {
+    "message": "Capturando página inteira...",
+    "description": "Texto padrão da barra de progresso"
+  },
+  "captureCompleted": {
+    "message": "Captura concluída!",
+    "description": "Toast de sucesso de captura"
+  },
+  "openingEditor": {
+    "message": "Abrindo editor de confirmação...",
+    "description": "Toast secundário de conclusão"
+  },
+  "imageCopied": {
+    "message": "Imagem copiada!",
+    "description": "Toast de imagem copiada"
+  },
+  "readyToPaste": {
+    "message": "Pronta para colar onde quiser (Ctrl+V).",
+    "description": "Instrução de imagem copiada"
+  },
+  "captureErrorTitle": {
+    "message": "Erro na captura",
+    "description": "Título de erro no overlay"
+  },
+  "captureErrorDefault": {
+    "message": "Não foi possível completar a captura.",
+    "description": "Mensagem padrão de erro no overlay"
+  },
+  "editorTitle": {
+    "message": "Editor de Pré-visualização — ScreenShot Turbo",
+    "description": "Título da página do editor"
+  },
+  "editorHeading": {
+    "message": "Editor de Pré-visualização",
+    "description": "Cabeçalho do editor"
+  },
+  "sourceLocal": {
+    "message": "Captura local",
+    "description": "Tag de origem local"
+  },
+  "btnRestoreImage": {
+    "message": "Restaurar Imagem",
+    "description": "Botão restaurar imagem"
+  },
+  "btnResetCropTooltip": {
+    "message": "Reiniciar Recorte",
+    "description": "Tooltip do botão reiniciar recorte"
+  },
+  "btnCopyClipboardTooltip": {
+    "message": "Copiar para Área de Transferência",
+    "description": "Tooltip de copiar imagem no editor"
+  },
+  "btnSaveImage": {
+    "message": "Salvar Imagem",
+    "description": "Botão salvar imagem no editor"
+  },
+  "drawingTools": {
+    "message": "Ferramentas de Desenho",
+    "description": "Seção de desenho no editor"
+  },
+  "toolSelect": {
+    "message": "Mover / Selecionar Elementos",
+    "description": "Tooltip da ferramenta selecionar"
+  },
+  "toolText": {
+    "message": "Adicionar Texto",
+    "description": "Tooltip da ferramenta texto"
+  },
+  "toolArrow": {
+    "message": "Desenhar Seta",
+    "description": "Tooltip da ferramenta seta"
+  },
+  "toolLine": {
+    "message": "Desenhar Linha Reta",
+    "description": "Tooltip da ferramenta linha"
+  },
+  "toolPolyline": {
+    "message": "Polilinha (Linhas Contínuas) — Duplo clique ou Enter para finalizar",
+    "description": "Tooltip da polilinha"
+  },
+  "toolRect": {
+    "message": "Retângulo",
+    "description": "Tooltip da ferramenta retângulo"
+  },
+  "toolCircle": {
+    "message": "Círculo",
+    "description": "Tooltip da ferramenta círculo"
+  },
+  "toolCrop": {
+    "message": "Recortar (ajustar área de corte)",
+    "description": "Tooltip da ferramenta recorte"
+  },
+  "toolDraw": {
+    "message": "Pincel Livre",
+    "description": "Tooltip da ferramenta pincel"
+  },
+  "propStrokeColor": {
+    "message": "Cor da linha/texto:",
+    "description": "Propriedade cor do traço"
+  },
+  "propFillColor": {
+    "message": "Fundo do texto / forma:",
+    "description": "Propriedade preenchimento"
+  },
+  "transparent": {
+    "message": "Transparente",
+    "description": "Opção transparente"
+  },
+  "transparentTooltip": {
+    "message": "Sem preenchimento / transparente",
+    "description": "Tooltip sem preenchimento"
+  },
+  "propThickness": {
+    "message": "Espessura / Tamanho:",
+    "description": "Propriedade espessura"
+  },
+  "btnDeleteSelected": {
+    "message": "Apagar Selecionado",
+    "description": "Botão apagar elemento"
+  },
+  "btnDeleteTooltip": {
+    "message": "Deletar elemento selecionado (Delete)",
+    "description": "Tooltip apagar elemento"
+  },
+  "cropAndRatios": {
+    "message": "Recorte & Proporções",
+    "description": "Seção recorte e proporções"
+  },
+  "ratioFree": {
+    "message": "Livre",
+    "description": "Opção livre de recorte"
+  },
+  "orientation": {
+    "message": "Orientação:",
+    "description": "Rótulo de orientação"
+  },
+  "orientHorizontal": {
+    "message": "Horizontal",
+    "description": "Orientação horizontal"
+  },
+  "orientVertical": {
+    "message": "Vertical",
+    "description": "Orientação vertical"
+  },
+  "imageDimensions": {
+    "message": "Dimensões da Imagem",
+    "description": "Seção de dimensões"
+  },
+  "dimWidth": {
+    "message": "Largura",
+    "description": "Rótulo de largura"
+  },
+  "dimHeight": {
+    "message": "Altura",
+    "description": "Rótulo de altura"
+  },
+  "ratioOriginal": {
+    "message": "Proporção: Original",
+    "description": "Proporção original exibida"
+  },
+  "ratioDisplay": {
+    "message": "Proporção: $VAL$",
+    "description": "Exibição de proporção",
+    "placeholders": {
+      "val": { "content": "$1" }
+    }
+  },
+  "exportFormat": {
+    "message": "Formato de Exportação",
+    "description": "Seção de formato"
+  },
+  "qualityLabel": {
+    "message": "Qualidade:",
+    "description": "Rótulo de qualidade"
+  },
+  "jpgBgColorLabel": {
+    "message": "Cor de fundo (sem transparência):",
+    "description": "Rótulo cor de fundo JPG"
+  },
+  "filename": {
+    "message": "Nome do Arquivo",
+    "description": "Seção nome do arquivo"
+  },
+  "zoomOutTooltip": {
+    "message": "Diminuir Zoom",
+    "description": "Tooltip diminuir zoom"
+  },
+  "zoomInTooltip": {
+    "message": "Aumentar Zoom",
+    "description": "Tooltip aumentar zoom"
+  },
+  "zoomFitTooltip": {
+    "message": "Ajustar à Tela",
+    "description": "Tooltip ajustar zoom à tela"
+  },
+  "zoom100Tooltip": {
+    "message": "Tamanho Real (100%)",
+    "description": "Tooltip zoom 100%"
+  },
+  "toastNoRecentImage": {
+    "message": "Nenhuma imagem capturada recente encontrada.",
+    "description": "Toast quando não há imagem"
+  },
+  "toastImageSaved": {
+    "message": "Imagem salva com sucesso!",
+    "description": "Toast de imagem salva"
+  },
+  "toastDownloadStarted": {
+    "message": "Download iniciado!",
+    "description": "Toast download iniciado"
+  },
+  "toastSaveError": {
+    "message": "Erro ao salvar: $ERR$",
+    "description": "Toast erro ao salvar",
+    "placeholders": {
+      "err": { "content": "$1" }
+    }
+  },
+  "toastCopySuccess": {
+    "message": "Imagem copiada para a área de transferência!",
+    "description": "Toast imagem copiada no editor"
+  },
+  "toastCopyError": {
+    "message": "Não foi possível copiar a imagem.",
+    "description": "Toast erro ao copiar no editor"
+  },
+  "settingsTitle": {
+    "message": "Configurações — ScreenShot Turbo",
+    "description": "Título da página de configurações"
+  },
+  "settingsSubtitle": {
+    "message": "Preferências & Predefinições Globais",
+    "description": "Subtítulo da página de configurações"
+  },
+  "btnSaveSettings": {
+    "message": "Salvar Alterações",
+    "description": "Botão salvar configurações"
+  },
+  "settingsGeneralCapture": {
+    "message": "Comportamento Geral de Captura",
+    "description": "Card de captura em configurações"
+  },
+  "settingsDefaultCaptureMode": {
+    "message": "Modo de Captura Padrão:",
+    "description": "Rótulo de modo padrão"
+  },
+  "optgroupCapture": {
+    "message": "Captura",
+    "description": "Grupo de opções de captura"
+  },
+  "optgroupRatio": {
+    "message": "Seleção por Proporção",
+    "description": "Grupo de opções de proporção"
+  },
+  "optRatio11": {
+    "message": "Proporção 1:1 (Quadrado)",
+    "description": "Opção proporção 1:1"
+  },
+  "optRatio32": {
+    "message": "Proporção 3:2 (Fotografia)",
+    "description": "Opção proporção 3:2"
+  },
+  "optRatio43": {
+    "message": "Proporção 4:3 (Monitor padrão)",
+    "description": "Opção proporção 4:3"
+  },
+  "optRatio54": {
+    "message": "Proporção 5:4 (Quadro)",
+    "description": "Opção proporção 5:4"
+  },
+  "optRatio169": {
+    "message": "Proporção 16:9 (Widescreen)",
+    "description": "Opção proporção 16:9"
+  },
+  "settingsDefaultOrientation": {
+    "message": "Orientação Padrão:",
+    "description": "Rótulo orientação padrão"
+  },
+  "optOrientLandscape": {
+    "message": "Horizontal (Paisagem)",
+    "description": "Opção paisagem"
+  },
+  "optOrientPortrait": {
+    "message": "Vertical (Retrato)",
+    "description": "Opção retrato"
+  },
+  "settingsExportQuality": {
+    "message": "Formatos & Qualidade de Exportação",
+    "description": "Card formatos e qualidade"
+  },
+  "settingsDefaultFormat": {
+    "message": "Formato de Saída Padrão:",
+    "description": "Rótulo formato de saída padrão"
+  },
+  "optPngDesc": {
+    "message": "PNG (Sem perdas, suporta transparência)",
+    "description": "Opção PNG"
+  },
+  "optJpgDesc": {
+    "message": "JPG (Comprimido, alta compatibilidade)",
+    "description": "Opção JPG"
+  },
+  "optWebpDesc": {
+    "message": "WebP (Moderno, ultra-compacto)",
+    "description": "Opção WebP"
+  },
+  "settingsJpgQuality": {
+    "message": "Qualidade JPG:",
+    "description": "Rótulo qualidade JPG"
+  },
+  "settingsWebpQuality": {
+    "message": "Qualidade WebP:",
+    "description": "Rótulo qualidade WebP"
+  },
+  "settingsJpgBg": {
+    "message": "Cor de Fundo para JPG:",
+    "description": "Rótulo cor de fundo JPG"
+  },
+  "settingsNaming": {
+    "message": "Nomes & Salvamento de Arquivo",
+    "description": "Card nomes de arquivo"
+  },
+  "checkIncludePrefix": {
+    "message": "Incluir \"ScreenShot-Turbo\" no início do nome",
+    "description": "Checkbox incluir prefixo"
+  },
+  "checkIncludeDomain": {
+    "message": "Incluir endereço do site após a data/hora",
+    "description": "Checkbox incluir domínio"
+  },
+  "previewLabel": {
+    "message": "Pré-visualização:",
+    "description": "Rótulo pré-visualização de nome"
+  },
+  "formatHelpText": {
+    "message": "Formato: <code>ScreenShot-Turbo-aaaa.mm.dd-hh.mm.ss-site.ext</code>",
+    "description": "Ajuda formato de arquivo"
+  },
+  "settingsGlobalShortcuts": {
+    "message": "Atalhos de Teclado Globais",
+    "description": "Card de atalhos globais"
+  },
+  "shortcutCustomizable": {
+    "message": "Personalizável",
+    "description": "Badge de atalho personalizável"
+  },
+  "shortcutsHelpText": {
+    "message": "Para personalizar os atalhos nativos do navegador, acesse <code>chrome://extensions/shortcuts</code> ou <code>edge://extensions/shortcuts</code>.",
+    "description": "Ajuda atalhos de teclado"
+  },
+  "toastSettingsSaved": {
+    "message": "Configurações salvas com sucesso!",
+    "description": "Toast configurações salvas"
+  },
+  "quickSaveTitle": {
+    "message": "ScreenShot Turbo — Salvamento Rápido",
+    "description": "Título da janela Quick-Save"
+  },
+  "quickSaveSubtitle": {
+    "message": "Salvamento Rápido",
+    "description": "Subtítulo da janela Quick-Save"
+  },
+  "saveCapture": {
+    "message": "Salvar Captura",
+    "description": "Título cabeçalho Quick-Save"
+  },
+  "previewAlt": {
+    "message": "Prévia da captura",
+    "description": "Alt da imagem no Quick-Save"
+  },
+  "filenameLabel": {
+    "message": "Nome do Arquivo",
+    "description": "Label nome do arquivo no Quick-Save"
+  },
+  "kbdSave": {
+    "message": "Salvar",
+    "description": "Dica de tecla salvar"
+  },
+  "kbdCancel": {
+    "message": "Cancelar",
+    "description": "Dica de tecla cancelar"
+  },
+  "noPendingImage": {
+    "message": "Nenhuma imagem pendente para salvar.",
+    "description": "Alerta sem imagem no Quick-Save"
+  },
+  "loadCaptureError": {
+    "message": "Erro ao carregar captura: $ERR$",
+    "description": "Erro ao carregar no Quick-Save",
+    "placeholders": {
+      "err": { "content": "$1" }
+    }
+  }
+}

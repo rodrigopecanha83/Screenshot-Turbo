@@ -1,113 +1,75 @@
-# ScreenShot Turbo 🚀
+# ScreenShot Turbo
 
-> Extensão profissional e moderna de captura, recorte, edição e exportação de tela para **Google Chrome** e **Microsoft Edge** (Manifest V3).
+Extensão profissional e rápida de captura, recorte, edição e exportação de tela para Google Chrome e Microsoft Edge (Manifest V3). Permite capturar janelas visíveis, páginas inteiras com rolagem contínua ou seleções personalizadas com anotações e exportação local de alta fidelidade.
 
----
+## Funcionalidades Principais
 
-## ✨ Principais Recursos
+* **Modos de Captura Flexíveis:** Captura rápida de janela visível, varredura inteligente de página inteira sem repetição de cabeçalhos e seleção livre interativa sobre a página com 8 alças de redimensionamento.
+* **Proporções Predefinidas com Orientação Automática:** Enquadramentos fixos matemáticos (1:1, 3:2, 4:3, 5:4 e 16:9) com alternância entre os modos horizontal (paisagem) e vertical (retrato).
+* **Editor de Pré-visualização com Ferramentas de Desenho:** Abertura automática após cada captura com suporte a anotações em tela (texto, retângulos, círculos, setas, linhas retas, polilinhas contínuas e pincel livre via Fabric.js).
+* **Exportação Multiformato e Ajuste Fino:** Salvamento em PNG (com transparência), JPG (com controle de qualidade de 10% a 100% e cor de fundo personalizada) e WebP ultra-compacto.
+* **Memória de Pasta Compartilhada:** Janela integrada do navegador que memoriza o último diretório de salvamento utilizado entre as sessões.
+* **Internacionalização Completa (i18n):** Suporte nativo a 4 idiomas (Inglês como padrão global, Português do Brasil, Espanhol e Francês).
 
-- 📸 **Modos de Captura Flexíveis**:
-  - **Janela Visível**: Captura instantânea do viewport atual.
-  - **Página Inteira**: Rolagem automática inteligente com costura sem emendas e ocultação de menus fixos repetidos.
-  - **Seleção Livre**: Camada interativa diretamente sobre a página com redimensionamento pelas 8 alças, confirmação, cópia direta e salvamento rápido.
-  - **Proporções Predefinidas**: Fixação matemática de proporções (1:1, 3:2, 4:3, 5:4, 16:9) com alternância entre paisagem e retrato.
-- 🎨 **Editor de Pré-visualização Integrado**:
-  - Abertura automática após cada captura.
-  - **Ferramentas de Anotação e Desenho**: Formas geométricas (retângulos, círculos), texto, setas, linhas retas, polilinhas (linhas contínuas ponto a ponto) e pincel livre.
-  - Modos de desenho contínuo sem necessidade de reativação da ferramenta.
-  - Recorte não destrutivo em Canvas.
-  - Controles de zoom (Zoom In, Zoom Out, Ajustar à Tela, 100%).
-  - Cópia direta para a área de transferência (`Clipboard API`).
-  - Restauração rápida da imagem original.
-- 💾 **Exportação Profissional**:
-  - **PNG**: Qualidade máxima sem perdas com suporte a transparência.
-  - **JPG**: Ajuste fino de compressão (10% a 100%) e personalização de cor de fundo.
-  - **WebP**: Formato moderno com excelente taxa de compressão e qualidade visual.
-  - **Memória da última pasta**: A janela "Salvar como" do editor reabre na última pasta utilizada.
-- ⚙️ **Configurações & Predefinições**:
-  - Alternância entre modo manual e modo automático com predefinições.
-  - Menu único de modo de captura padrão (incluindo as seleções por proporção).
-  - Nome de arquivo padronizado `ScreenShot-Turbo-aaaa.mm.dd-hh.mm.ss-site.ext`, com prefixo e site opcionais e pré-visualização ao vivo.
-  - Persistência contínua com `chrome.storage.local`.
-- ⌨️ **Atalhos de Teclado Personalizáveis**:
-  - `Alt + Shift + V`: Capturar janela visível.
-  - `Alt + Shift + F`: Capturar página inteira.
-  - `Alt + Shift + S`: Iniciar seleção livre.
-  - `Alt + Shift + 1` a `4`: Iniciar seleções com proporções fixas (1:1, 3:2, 4:3, 5:4).
-  - Seleção 16:9: atalho configurável em `chrome://extensions/shortcuts`.
-  - `ESC`: Cancelar seleção ou fechar sobreposição.
+## Pré-requisitos
 
----
+* Navegador baseado em Chromium (Google Chrome, Microsoft Edge, Brave, Opera) com suporte a Manifest V3.
 
-## 📝 Histórico de Versões
+## Instalação e Configuração
 
-### v1.1.0 - 2026-10-21
-- Menu único para "Modo de Captura Padrão" e "Proporção Padrão" nas configurações.
-- Nova proporção **16:9** (popup, editor, overlay, configurações e atalho).
-- Novo padrão de nome: `ScreenShot-Turbo-aaaa.mm.dd-hh.mm.ss-site.ext`, com opções para remover o prefixo e o site.
-- Salvamento direto do overlay passa a usar o mesmo padrão de nome do editor.
-- Editor lembra a última pasta usada no "Salvar como" (File System Access API).
-- Ícones renomeados para Train-Case e novos tamanhos (64, 256, 512).
+1. Clone ou baixe este repositório em seu computador.
+2. Abra o navegador e acesse a página de extensões:
+   * No Chrome: `chrome://extensions/`
+   * No Edge: `edge://extensions/`
+3. Ative o **Modo do desenvolvedor** no canto da interface.
+4. Clique em **Carregar sem compactação** (ou *Load unpacked*).
+5. Selecione a pasta raiz deste projeto (`ScreenShot-Turbo`).
 
-### v1.0.0
-- Lançamento inicial.
+## Como Usar
 
----
-
-## 🔒 Segurança e Privacidade
-
-- **Processamento 100% Local**: Nenhuma imagem é transmitida para servidores externos.
-- **Manifest V3**: Construído seguindo as diretrizes oficiais de segurança dos navegadores Chromium.
-- **Permissões Mínimas**:
-  - `activeTab` e `scripting`: Para injetar a área de seleção e capturar a aba ativa solicitada.
-  - `storage`: Para manter as preferências e predefinições salvas localmente.
-  - `downloads`: Para salvar os arquivos no diretório de downloads do usuário.
-
----
-
-## 📦 Como Instalar (Modo Desenvolvedor)
-
-### No Google Chrome:
-1. Abra o navegador e acesse `chrome://extensions/`.
-2. Ative o botão **Modo do desenvolvedor** no canto superior direito.
-3. Clique em **Carregar sem compactação** (ou *Load unpacked*).
-4. Selecione a pasta deste projeto (`c:\Projetos\Extensoes-Chrome\ScreenShot-Turbo`).
-
-### No Microsoft Edge:
-1. Acesse `edge://extensions/`.
-2. Ative o alternador **Modo do desenvolvedor** no painel lateral esquerdo.
-3. Clique em **Carregar descompactada** (*Load unpacked*).
-4. Selecione a pasta deste projeto.
-
----
-
-## 📁 Estrutura do Código
+A extensão pode ser operada pelo menu de ação rápida na barra de ferramentas ou diretamente por atalhos globais de teclado:
 
 ```text
-ScreenShot-Turbo/
-├── manifest.json              # Configuração Manifest V3
-├── background/
-│   └── service-worker.js      # Gerenciamento de eventos, atalhos e downloads
-├── popup/
-│   ├── popup.html             # Interface pop-up da extensão
-│   ├── popup.css              # Estilos com design system moderno e escuro
-│   └── popup.js               # Disparadores de captura e predefinições
-├── content/
-│   ├── capture-overlay.js     # Script de seleção interativo na página
-│   └── capture-overlay.css    # Máscaras e alças de redimensionamento
-├── capture/
-│   └── full-page-scanner.js   # Script de varredura e cálculo de página inteira
-├── editor/
-│   ├── editor.html            # Interface completa do editor de pré-visualização
-│   ├── editor.css             # Estilos do workspace Canvas e paleta de ferramentas
-│   └── editor.js              # Lógica de recorte não-destrutivo, zoom e costura
-├── settings/
-│   ├── settings.html          # Painel de preferências e atalhos
-│   ├── settings.css           # Estilos da página de configurações
-│   └── settings.js            # Persistência e binding com chrome.storage
-├── shared/
-│   ├── constants.js           # Constantes e valores padrão
-│   ├── storage.js             # Helpers do chrome.storage
-│   └── image-export.js        # Utilitários de Canvas, conversão e nomes
-└── icons/                     # Ícones oficiais (Icon16, Icon32, Icon48, Icon64, Icon128, Icon256, Icon512)
+Alt + Shift + V    -> Capturar Janela Visível
+Alt + Shift + F    -> Capturar Página Inteira (com rolagem automática)
+Alt + Shift + S    -> Iniciar Seleção Livre na página
+Alt + Shift + 1    -> Seleção na proporção 1:1 (Quadrado)
+Alt + Shift + 2    -> Seleção na proporção 3:2 (Fotografia)
+Alt + Shift + 3    -> Seleção na proporção 4:3 (Monitor padrão)
+Alt + Shift + 4    -> Seleção na proporção 5:4 (Quadro)
+Esc                -> Cancelar seleção ou fechar interface de recorte
 ```
+
+Após capturar, use o **Editor de Pré-visualização** para desenhar anotações, recortar e clicar em **Copiar** (Ctrl+V em qualquer aplicativo) ou **Salvar Imagem**.
+
+## Capturas de Tela
+
+Imagens e materiais visuais demonstrativos do produto estão disponíveis na pasta [`arte_original/`](file:///c:/Projetos/Extensoes-Chrome/ScreenShot-Turbo/arte_original).
+
+## Histórico de Versões
+
+### v1.2.0 - 2026-10-28
+- Implementação de internacionalização nativa (i18n) completa em 4 idiomas: Inglês (`en` como idioma padrão global), Português do Brasil (`pt_BR`), Espanhol (`es`) e Francês (`fr`).
+- Adaptação dinâmica de todas as interfaces (Popup, Editor, Configurações, Overlay interativo e Salvamento Rápido).
+- Limpeza e organização estrutural do projeto para empacotamento da Web Store.
+
+### v1.1.0 - 2026-10-21
+- Menu unificado para modo de captura padrão e seleção por proporção nas configurações.
+- Suporte à proporção widescreen **16:9** em todas as interfaces.
+- Padronização de nomes de arquivos com prefixo e domínio opcionais.
+- Memória de última pasta de salvamento via File System Access API.
+
+### v1.0.0
+- Lançamento inicial da extensão.
+
+## Contribuindo
+
+Sugestões e correções são bem-vindas. Abra uma Issue ou envie um Pull Request.
+
+## Licença
+
+TODO: definir licença. Veja o arquivo `LICENSE` para mais detalhes.
+
+## Autor
+
+Rodrigo Peçanha

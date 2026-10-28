@@ -1,23 +1,28 @@
 import { MESSAGE_TYPES } from '../shared/constants.js';
 import { getSettings } from '../shared/storage.js';
-
-const MODE_LABELS = {
-  visible: 'Janela Visível',
-  free_selection: 'Seleção Livre',
-  ratio_selection: 'Seleção com Proporção',
-  full_page: 'Página Inteira'
-};
+import { applyI18n, getI18nMessage } from '../shared/i18n.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  applyI18n();
+
   let settings = await getSettings();
   let currentOrientation = settings.defaultOrientation || 'landscape';
   const statusEl = document.getElementById('status-message');
 
   const userMode = settings.defaultMode || 'visible';
-  const modeLabel = userMode === 'ratio_selection'
-    ? `Seleção ${settings.defaultRatio || '1:1'}`
-    : (MODE_LABELS[userMode] || userMode);
-  document.getElementById('preset-desc').textContent = `Modo padrão: ${modeLabel}`;
+  let modeLabel = '';
+  if (userMode === 'visible') {
+    modeLabel = getI18nMessage('visibleWindow');
+  } else if (userMode === 'free_selection') {
+    modeLabel = getI18nMessage('freeSelection');
+  } else if (userMode === 'full_page') {
+    modeLabel = getI18nMessage('fullPage');
+  } else if (userMode === 'ratio_selection') {
+    modeLabel = getI18nMessage('ratioSelectionWithVal', [settings.defaultRatio || '1:1']);
+  } else {
+    modeLabel = userMode;
+  }
+  document.getElementById('preset-desc').textContent = getI18nMessage('presetCurrent', [modeLabel]);
 
   // Abertura das configurações
   document.getElementById('btn-open-settings').addEventListener('click', () => {

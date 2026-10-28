@@ -74,12 +74,24 @@
     overlay.appendChild(maskLeft);
     overlay.appendChild(maskRight);
 
+    // Função utilitária de mensagem i18n
+    const msg = (key, subs) => {
+      try {
+        if (typeof chrome !== 'undefined' && chrome.i18n && chrome.i18n.getMessage) {
+          const res = chrome.i18n.getMessage(key, subs);
+          if (res) return res;
+        }
+      } catch (e) {}
+      return key;
+    };
+
     // Dica inicial
     const hint = document.createElement('div');
     hint.id = 'sst-overlay-hint';
+    const orientLabel = options.orientation === 'portrait' ? msg('orientVertical') : msg('orientHorizontal');
     hint.textContent = options.ratio !== 'free'
-      ? `Proporção ${options.ratio} (${options.orientation}) — Clique e arraste para selecionar (ESC para sair)`
-      : 'Clique e arraste para selecionar a área desejada (ESC para cancelar)';
+      ? msg('overlayHintRatio', [options.ratio, orientLabel])
+      : msg('overlayHintFree');
     overlay.appendChild(hint);
 
     // Box de seleção
@@ -105,19 +117,19 @@
       ${options.ratio !== 'free' ? `<span class="sst-ratio-badge">${options.ratio}</span>` : ''}
       <button class="sst-btn sst-btn-confirm" id="sst-btn-confirm">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        Confirmar
+        ${msg('btnConfirm')}
       </button>
-      <button class="sst-btn sst-btn-copy" id="sst-btn-copy" title="Copiar seleção para a área de transferência">
+      <button class="sst-btn sst-btn-copy" id="sst-btn-copy" title="${msg('btnCopyTooltip')}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        Copiar
+        ${msg('btnCopy')}
       </button>
-      <button class="sst-btn sst-btn-save" id="sst-btn-save" title="Salvar direto, sem abrir o editor">
+      <button class="sst-btn sst-btn-save" id="sst-btn-save" title="${msg('btnSaveTooltip')}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        Salvar
+        ${msg('btnSave')}
       </button>
       <button class="sst-btn sst-btn-cancel" id="sst-btn-cancel">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-        Cancelar
+        ${msg('btnCancel')}
       </button>
     `;
     overlay.appendChild(toolbar);
@@ -554,13 +566,16 @@
       progressToast.id = 'sst-progress-toast';
       document.body.appendChild(progressToast);
     }
+    const defaultStatus = (typeof chrome !== 'undefined' && chrome.i18n)
+      ? chrome.i18n.getMessage('capturingFullPage')
+      : 'Capturando página inteira...';
     progressToast.style.visibility = 'visible';
     progressToast.innerHTML = `
       <div style="font-weight:600; font-size:14px; display:flex; justify-content:space-between;">
         <span>ScreenShot Turbo</span>
         <span>${Math.round(progress)}%</span>
       </div>
-      <div style="font-size:12px; color:#94a3b8;">${statusText || 'Capturando página inteira...'}</div>
+      <div style="font-size:12px; color:#94a3b8;">${statusText || defaultStatus}</div>
       <div class="sst-progress-bar-bg">
         <div class="sst-progress-bar-fill" style="width: ${progress}%;"></div>
       </div>
@@ -586,14 +601,20 @@
       progressToast.id = 'sst-progress-toast';
       document.body.appendChild(progressToast);
     }
+    const titleText = (typeof chrome !== 'undefined' && chrome.i18n)
+      ? chrome.i18n.getMessage('captureCompleted')
+      : 'Captura concluída!';
+    const subText = (typeof chrome !== 'undefined' && chrome.i18n)
+      ? chrome.i18n.getMessage('openingEditor')
+      : 'Abrindo editor de confirmação...';
     progressToast.style.visibility = 'visible';
     progressToast.style.borderColor = 'rgba(74, 222, 128, 0.4)';
     progressToast.innerHTML = `
       <div style="font-weight:600; font-size:14px; color:#4ade80; display:flex; align-items:center; gap:8px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        Captura concluída!
+        ${titleText}
       </div>
-      <div style="font-size:12px; color:#e2e8f0; margin-top:4px;">Abrindo editor de confirmação...</div>
+      <div style="font-size:12px; color:#e2e8f0; margin-top:4px;">${subText}</div>
       <div class="sst-progress-bar-bg" style="margin-top:8px;">
         <div class="sst-progress-bar-fill" style="width: 100%; background: #22c55e;"></div>
       </div>
@@ -608,12 +629,18 @@
     const copyToast = document.createElement('div');
     copyToast.id = 'sst-progress-toast';
     copyToast.style.borderColor = 'rgba(56, 189, 248, 0.5)';
+    const titleText = (typeof chrome !== 'undefined' && chrome.i18n)
+      ? chrome.i18n.getMessage('imageCopied')
+      : 'Imagem copiada!';
+    const subText = (typeof chrome !== 'undefined' && chrome.i18n)
+      ? chrome.i18n.getMessage('readyToPaste')
+      : 'Pronta para colar onde quiser (Ctrl+V).';
     copyToast.innerHTML = `
       <div style="font-weight:600; font-size:14px; color:#38bdf8; display:flex; align-items:center; gap:8px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        Imagem copiada!
+        ${titleText}
       </div>
-      <div style="font-size:12px; color:#e2e8f0; margin-top:4px;">Pronta para colar onde quiser (Ctrl+V).</div>
+      <div style="font-size:12px; color:#e2e8f0; margin-top:4px;">${subText}</div>
     `;
     document.body.appendChild(copyToast);
     setTimeout(() => {
@@ -621,17 +648,23 @@
     }, 2000);
   }
 
-  function showErrorToast(msg) {
+  function showErrorToast(msgText) {
     removeProgressToast();
     const errorToast = document.createElement('div');
     errorToast.id = 'sst-progress-toast';
     errorToast.style.border = '1px solid rgba(239, 68, 68, 0.6)';
+    const titleText = (typeof chrome !== 'undefined' && chrome.i18n)
+      ? chrome.i18n.getMessage('captureErrorTitle')
+      : 'Erro na captura';
+    const defaultMsg = (typeof chrome !== 'undefined' && chrome.i18n)
+      ? chrome.i18n.getMessage('captureErrorDefault')
+      : 'Não foi possível completar a captura.';
     errorToast.innerHTML = `
       <div style="font-weight:600; font-size:14px; color:#f87171; display:flex; align-items:center; gap:8px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-        Erro na captura
+        ${titleText}
       </div>
-      <div style="font-size:12px; color:#e2e8f0;">${msg || 'Não foi possível completar a captura.'}</div>
+      <div style="font-size:12px; color:#e2e8f0;">${msgText || defaultMsg}</div>
     `;
     document.body.appendChild(errorToast);
     setTimeout(() => {

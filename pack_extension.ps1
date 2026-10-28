@@ -4,6 +4,7 @@ if (Test-Path $zipPath) {
 }
 
 $allowedItems = @(
+    "_locales",
     "manifest.json",
     "background",
     "capture",

@@ -1,7 +1,10 @@
 import { getSettings, saveSettings } from '../shared/storage.js';
 import { generateFilename } from '../shared/image-export.js';
+import { applyI18n } from '../shared/i18n.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  applyI18n();
+
   const currentSettings = await getSettings();
 
   // Elementos do Formulário

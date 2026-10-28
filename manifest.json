@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "ScreenShot Turbo",
-  "version": "1.1.0",
-  "description": "Extensão profissional e rápida de captura, recorte, edição e exportação de tela para Chrome e Edge.",
+  "default_locale": "en",
+  "name": "__MSG_appName__",
+  "version": "1.2.0",
+  "description": "__MSG_appDesc__",
   "permissions": [
     "activeTab",
     "tabs",
@@ -19,7 +20,7 @@
       "48": "icons/Icon48.png",
       "128": "icons/Icon128.png"
     },
-    "default_title": "ScreenShot Turbo"
+    "default_title": "__MSG_appName__"
   },
   "background": {
     "service_worker": "background/service-worker.js",
@@ -30,40 +31,40 @@
       "suggested_key": {
         "default": "Alt+Shift+S"
       },
-      "description": "Abrir o menu ScreenShot Turbo"
+      "description": "__MSG_cmdOpenMenu__"
     },
     "capture-visible": {
       "suggested_key": {
         "default": "Alt+Shift+V"
       },
-      "description": "Capturar janela visível"
+      "description": "__MSG_cmdCaptureVisible__"
     },
     "capture-full-page": {
       "suggested_key": {
         "default": "Alt+Shift+F"
       },
-      "description": "Capturar página inteira"
+      "description": "__MSG_cmdCaptureFullPage__"
     },
     "capture-selection": {
       "suggested_key": {
         "default": "Alt+Shift+C"
       },
-      "description": "Iniciar seleção livre"
+      "description": "__MSG_cmdCaptureSelection__"
     },
     "capture-ratio-1-1": {
-      "description": "Seleção com proporção 1:1"
+      "description": "__MSG_cmdRatio11__"
     },
     "capture-ratio-3-2": {
-      "description": "Seleção com proporção 3:2"
+      "description": "__MSG_cmdRatio32__"
     },
     "capture-ratio-4-3": {
-      "description": "Seleção com proporção 4:3"
+      "description": "__MSG_cmdRatio43__"
     },
     "capture-ratio-5-4": {
-      "description": "Seleção com proporção 5:4"
+      "description": "__MSG_cmdRatio54__"
     },
     "capture-ratio-16-9": {
-      "description": "Seleção com proporção 16:9"
+      "description": "__MSG_cmdRatio169__"
     }
   },
   "options_ui": {

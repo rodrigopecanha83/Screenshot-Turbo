@@ -1,0 +1,186 @@
+================================================================================
+                    CHROME DEVELOPER DASHBOARD — SCREENSHOT TURBO
+================================================================================
+
+--------------------------------------------------------------------------------
+1. DETALHES DO PRODUTO (STORE LISTING DETAILS)
+--------------------------------------------------------------------------------
+
+==================================================
+IDIOMA PRINCIPAL / PRIMARY LANGUAGE: ENGLISH (en)
+==================================================
+
+[TITLE] (Maximum 45 characters)
+ScreenShot Turbo
+
+[SUMMARY] (Maximum 132 characters)
+Fast and professional screenshot capture, crop, annotation editor, and export tool for Chrome and Edge.
+
+[CATEGORY]
+Productivity (or Photos)
+
+[DESCRIPTION]
+Capture, crop, annotate, and export high-quality screenshots in seconds! ScreenShot Turbo is a lightweight, all-in-one browser extension designed for developers, designers, content creators, and everyday professionals who need reliable screen captures without bloat or privacy risks.
+
+Whether you need a quick visible snapshot, an entire scrolling webpage, or a pixel-perfect aspect ratio crop, ScreenShot Turbo provides an intuitive experience with a powerful built-in editor.
+
+KEY FEATURES:
+
+* Multiple Capture Modes:
+  - Visible Window: Instant capture of your current viewport with a single click or shortcut.
+  - Full Page Capture: Smart automated scrolling engine that stitches long articles and dashboards seamlessly, automatically hiding duplicate fixed headers.
+  - Interactive Free Selection: On-page selection layer with 8-point resize handles, live pixel dimensions, direct copying, and quick saving.
+  - Preset Aspect Ratios: Mathematical locking for 1:1 (Square), 3:2 (Photo), 4:3 (Standard Monitor), 5:4 (Frame), and 16:9 (Widescreen), with instant toggle between Landscape and Portrait orientations.
+
+* Built-in Annotation & Drawing Editor:
+  - Automatic preview editor window opens right after each capture.
+  - Vector & Shape Tools: Draw straight lines, arrows, rectangles, circles, and multi-point continuous polylines.
+  - Text & Freehand Brush: Add explanatory text with custom colors/backgrounds or draw freely with a customizable brush.
+  - Non-destructive Canvas Cropping: Adjust the final crop area anytime before exporting.
+  - Zoom & Navigation: Zoom in/out, fit to screen, or view at 100% actual resolution.
+  - Instant Clipboard Copy: Copy formatted PNG screenshots directly to your clipboard (Ctrl+V) ready to paste into Slack, Discord, WhatsApp, Notion, or email.
+
+* Flexible Multi-Format Export:
+  - PNG: Crystal-clear lossless quality supporting full transparency.
+  - JPG: Adjustable compression quality (10% to 100%) and customizable solid background colors.
+  - WebP: Modern ultra-compact image format for web publishing and reduced disk usage.
+  - Directory Memory: Remembers your last saved folder across sessions, saving you time.
+
+* Native Global Shortcuts:
+  - Alt + Shift + V : Capture Visible Window
+  - Alt + Shift + F : Capture Full Page
+  - Alt + Shift + S : Start Free Selection
+  - Alt + Shift + 1 to 4 : Quick Aspect Ratio Selections (1:1, 3:2, 4:3, 5:4)
+  - Esc : Cancel selection or dismiss overlay
+
+* 100% Privacy Focused & Local Processing:
+  - All image rendering, canvas cropping, and conversions are executed purely inside your browser.
+  - Zero external servers. Zero tracking. Zero data collection.
+
+
+==================================================
+IDIOMA SECUNDÁRIO: PORTUGUÊS (pt-BR)
+==================================================
+
+[TÍTULO] (Máximo 45 caracteres)
+ScreenShot Turbo
+
+[RESUMO] (Máximo 132 caracteres)
+Extensão profissional e rápida de captura, recorte, edição e exportação de tela para Chrome e Edge.
+
+[CATEGORIA]
+Produtividade (ou Fotos)
+
+[DESCRIÇÃO]
+Capture, recorte, anote e salve capturas de tela profissionais em segundos! O ScreenShot Turbo é uma extensão leve e completa, desenvolvida para profissionais, desenvolvedores, designers e criadores de conteúdo que precisam de capturas impecáveis sem lentidão e com total privacidade.
+
+RECURSOS PRINCIPAIS:
+
+* Modos Flexíveis de Captura:
+  - Janela Visível: Captura instantânea do que está na tela agora.
+  - Página Inteira: Rolagem contínua automática inteligente que costura páginas longas com precisão, ocultando menus fixos repetidos.
+  - Seleção Livre Interativa: Camada de seleção direta sobre a página com 8 alças de redimensionamento e exibição de dimensões em tempo real.
+  - Proporções Predefinidas: Enquadramentos fixos matemáticos (1:1, 3:2, 4:3, 5:4 e 16:9) com alternância entre os modos horizontal (paisagem) e vertical (retrato).
+
+* Editor de Pré-visualização com Ferramentas de Desenho:
+  - Abre automaticamente após a captura para conferência imediata.
+  - Ferramentas de Anotação: Retângulos, círculos, setas, linhas retas, polilinhas (linhas contínuas ponto a ponto), texto formatado e pincel livre.
+  - Recorte em Canvas e controle de Zoom (Ajustar à Tela, 100%, Zoom In/Out).
+  - Cópia com 1 clique para a área de transferência (Ctrl+V em qualquer app).
+
+* Exportação Profissional:
+  - PNG com transparência, JPG com controle de qualidade e cor de fundo, e WebP ultra-compacto.
+  - Memoriza a última pasta de salvamento utilizada.
+
+* Atalhos Globais:
+  - Alt + Shift + V : Capturar Janela Visível
+  - Alt + Shift + F : Capturar Página Inteira
+  - Alt + Shift + S : Seleção Livre
+  - Alt + Shift + 1 a 4 : Seleção com Proporções (1:1, 3:2, 4:3, 5:4)
+  - Esc : Cancelar seleção
+
+* 100% Privado e Seguro:
+  - Todo o processamento de imagem é executado localmente na máquina do usuário.
+  - Sem servidores externos, sem rastreamento e sem coleta de dados.
+
+
+==================================================
+IDIOMA SECUNDÁRIO: ESPAÑOL (es)
+==================================================
+
+[TÍTULO] (Máximo 45 caracteres)
+ScreenShot Turbo
+
+[RESUMEN] (Máximo 132 caracteres)
+Extensión rápida y profesional para capturar, recortar, editar con anotaciones y exportar pantallas en Chrome y Edge.
+
+[CATEGORÍA]
+Productividad
+
+[DESCRIPCIÓN]
+¡Captura, recorta, anota y guarda capturas de pantalla de alta calidad en segundos! ScreenShot Turbo es una extensión rápida y completa para Chrome y Edge, diseñada para quienes necesitan capturas de pantalla precisas con total privacidad y sin complicaciones.
+
+CARACTERÍSTICAS PRINCIPALES:
+* Modos de Captura: Ventana visible, página completa con desplazamiento inteligente, recorte libre en página y proporciones predefinidas (1:1, 3:2, 4:3, 5:4, 16:9).
+* Editor con Anotaciones: Flechas, rectángulos, círculos, líneas rectas, polilíneas continuas, texto y pincel libre.
+* Copia Directa: Copia la imagen al portapapeles con un clic para pegarla donde quieras (Ctrl+V).
+* Exportación Multiformato: PNG sin pérdidas, JPG con calidad configurable y WebP ultracompacto.
+* Atajos de Teclado Globales: Alt+Shift+V, Alt+Shift+F, Alt+Shift+S y selecciones de proporción.
+* Privacidad Total: Procesamiento 100% local en tu navegador. Cero servidores externos.
+
+
+==================================================
+IDIOMA SECUNDÁRIO: FRANÇAIS (fr)
+==================================================
+
+[TITRE] (Maximum 45 caractères)
+ScreenShot Turbo
+
+[RÉSUMÉ] (Maximum 132 caractères)
+Extension rapide et professionnelle de capture, recadrage, annotation et exportation d'écran pour Chrome et Edge.
+
+[CATÉGORIE]
+Productivité
+
+[DESCRIPTION]
+Capturez, recadrez, annotez et exportez des captures d'écran professionnelles en quelques secondes ! ScreenShot Turbo est une extension complète et ultra-rapide pour Chrome et Edge avec un éditeur d'aperçu puissant et un respect total de votre vie privée.
+
+FONCTIONNALITÉS PRINCIPALES :
+* Modes de Capture : Fenêtre visible, page entière avec défilement automatique, sélection libre sur la page et formats prédéfinis (1:1, 3:2, 4:3, 5:4, 16:9).
+* Outils d'Édition : Flèches, rectangles, cercles, lignes droites, polylignes continues, texte et pinceau libre.
+* Presse-papiers Instantané : Copiez en un clic pour coller immédiatement (Ctrl+V).
+* Exportation : PNG transparent, JPG avec qualité réglable et WebP ultra-léger.
+* Raccourcis Clavier Globaux : Alt+Shift+V, Alt+Shift+F, Alt+Shift+S et accès direct aux formats.
+* Sécurité et Confidentialité : Traitement 100% local dans votre navigateur. Aucun serveur distant.
+
+
+--------------------------------------------------------------------------------
+2. ABA PRIVACIDADE (PRIVACY PRACTICES)
+--------------------------------------------------------------------------------
+
+[SINGLE PURPOSE POLICY — ENGLISH]
+ScreenShot Turbo has the single, dedicated purpose of allowing users to capture, crop, annotate, and export screenshots of webpages locally within their browser.
+
+[JUSTIFICATION OF PERMISSIONS — REQUIRED IN ENGLISH FOR REVIEWERS]
+
+* activeTab:
+  Required to capture the visible contents of the currently active browser tab when the user explicitly triggers a capture command or action, and to display the interactive crop overlay directly on that page.
+
+* tabs:
+  Used exclusively to query the active tab's URL and title for naming captured screenshots, and to open the local preview editor tab (editor.html) or settings tab upon user request.
+
+* storage:
+  Used to store the user's local capture presets, default image formats, compression levels, and UI options via chrome.storage.local. No data leaves the user's machine.
+
+* unlimitedStorage:
+  Required to temporarily cache high-resolution, full-page stitched canvas screenshots in memory and local storage so they can be smoothly handed over to the built-in editor without crashing browser memory limits.
+
+* downloads:
+  Required to export and save the final screenshot files (PNG, JPG, or WebP) directly into the user's chosen local downloads directory when the user clicks the save button.
+
+* scripting:
+  Required to execute the full-page scrolling scanner script and inject the interactive crop overlay elements into the active webpage only during user-requested screen capture sessions.
+
+[REMOTE CODE DECLARATION]
+Question: "Is this extension using remote code?"
+Answer: No, I am not using remote code. (All scripts, styles, and the Fabric.js library are bundled locally within the extension package).

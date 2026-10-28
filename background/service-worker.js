@@ -1,6 +1,7 @@
 import { MESSAGE_TYPES } from '../shared/constants.js';
 import { getSettings, setTemporaryCaptureData, setQuickSaveData } from '../shared/storage.js';
 import { generateFilename } from '../shared/image-export.js';
+import { getI18nMessage } from '../shared/i18n.js';
 
 // Armazenamento em memória do Service Worker para transferências ultra-rápidas
 let memoryCaptureData = null;
@@ -27,7 +28,7 @@ async function captureTabWithRetry(windowId) {
       await sleep(600 + attempt * 200);
     }
   }
-  throw lastErr || new Error('Falha ao capturar a janela do navegador. Tente novamente.');
+  throw lastErr || new Error(getI18nMessage('errCaptureWindow'));
 }
 
 /**
@@ -89,13 +90,13 @@ async function handleMessage(message, sender, sendResponse) {
       case MESSAGE_TYPES.START_CAPTURE: {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
         if (!tab || !tab.id) {
-          sendResponse({ error: 'Nenhuma aba ativa encontrada.' });
+          sendResponse({ error: getI18nMessage('errNoActiveTab') });
           return;
         }
 
         if (isRestrictedUrl(tab.url)) {
           sendResponse({
-            error: 'Por motivos de segurança do navegador, extensões não podem capturar telas em páginas internas do sistema (chrome://, edge:// ou Web Store).'
+            error: getI18nMessage('errRestrictedUrl')
           });
           return;
         }
@@ -634,7 +635,7 @@ async function startCaptureFullPage(tabId, settings) {
     console.error('Erro crítico ao capturar página inteira:', err);
     chrome.tabs.sendMessage(tabId, {
       type: 'CAPTURE_ERROR',
-      message: err.message || 'Erro ao capturar página inteira.'
+      message: err.message || getI18nMessage('errFullPage')
     }).catch(() => {});
   } finally {
     // Restaura cabeçalhos fixos, scroller, overflow e posição original
@@ -698,7 +699,7 @@ async function startCaptureFullPage(tabId, settings) {
   } else {
     chrome.tabs.sendMessage(tabId, {
       type: 'CAPTURE_ERROR',
-      message: 'Não foi possível capturar imagens desta página.'
+      message: getI18nMessage('errFullPageNoImages')
     }).catch(() => {});
   }
 }

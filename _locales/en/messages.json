@@ -1,0 +1,581 @@
+{
+  "appName": {
+    "message": "ScreenShot Turbo",
+    "description": "Extension name"
+  },
+  "appDesc": {
+    "message": "Fast and professional screenshot capture, crop, annotation editor, and export tool for Chrome and Edge.",
+    "description": "Extension description"
+  },
+  "cmdOpenMenu": {
+    "message": "Open ScreenShot Turbo menu",
+    "description": "Shortcut command to open popup"
+  },
+  "cmdCaptureVisible": {
+    "message": "Capture visible window",
+    "description": "Shortcut command to capture visible area"
+  },
+  "cmdCaptureFullPage": {
+    "message": "Capture full page",
+    "description": "Shortcut command to capture full page"
+  },
+  "cmdCaptureSelection": {
+    "message": "Start free selection",
+    "description": "Shortcut command to start free selection"
+  },
+  "cmdRatio11": {
+    "message": "Selection with 1:1 aspect ratio",
+    "description": "Shortcut command for 1:1 selection"
+  },
+  "cmdRatio32": {
+    "message": "Selection with 3:2 aspect ratio",
+    "description": "Shortcut command for 3:2 selection"
+  },
+  "cmdRatio43": {
+    "message": "Selection with 4:3 aspect ratio",
+    "description": "Shortcut command for 4:3 selection"
+  },
+  "cmdRatio54": {
+    "message": "Selection with 5:4 aspect ratio",
+    "description": "Shortcut command for 5:4 selection"
+  },
+  "cmdRatio169": {
+    "message": "Selection with 16:9 aspect ratio",
+    "description": "Shortcut command for 16:9 selection"
+  },
+  "btnSettings": {
+    "message": "Settings",
+    "description": "Settings button title"
+  },
+  "presetTitle": {
+    "message": "User Preset",
+    "description": "User preset card title"
+  },
+  "presetDesc": {
+    "message": "Uses default mode from settings",
+    "description": "Preset mode description"
+  },
+  "presetCurrent": {
+    "message": "Default mode: $MODE$",
+    "description": "Current mode text",
+    "placeholders": {
+      "mode": {
+        "content": "$1"
+      }
+    }
+  },
+  "visibleWindow": {
+    "message": "Visible Window",
+    "description": "Visible window card title"
+  },
+  "visibleDesc": {
+    "message": "Captures what is currently on screen",
+    "description": "Visible window card description"
+  },
+  "freeSelection": {
+    "message": "Free Selection",
+    "description": "Free selection card title"
+  },
+  "freeSelectionDesc": {
+    "message": "Custom crop selection on page",
+    "description": "Free selection card description"
+  },
+  "fullPage": {
+    "message": "Full Page",
+    "description": "Full page card title"
+  },
+  "fullPageDesc": {
+    "message": "Automatic scroll and capture",
+    "description": "Full page card description"
+  },
+  "presetRatios": {
+    "message": "Preset Aspect Ratios",
+    "description": "Preset ratios section title"
+  },
+  "autoOrientation": {
+    "message": "Auto Orientation",
+    "description": "Auto orientation badge"
+  },
+  "ratioSquare": {
+    "message": "Square",
+    "description": "1:1 ratio subtitle"
+  },
+  "ratioPhoto": {
+    "message": "Photo",
+    "description": "3:2 ratio subtitle"
+  },
+  "ratioMonitor": {
+    "message": "Monitor",
+    "description": "4:3 ratio subtitle"
+  },
+  "ratioFrame": {
+    "message": "Frame",
+    "description": "5:4 ratio subtitle"
+  },
+  "ratioWidescreen": {
+    "message": "Widescreen",
+    "description": "16:9 ratio subtitle"
+  },
+  "ratioSelectionLabel": {
+    "message": "Ratio Selection",
+    "description": "Generic ratio selection mode name"
+  },
+  "ratioSelectionWithVal": {
+    "message": "$RATIO$ Selection",
+    "description": "Selection with ratio specific value",
+    "placeholders": {
+      "ratio": {
+        "content": "$1"
+      }
+    }
+  },
+  "errNoActiveTab": {
+    "message": "No active tab found.",
+    "description": "Error when active tab is missing"
+  },
+  "errRestrictedUrl": {
+    "message": "For browser security reasons, extensions cannot capture internal system pages (chrome://, edge://, or Web Store).",
+    "description": "Error on restricted URLs"
+  },
+  "errCaptureWindow": {
+    "message": "Failed to capture browser window. Please try again.",
+    "description": "General window capture error"
+  },
+  "errFullPage": {
+    "message": "Error capturing full page.",
+    "description": "Full page capture error"
+  },
+  "errFullPageNoImages": {
+    "message": "Could not capture images from this page.",
+    "description": "Error when no images could be captured"
+  },
+  "overlayHintFree": {
+    "message": "Click and drag to select desired area (ESC to cancel)",
+    "description": "Free selection hint on overlay"
+  },
+  "overlayHintRatio": {
+    "message": "Ratio $RATIO$ ($ORIENTATION$) — Click and drag to select (ESC to exit)",
+    "description": "Ratio selection hint on overlay",
+    "placeholders": {
+      "ratio": { "content": "$1" },
+      "orientation": { "content": "$2" }
+    }
+  },
+  "btnConfirm": {
+    "message": "Confirm",
+    "description": "Confirm button"
+  },
+  "btnCopy": {
+    "message": "Copy",
+    "description": "Copy button"
+  },
+  "btnSave": {
+    "message": "Save",
+    "description": "Direct save button"
+  },
+  "btnCancel": {
+    "message": "Cancel",
+    "description": "Cancel button"
+  },
+  "btnCopyTooltip": {
+    "message": "Copy selection to clipboard",
+    "description": "Copy button tooltip on overlay"
+  },
+  "btnSaveTooltip": {
+    "message": "Save directly without opening the editor",
+    "description": "Save button tooltip on overlay"
+  },
+  "capturingFullPage": {
+    "message": "Capturing full page...",
+    "description": "Default progress text for full page"
+  },
+  "captureCompleted": {
+    "message": "Capture completed!",
+    "description": "Capture success toast"
+  },
+  "openingEditor": {
+    "message": "Opening confirmation editor...",
+    "description": "Opening editor toast subtitle"
+  },
+  "imageCopied": {
+    "message": "Image copied!",
+    "description": "Image copied toast"
+  },
+  "readyToPaste": {
+    "message": "Ready to paste anywhere (Ctrl+V).",
+    "description": "Ready to paste toast subtitle"
+  },
+  "captureErrorTitle": {
+    "message": "Capture error",
+    "description": "Capture error title on overlay"
+  },
+  "captureErrorDefault": {
+    "message": "Could not complete screen capture.",
+    "description": "Default capture error message"
+  },
+  "editorTitle": {
+    "message": "Preview Editor — ScreenShot Turbo",
+    "description": "Editor page title"
+  },
+  "editorHeading": {
+    "message": "Preview Editor",
+    "description": "Editor heading"
+  },
+  "sourceLocal": {
+    "message": "Local capture",
+    "description": "Local capture origin tag"
+  },
+  "btnRestoreImage": {
+    "message": "Restore Image",
+    "description": "Restore image button"
+  },
+  "btnResetCropTooltip": {
+    "message": "Reset Crop",
+    "description": "Reset crop tooltip"
+  },
+  "btnCopyClipboardTooltip": {
+    "message": "Copy to Clipboard",
+    "description": "Copy image to clipboard tooltip"
+  },
+  "btnSaveImage": {
+    "message": "Save Image",
+    "description": "Save image button in editor"
+  },
+  "drawingTools": {
+    "message": "Drawing Tools",
+    "description": "Drawing tools section"
+  },
+  "toolSelect": {
+    "message": "Move / Select Elements",
+    "description": "Select tool tooltip"
+  },
+  "toolText": {
+    "message": "Add Text",
+    "description": "Text tool tooltip"
+  },
+  "toolArrow": {
+    "message": "Draw Arrow",
+    "description": "Arrow tool tooltip"
+  },
+  "toolLine": {
+    "message": "Draw Straight Line",
+    "description": "Line tool tooltip"
+  },
+  "toolPolyline": {
+    "message": "Polyline (Connected Lines) — Double click or Enter to finish",
+    "description": "Polyline tool tooltip"
+  },
+  "toolRect": {
+    "message": "Rectangle",
+    "description": "Rectangle tool tooltip"
+  },
+  "toolCircle": {
+    "message": "Circle",
+    "description": "Circle tool tooltip"
+  },
+  "toolCrop": {
+    "message": "Crop (adjust crop box)",
+    "description": "Crop tool tooltip"
+  },
+  "toolDraw": {
+    "message": "Freehand Brush",
+    "description": "Freehand brush tooltip"
+  },
+  "propStrokeColor": {
+    "message": "Line/Text Color:",
+    "description": "Stroke color label"
+  },
+  "propFillColor": {
+    "message": "Text / Shape Background:",
+    "description": "Fill color label"
+  },
+  "transparent": {
+    "message": "Transparent",
+    "description": "Transparent label"
+  },
+  "transparentTooltip": {
+    "message": "No fill / transparent",
+    "description": "No fill tooltip"
+  },
+  "propThickness": {
+    "message": "Thickness / Size:",
+    "description": "Stroke thickness label"
+  },
+  "btnDeleteSelected": {
+    "message": "Delete Selected",
+    "description": "Delete selected button"
+  },
+  "btnDeleteTooltip": {
+    "message": "Delete selected element (Delete key)",
+    "description": "Delete tooltip"
+  },
+  "cropAndRatios": {
+    "message": "Crop & Aspect Ratios",
+    "description": "Crop and ratios section"
+  },
+  "ratioFree": {
+    "message": "Free",
+    "description": "Free aspect ratio option"
+  },
+  "orientation": {
+    "message": "Orientation:",
+    "description": "Orientation label"
+  },
+  "orientHorizontal": {
+    "message": "Horizontal",
+    "description": "Horizontal orientation"
+  },
+  "orientVertical": {
+    "message": "Vertical",
+    "description": "Vertical orientation"
+  },
+  "imageDimensions": {
+    "message": "Image Dimensions",
+    "description": "Dimensions section"
+  },
+  "dimWidth": {
+    "message": "Width",
+    "description": "Width label"
+  },
+  "dimHeight": {
+    "message": "Height",
+    "description": "Height label"
+  },
+  "ratioOriginal": {
+    "message": "Aspect Ratio: Original",
+    "description": "Original aspect ratio label"
+  },
+  "ratioDisplay": {
+    "message": "Aspect Ratio: $VAL$",
+    "description": "Aspect ratio display",
+    "placeholders": {
+      "val": { "content": "$1" }
+    }
+  },
+  "exportFormat": {
+    "message": "Export Format",
+    "description": "Export format section"
+  },
+  "qualityLabel": {
+    "message": "Quality:",
+    "description": "Quality label"
+  },
+  "jpgBgColorLabel": {
+    "message": "Background color (no transparency):",
+    "description": "JPG background color label"
+  },
+  "filename": {
+    "message": "File Name",
+    "description": "File name section"
+  },
+  "zoomOutTooltip": {
+    "message": "Zoom Out",
+    "description": "Zoom out tooltip"
+  },
+  "zoomInTooltip": {
+    "message": "Zoom In",
+    "description": "Zoom in tooltip"
+  },
+  "zoomFitTooltip": {
+    "message": "Fit to Screen",
+    "description": "Fit to screen tooltip"
+  },
+  "zoom100Tooltip": {
+    "message": "Actual Size (100%)",
+    "description": "Actual size tooltip"
+  },
+  "toastNoRecentImage": {
+    "message": "No recent captured image found.",
+    "description": "No recent image toast"
+  },
+  "toastImageSaved": {
+    "message": "Image saved successfully!",
+    "description": "Image saved toast"
+  },
+  "toastDownloadStarted": {
+    "message": "Download started!",
+    "description": "Download started toast"
+  },
+  "toastSaveError": {
+    "message": "Error saving: $ERR$",
+    "description": "Error saving toast",
+    "placeholders": {
+      "err": { "content": "$1" }
+    }
+  },
+  "toastCopySuccess": {
+    "message": "Image copied to clipboard!",
+    "description": "Image copied toast in editor"
+  },
+  "toastCopyError": {
+    "message": "Failed to copy image to clipboard.",
+    "description": "Failed to copy toast in editor"
+  },
+  "settingsTitle": {
+    "message": "Settings — ScreenShot Turbo",
+    "description": "Settings page title"
+  },
+  "settingsSubtitle": {
+    "message": "Global Preferences & Presets",
+    "description": "Settings subtitle"
+  },
+  "btnSaveSettings": {
+    "message": "Save Changes",
+    "description": "Save settings button"
+  },
+  "settingsGeneralCapture": {
+    "message": "General Capture Behavior",
+    "description": "General capture settings card"
+  },
+  "settingsDefaultCaptureMode": {
+    "message": "Default Capture Mode:",
+    "description": "Default capture mode label"
+  },
+  "optgroupCapture": {
+    "message": "Capture",
+    "description": "Capture option group"
+  },
+  "optgroupRatio": {
+    "message": "Aspect Ratio Selection",
+    "description": "Ratio option group"
+  },
+  "optRatio11": {
+    "message": "1:1 Ratio (Square)",
+    "description": "1:1 ratio option"
+  },
+  "optRatio32": {
+    "message": "3:2 Ratio (Photo)",
+    "description": "3:2 ratio option"
+  },
+  "optRatio43": {
+    "message": "4:3 Ratio (Standard monitor)",
+    "description": "4:3 ratio option"
+  },
+  "optRatio54": {
+    "message": "5:4 Ratio (Frame)",
+    "description": "5:4 ratio option"
+  },
+  "optRatio169": {
+    "message": "16:9 Ratio (Widescreen)",
+    "description": "16:9 ratio option"
+  },
+  "settingsDefaultOrientation": {
+    "message": "Default Orientation:",
+    "description": "Default orientation label"
+  },
+  "optOrientLandscape": {
+    "message": "Horizontal (Landscape)",
+    "description": "Landscape option"
+  },
+  "optOrientPortrait": {
+    "message": "Vertical (Portrait)",
+    "description": "Portrait option"
+  },
+  "settingsExportQuality": {
+    "message": "Export Formats & Quality",
+    "description": "Formats and quality settings card"
+  },
+  "settingsDefaultFormat": {
+    "message": "Default Output Format:",
+    "description": "Default output format label"
+  },
+  "optPngDesc": {
+    "message": "PNG (Lossless, supports transparency)",
+    "description": "PNG description option"
+  },
+  "optJpgDesc": {
+    "message": "JPG (Compressed, high compatibility)",
+    "description": "JPG description option"
+  },
+  "optWebpDesc": {
+    "message": "WebP (Modern, ultra-compact)",
+    "description": "WebP description option"
+  },
+  "settingsJpgQuality": {
+    "message": "JPG Quality:",
+    "description": "JPG quality label"
+  },
+  "settingsWebpQuality": {
+    "message": "WebP Quality:",
+    "description": "WebP quality label"
+  },
+  "settingsJpgBg": {
+    "message": "Background Color for JPG:",
+    "description": "JPG background color label"
+  },
+  "settingsNaming": {
+    "message": "File Naming & Saving",
+    "description": "Naming and saving settings card"
+  },
+  "checkIncludePrefix": {
+    "message": "Include \"ScreenShot-Turbo\" at beginning of file name",
+    "description": "Include prefix checkbox"
+  },
+  "checkIncludeDomain": {
+    "message": "Include website address after date/time",
+    "description": "Include domain checkbox"
+  },
+  "previewLabel": {
+    "message": "Preview:",
+    "description": "Preview label"
+  },
+  "formatHelpText": {
+    "message": "Format: <code>ScreenShot-Turbo-yyyy.mm.dd-hh.mm.ss-site.ext</code>",
+    "description": "File format help text"
+  },
+  "settingsGlobalShortcuts": {
+    "message": "Global Keyboard Shortcuts",
+    "description": "Global shortcuts card"
+  },
+  "shortcutCustomizable": {
+    "message": "Customizable",
+    "description": "Customizable shortcut badge"
+  },
+  "shortcutsHelpText": {
+    "message": "To customize native browser shortcuts, open <code>chrome://extensions/shortcuts</code> or <code>edge://extensions/shortcuts</code>.",
+    "description": "Shortcuts help text"
+  },
+  "toastSettingsSaved": {
+    "message": "Settings saved successfully!",
+    "description": "Settings saved toast"
+  },
+  "quickSaveTitle": {
+    "message": "ScreenShot Turbo — Quick Save",
+    "description": "Quick-Save window title"
+  },
+  "quickSaveSubtitle": {
+    "message": "Quick Save",
+    "description": "Quick-Save subtitle"
+  },
+  "saveCapture": {
+    "message": "Save Capture",
+    "description": "Quick-Save header title"
+  },
+  "previewAlt": {
+    "message": "Capture preview",
+    "description": "Image alt in Quick-Save"
+  },
+  "filenameLabel": {
+    "message": "File Name",
+    "description": "File name label in Quick-Save"
+  },
+  "kbdSave": {
+    "message": "Save",
+    "description": "Keyboard hint save"
+  },
+  "kbdCancel": {
+    "message": "Cancel",
+    "description": "Keyboard hint cancel"
+  },
+  "noPendingImage": {
+    "message": "No pending image to save.",
+    "description": "No pending image warning in Quick-Save"
+  },
+  "loadCaptureError": {
+    "message": "Error loading capture: $ERR$",
+    "description": "Error loading capture in Quick-Save",
+    "placeholders": {
+      "err": { "content": "$1" }
+    }
+  }
+}

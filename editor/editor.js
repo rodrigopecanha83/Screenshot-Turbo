@@ -1,6 +1,7 @@
 import { getTemporaryCaptureData, getSettings, saveSettings } from '../shared/storage.js';
 import { canvasToBlob, loadImage, cropImageToCanvas, generateFilename } from '../shared/image-export.js';
 import { RATIO_VALUES, SAVE_PICKER_ID } from '../shared/constants.js';
+import { applyI18n, getI18nMessage } from '../shared/i18n.js';
 
 let rawImage = null; // HTMLImageElement ou Canvas original completo
 let canvas = null;
@@ -43,6 +44,8 @@ let activeHandle = null;
 let dragStartX = 0, dragStartY = 0;
 
 document.addEventListener('DOMContentLoaded', async () => {
+  applyI18n();
+
   canvas = document.getElementById('main-canvas');
   ctx = canvas.getContext('2d');
 
@@ -56,7 +59,7 @@ async function loadCapturedSession() {
   try {
     currentCaptureData = await getTemporaryCaptureData();
     if (!currentCaptureData) {
-      showToast('Nenhuma imagem capturada recente encontrada.');
+      showToast(getI18nMessage('toastNoRecentImage'));
       return;
     }
 
@@ -714,7 +717,9 @@ function updateCropOverlayVisual() {
 function updateDimensionStats() {
   document.getElementById('stat-width').textContent = `${Math.round(cropRect.width)} px`;
   document.getElementById('stat-height').textContent = `${Math.round(cropRect.height)} px`;
-  document.getElementById('stat-ratio-display').textContent = `Proporção: ${currentRatio === 'free' ? 'Livre' : currentRatio} (${currentOrientation})`;
+  const ratioLabel = currentRatio === 'free' ? getI18nMessage('ratioFree') : currentRatio;
+  const orientLabel = currentOrientation === 'portrait' ? getI18nMessage('orientVertical') : getI18nMessage('orientHorizontal');
+  document.getElementById('stat-ratio-display').textContent = getI18nMessage('ratioDisplay', [`${ratioLabel} (${orientLabel})`]);
 }
 
 function setupUIEventListeners() {
@@ -799,7 +804,7 @@ function setupUIEventListeners() {
       b.classList.toggle('active', b.dataset.ratio === 'free');
     });
     updateCropOverlayVisual();
-    showToast('Recorte restaurado para a imagem original.');
+    showToast(getI18nMessage('btnRestoreImage'));
   });
 
   // Copiar para Área de Transferência
@@ -810,9 +815,9 @@ function setupUIEventListeners() {
       const blob = await canvasToBlob(cropped, 'png');
       const item = new ClipboardItem({ 'image/png': blob });
       await navigator.clipboard.write([item]);
-      showToast('Imagem copiada para a área de transferência!');
+      showToast(getI18nMessage('toastCopySuccess'));
     } catch (err) {
-      showToast(`Erro ao copiar imagem: ${err.message}`);
+      showToast(`${getI18nMessage('toastCopyError')} (${err.message})`);
     }
   });
 
@@ -1072,9 +1077,9 @@ async function executeSaveImage() {
         const writable = await fileHandle.createWritable();
         await writable.write(blob);
         await writable.close();
-        showToast(`Imagem salva: ${fileHandle.name}`);
+        showToast(`${getI18nMessage('toastImageSaved')} (${fileHandle.name})`);
       } catch (err) {
-        showToast(`Erro ao salvar: ${err.message}`);
+        showToast(getI18nMessage('toastSaveError', [err.message]));
       }
       return;
     }
@@ -1091,17 +1096,17 @@ async function executeSaveImage() {
       saveAs: true
     }, (response) => {
       if (response && response.success) {
-        showToast('Imagem salva com sucesso!');
+        showToast(getI18nMessage('toastImageSaved'));
       } else {
         const a = document.createElement('a');
         a.href = blobUrl;
         a.download = filename;
         a.click();
-        showToast('Download iniciado!');
+        showToast(getI18nMessage('toastDownloadStarted'));
       }
     });
   } catch (err) {
-    showToast(`Erro ao salvar: ${err.message}`);
+    showToast(getI18nMessage('toastSaveError', [err.message]));
   }
 }
 

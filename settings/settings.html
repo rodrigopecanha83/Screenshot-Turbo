@@ -19,63 +19,63 @@
         </div>
         <div>
           <h1>ScreenShot <span class="accent-turbo">Turbo</span></h1>
-          <p class="subtitle">Preferências & Predefinições Globais</p>
+          <p class="subtitle" data-i18n="settingsSubtitle">Preferências & Predefinições Globais</p>
         </div>
       </div>
       <button id="btn-save-settings" class="btn-save">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-        Salvar Alterações
+        <span data-i18n="btnSaveSettings">Salvar Alterações</span>
       </button>
     </header>
 
     <div class="settings-grid">
       <!-- Seção: Padrões de Captura -->
       <div class="card">
-        <h2 class="card-title">Comportamento Geral de Captura</h2>
+        <h2 class="card-title" data-i18n="settingsGeneralCapture">Comportamento Geral de Captura</h2>
         
         <div class="form-group">
-          <label for="Default-Capture">Modo de Captura Padrão:</label>
+          <label for="Default-Capture" data-i18n="settingsDefaultCaptureMode">Modo de Captura Padrão:</label>
           <select id="Default-Capture" class="form-control">
-            <optgroup label="Captura">
-              <option value="visible">Janela Visível</option>
-              <option value="full_page">Página Inteira</option>
-              <option value="free_selection">Seleção Livre</option>
+            <optgroup label="Captura" data-i18n-label="optgroupCapture">
+              <option value="visible" data-i18n="visibleWindow">Janela Visível</option>
+              <option value="full_page" data-i18n="fullPage">Página Inteira</option>
+              <option value="free_selection" data-i18n="freeSelection">Seleção Livre</option>
             </optgroup>
-            <optgroup label="Seleção por Proporção">
-              <option value="ratio_selection|1:1">Proporção 1:1 (Quadrado)</option>
-              <option value="ratio_selection|3:2">Proporção 3:2 (Fotografia)</option>
-              <option value="ratio_selection|4:3">Proporção 4:3 (Monitor padrão)</option>
-              <option value="ratio_selection|5:4">Proporção 5:4 (Quadro)</option>
-              <option value="ratio_selection|16:9">Proporção 16:9 (Widescreen)</option>
+            <optgroup label="Seleção por Proporção" data-i18n-label="optgroupRatio">
+              <option value="ratio_selection|1:1" data-i18n="optRatio11">Proporção 1:1 (Quadrado)</option>
+              <option value="ratio_selection|3:2" data-i18n="optRatio32">Proporção 3:2 (Fotografia)</option>
+              <option value="ratio_selection|4:3" data-i18n="optRatio43">Proporção 4:3 (Monitor padrão)</option>
+              <option value="ratio_selection|5:4" data-i18n="optRatio54">Proporção 5:4 (Quadro)</option>
+              <option value="ratio_selection|16:9" data-i18n="optRatio169">Proporção 16:9 (Widescreen)</option>
             </optgroup>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="default-orient">Orientação Padrão:</label>
+          <label for="default-orient" data-i18n="settingsDefaultOrientation">Orientação Padrão:</label>
           <select id="default-orient" class="form-control">
-            <option value="landscape">Horizontal (Paisagem)</option>
-            <option value="portrait">Vertical (Retrato)</option>
+            <option value="landscape" data-i18n="optOrientLandscape">Horizontal (Paisagem)</option>
+            <option value="portrait" data-i18n="optOrientPortrait">Vertical (Retrato)</option>
           </select>
         </div>
       </div>
 
       <!-- Seção: Exportação de Arquivos -->
       <div class="card">
-        <h2 class="card-title">Formatos & Qualidade de Exportação</h2>
+        <h2 class="card-title" data-i18n="settingsExportQuality">Formatos & Qualidade de Exportação</h2>
         
         <div class="form-group">
-          <label for="default-format">Formato de Saída Padrão:</label>
+          <label for="default-format" data-i18n="settingsDefaultFormat">Formato de Saída Padrão:</label>
           <select id="default-format" class="form-control">
-            <option value="png">PNG (Sem perdas, suporta transparência)</option>
-            <option value="jpg">JPG (Comprimido, alta compatibilidade)</option>
-            <option value="webp">WebP (Moderno, ultra-compacto)</option>
+            <option value="png" data-i18n="optPngDesc">PNG (Sem perdas, suporta transparência)</option>
+            <option value="jpg" data-i18n="optJpgDesc">JPG (Comprimido, alta compatibilidade)</option>
+            <option value="webp" data-i18n="optWebpDesc">WebP (Moderno, ultra-compacto)</option>
           </select>
         </div>
 
         <div class="form-group">
           <div class="flex-between">
-            <label for="jpg-quality">Qualidade JPG:</label>
+            <label for="jpg-quality" data-i18n="settingsJpgQuality">Qualidade JPG:</label>
             <span id="jpg-quality-val" class="badge">90%</span>
           </div>
           <input type="range" id="jpg-quality" min="10" max="100" value="90" class="slider">
@@ -83,14 +83,14 @@
 
         <div class="form-group">
           <div class="flex-between">
-            <label for="webp-quality">Qualidade WebP:</label>
+            <label for="webp-quality" data-i18n="settingsWebpQuality">Qualidade WebP:</label>
             <span id="webp-quality-val" class="badge">90%</span>
           </div>
           <input type="range" id="webp-quality" min="10" max="100" value="90" class="slider">
         </div>
 
         <div class="form-group">
-          <label for="jpg-bg-color">Cor de Fundo para JPG:</label>
+          <label for="jpg-bg-color" data-i18n="settingsJpgBg">Cor de Fundo para JPG:</label>
           <div class="color-row">
             <input type="color" id="jpg-bg-color" value="#ffffff">
             <span id="jpg-bg-hex">#ffffff</span>
@@ -100,68 +100,68 @@
 
       <!-- Seção: Nomenclatura -->
       <div class="card">
-        <h2 class="card-title">Nomes & Salvamento de Arquivo</h2>
+        <h2 class="card-title" data-i18n="settingsNaming">Nomes & Salvamento de Arquivo</h2>
         
         <div class="form-group checkbox-group">
           <input type="checkbox" id="Include-Prefix" checked>
-          <label for="Include-Prefix">Incluir "ScreenShot-Turbo" no início do nome</label>
+          <label for="Include-Prefix" data-i18n="checkIncludePrefix">Incluir "ScreenShot-Turbo" no início do nome</label>
         </div>
 
         <div class="form-group checkbox-group">
           <input type="checkbox" id="include-domain" checked>
-          <label for="include-domain">Incluir endereço do site após a data/hora</label>
+          <label for="include-domain" data-i18n="checkIncludeDomain">Incluir endereço do site após a data/hora</label>
         </div>
 
         <div class="form-group">
-          <span class="Field-Label">Pré-visualização:</span>
+          <span class="Field-Label" data-i18n="previewLabel">Pré-visualização:</span>
           <code id="Filename-Preview" class="Filename-Preview"></code>
-          <p class="help-text">Formato: <code>ScreenShot-Turbo-aaaa.mm.dd-hh.mm.ss-site.ext</code></p>
+          <p class="help-text" data-i18n-html="formatHelpText">Formato: <code>ScreenShot-Turbo-aaaa.mm.dd-hh.mm.ss-site.ext</code></p>
         </div>
       </div>
 
       <!-- Seção: Atalhos do Teclado -->
       <div class="card">
-        <h2 class="card-title">Atalhos de Teclado Globais</h2>
+        <h2 class="card-title" data-i18n="settingsGlobalShortcuts">Atalhos de Teclado Globais</h2>
         <div class="shortcuts-list">
           <div class="shortcut-item">
-            <span>Janela Visível</span>
+            <span data-i18n="visibleWindow">Janela Visível</span>
             <span class="key-badge">Alt + Shift + V</span>
           </div>
           <div class="shortcut-item">
-            <span>Página Inteira</span>
+            <span data-i18n="fullPage">Página Inteira</span>
             <span class="key-badge">Alt + Shift + F</span>
           </div>
           <div class="shortcut-item">
-            <span>Seleção Livre</span>
+            <span data-i18n="freeSelection">Seleção Livre</span>
             <span class="key-badge">Alt + Shift + S</span>
           </div>
           <div class="shortcut-item">
-            <span>Seleção 1:1</span>
+            <span><span data-i18n="ratioSelectionLabel">Seleção</span> 1:1</span>
             <span class="key-badge">Alt + Shift + 1</span>
           </div>
           <div class="shortcut-item">
-            <span>Seleção 3:2</span>
+            <span><span data-i18n="ratioSelectionLabel">Seleção</span> 3:2</span>
             <span class="key-badge">Alt + Shift + 2</span>
           </div>
           <div class="shortcut-item">
-            <span>Seleção 4:3</span>
+            <span><span data-i18n="ratioSelectionLabel">Seleção</span> 4:3</span>
             <span class="key-badge">Alt + Shift + 3</span>
           </div>
           <div class="shortcut-item">
-            <span>Seleção 5:4</span>
+            <span><span data-i18n="ratioSelectionLabel">Seleção</span> 5:4</span>
             <span class="key-badge">Alt + Shift + 4</span>
           </div>
           <div class="shortcut-item">
-            <span>Seleção 16:9</span>
-            <span class="key-badge">Personalizável</span>
+            <span><span data-i18n="ratioSelectionLabel">Seleção</span> 16:9</span>
+            <span class="key-badge" data-i18n="shortcutCustomizable">Personalizável</span>
           </div>
         </div>
-        <p class="help-text" style="margin-top:12px;">Para personalizar os atalhos nativos do navegador, acesse <code>chrome://extensions/shortcuts</code> ou <code>edge://extensions/shortcuts</code>.</p>
+        <p class="help-text" style="margin-top:12px;" data-i18n-html="shortcutsHelpText">Para personalizar os atalhos nativos do navegador, acesse <code>chrome://extensions/shortcuts</code> ou <code>edge://extensions/shortcuts</code>.</p>
       </div>
     </div>
 
     <!-- Feedback Toast -->
-    <div id="save-toast" class="save-toast" style="display: none;">Configurações salvas com sucesso!</div>
+    <div id="save-toast" class="save-toast" style="display: none;" data-i18n="toastSettingsSaved">Configurações salvas com sucesso!</div>
   </div>
 
   <script type="module" src="settings.js"></script>

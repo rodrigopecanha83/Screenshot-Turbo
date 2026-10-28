@@ -20,10 +20,10 @@
         </div>
         <div class="logo-text">
           <h1>ScreenShot <span class="accent-turbo">Turbo</span></h1>
-          <span class="version-badge">v1.1</span>
+          <span class="version-badge">v1.2</span>
         </div>
       </div>
-      <button id="btn-open-settings" class="icon-btn" title="Configurações">
+      <button id="btn-open-settings" class="icon-btn" title="Configurações" data-i18n-title="btnSettings">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="3"></circle>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -41,8 +41,8 @@
           </svg>
         </div>
         <div class="card-content">
-          <span class="card-title">Predefinição do Usuário</span>
-          <span class="card-desc" id="preset-desc">Usa o modo padrão das configurações</span>
+          <span class="card-title" data-i18n="presetTitle">Predefinição do Usuário</span>
+          <span class="card-desc" id="preset-desc" data-i18n="presetDesc">Usa o modo padrão das configurações</span>
         </div>
       </button>
 
@@ -56,8 +56,8 @@
           </svg>
         </div>
         <div class="card-content">
-          <span class="card-title">Janela Visível</span>
-          <span class="card-desc">Captura o que está na tela agora</span>
+          <span class="card-title" data-i18n="visibleWindow">Janela Visível</span>
+          <span class="card-desc" data-i18n="visibleDesc">Captura o que está na tela agora</span>
         </div>
         <span class="shortcut-tag">Alt+Shift+V</span>
       </button>
@@ -70,8 +70,8 @@
           </svg>
         </div>
         <div class="card-content">
-          <span class="card-title">Seleção Livre</span>
-          <span class="card-desc">Recorte livre na página</span>
+          <span class="card-title" data-i18n="freeSelection">Seleção Livre</span>
+          <span class="card-desc" data-i18n="freeSelectionDesc">Recorte livre na página</span>
         </div>
         <span class="shortcut-tag">Alt+Shift+S</span>
       </button>
@@ -85,8 +85,8 @@
           </svg>
         </div>
         <div class="card-content">
-          <span class="card-title">Página Inteira</span>
-          <span class="card-desc">Rolagem e captura automática</span>
+          <span class="card-title" data-i18n="fullPage">Página Inteira</span>
+          <span class="card-desc" data-i18n="fullPageDesc">Rolagem e captura automática</span>
         </div>
         <span class="shortcut-tag">Alt+Shift+F</span>
       </button>
@@ -95,29 +95,29 @@
     <!-- Proporções Rápidas com Detecção Automática de Orientação -->
     <section class="ratios-section">
       <div class="section-header">
-        <span class="section-title">Proporções Predefinidas</span>
-        <span class="auto-orient-badge">Orientação Auto</span>
+        <span class="section-title" data-i18n="presetRatios">Proporções Predefinidas</span>
+        <span class="auto-orient-badge" data-i18n="autoOrientation">Orientação Auto</span>
       </div>
       <div class="ratio-grid">
         <button class="ratio-btn" data-ratio="1:1">
           <span class="ratio-label">1:1</span>
-          <span class="ratio-desc">Quadrado</span>
+          <span class="ratio-desc" data-i18n="ratioSquare">Quadrado</span>
         </button>
         <button class="ratio-btn" data-ratio="3:2">
           <span class="ratio-label">3:2</span>
-          <span class="ratio-desc">Foto</span>
+          <span class="ratio-desc" data-i18n="ratioPhoto">Foto</span>
         </button>
         <button class="ratio-btn" data-ratio="4:3">
           <span class="ratio-label">4:3</span>
-          <span class="ratio-desc">Monitor</span>
+          <span class="ratio-desc" data-i18n="ratioMonitor">Monitor</span>
         </button>
         <button class="ratio-btn" data-ratio="5:4">
           <span class="ratio-label">5:4</span>
-          <span class="ratio-desc">Quadro</span>
+          <span class="ratio-desc" data-i18n="ratioFrame">Quadro</span>
         </button>
         <button class="ratio-btn" data-ratio="16:9">
           <span class="ratio-label">16:9</span>
-          <span class="ratio-desc">Widescreen</span>
+          <span class="ratio-desc" data-i18n="ratioWidescreen">Widescreen</span>
         </button>
       </div>
     </section>
