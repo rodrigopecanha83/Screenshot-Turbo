@@ -48,6 +48,9 @@ Imagens e materiais visuais demonstrativos do produto estão disponíveis na pas
 
 ## Histórico de Versões
 
+### v1.2.1 - 2026-10-29
+- Correção de bugs: a janela de Salvamento Rápido (Quick-Save) não abria na versão publicada (ERR_FILE_NOT_FOUND) porque a pasta não era incluída no pacote.
+
 ### v1.2.0 - 2026-10-28
 - Implementação de internacionalização nativa (i18n) completa em 4 idiomas: Inglês (`en` como idioma padrão global), Português do Brasil (`pt_BR`), Espanhol (`es`) e Francês (`fr`).
 - Adaptação dinâmica de todas as interfaces (Popup, Editor, Configurações, Overlay interativo e Salvamento Rápido).

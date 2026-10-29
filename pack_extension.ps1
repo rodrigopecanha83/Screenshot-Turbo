@@ -13,6 +13,7 @@ $allowedItems = @(
     "icons",
     "lib",
     "popup",
+    "Quick-Save",
     "settings",
     "shared"
 )
